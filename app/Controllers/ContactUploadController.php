@@ -3,21 +3,23 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Contact;
 use App\Services\CategoryService;
+use App\Services\ContactService;
 use ReflectionException;
 
-class CategoryUploadController extends BaseController
+class ContactUploadController extends BaseController
 {
-    public CategoryService $categoryService;
+    private ContactService $contactService;
 
     public function __construct()
     {
-        $this->categoryService = new CategoryService();
+        $this->contactService = new ContactService();
     }
 
     public function create(): string
     {
-        return view('category\upload');
+        return view('contact\upload');
     }
 
     /**
@@ -27,6 +29,6 @@ class CategoryUploadController extends BaseController
     {
         $file = $this->request->getFile('csv_file');
 
-        dd($this->categoryService->storeUploadedCategories($file));            
+        dd($this->contactService->storeUploadedCategories($file));
     }
 }

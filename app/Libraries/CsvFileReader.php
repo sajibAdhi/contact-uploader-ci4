@@ -10,12 +10,16 @@ class CsvFileReader
     /**
      * @param UploadedFile file
      * @param array $headers
-     * 
+     *
      * @return false|array
      */
     public static function readCsvFile(UploadedFile $file, array $headers)
     {
         $csvData = [];
+
+        // Check is the file is valid and text/csv type
+        if (!$file->isValid() || $file->getClientMimeType() !== 'text/csv') return false;
+
 
         if (($handle = fopen($file->getTempName(), "r")) === false) return false;
 
@@ -23,7 +27,7 @@ class CsvFileReader
 
         // Check if all elements in $headers are present in $fileHeader
         $diff = array_diff($headers, $fileHeaders);
-        if (!empty($diff))    return false;
+        if (!empty($diff)) return false;
 
 
         while (($data = fgetcsv($handle, 1000, ",")) !== false) {

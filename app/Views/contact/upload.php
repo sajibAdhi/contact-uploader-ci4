@@ -8,8 +8,9 @@
 </head>
 
 <body>
-    <form action="<?= route_to('category.upload') ?>" method="post" enctype="multipart/form-data">
-        <label for="file">Choose a csv file with header (category):</label>
+    <form action="<?= route_to('contact.upload') ?>" method="post" enctype="multipart/form-data">
+        <?= csrf_field()?>
+        <label for="file">Choose a csv file with header (contact,category):</label>
         <input type="file" name="csv_file" id="file" accept=".csv">
 
         <button type="submit">Submit</button>

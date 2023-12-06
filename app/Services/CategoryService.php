@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Libraries\CsvFileReader;
 use CodeIgniter\HTTP\Files\UploadedFile;
+use ReflectionException;
 
 class CategoryService
 {
@@ -15,22 +16,38 @@ class CategoryService
         $this->category = new Category();
     }
 
-    public function storeUploadedCategories(UploadedFile $file)
+    /**
+     * @throws ReflectionException
+     */
+    public function storeUploadedCategories(UploadedFile $file): bool
     {
-        if (!$file->isValid() || $file->getClientMimeType() !== 'text/csv') {
-            return false;
+        $csvData = CsvFileReader::readCsvFile($file, ['category']);
+
+        if (!$csvData) return false;
+
+        $this->category->db->transStart();
+
+        foreach ($csvData as $datum){
+            $this->findOrCreate($datum['category']);
         }
 
-        $csvData = CsvFileReader::readCsvFile($file, ['contact', 'category']);
+        $this->category->db->transComplete();
 
-        if ($csvData == false){
-            return  false;
-        } 
-        
-        if(!$this->category->insertBatch($csvData)){
-            return false;
+        return $this->category->db->transStart();
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function findOrCreate($category)
+    {
+        $categoryData = $this->category->where('category', $category)->first();
+
+        if (is_null($categoryData)) {
+            $this->category->insert(['category' => $category]);
+            $categoryData = $this->category->find($this->category->getInsertID());
         }
 
-        return true;
+        return $categoryData;
     }
 }
