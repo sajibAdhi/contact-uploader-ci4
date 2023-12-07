@@ -14,7 +14,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= base_url('bower_components/font-awesome/css/font-awesome.min.css') ?>">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="<?= base_url('bower_components/Ionicons/css/ionicons.min.css') ?>">
+    <!--    <link rel="stylesheet" href="-->
+    <?php //= base_url('bower_components/Ionicons/css/ionicons.min.css') ?><!--">-->
 
     <?= $this->renderSection('styles') ?>
 
@@ -86,6 +87,8 @@ desired effect
 
         <!-- Main content -->
         <section class="content container-fluid">
+
+            <?= validation_list_errors() ?>
 
             <!--------------------------
               | Your Page Content Here |

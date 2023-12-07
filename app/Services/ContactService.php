@@ -66,4 +66,9 @@ class ContactService
 
         return $this->contact->db->transStatus();
     }
+
+    public function contacts(): array
+    {
+        return $this->contact->findAll();
+    }
 }

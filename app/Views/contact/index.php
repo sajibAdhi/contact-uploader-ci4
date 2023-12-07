@@ -15,41 +15,27 @@
         <?= csrf_field() ?>
 
         <div class="box-body">
-
-            <!-- Category -->
-            <div class="form-group <?= validation_show_error('category') ? 'has-warning' : '' ?>">
+            <div class="form-group row">
                 <label for="category" class="control-label col-sm-3">Select a category:</label>
                 <div class=" col-sm-9">
                     <select class="form-control select2" name="category" id="category" style="width: 100%">
                         <option value="">Select a Category</option>
                         <?php if (!empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>
-                                <option value="<?= $category->id ?>" <?= set_select('category', $category->id) ?>>
-                                    <?= $category->name ?>
-                                </option>
+                                <option value="<?= $category->id ?>"><?= $category->name ?></option>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>
-                    <span class="help-block"><?= validation_show_error('category')?></span>
+
+                    <input type="text" class="form-control col-sm-9" style="margin-top: 10px" name="category_name"
+                           placeholder="Category Name">
                 </div>
             </div>
 
-            <!-- Category Name -->
-            <div class="form-group <?= validation_show_error('category_name') ? 'has-warning' : '' ?>">
-                <label for="contacts" class="control-label col-sm-3"></label>
-                <div class=" col-sm-9">
-                    <input type="text" class="form-control col-sm-9" name="category_name"
-                           value="<?= set_value('category_name') ?>" placeholder="Category Name">
-                    <span class="help-block"><?= validation_show_error('category_name')?></span>
-                </div>
-            </div>
-
-            <!-- Contacts File -->
-            <div class="form-group <?= validation_show_error('contacts_file') ? 'has-warning' : '' ?>">
+            <div class="form-group row">
                 <label for="contacts" class="control-label col-sm-3">Contacts CSV:</label>
                 <div class=" col-sm-9">
-                    <input type="file" class="form-control col-sm-9 " name="contacts_file" id="contacts" accept=".csv">
-                    <span class="help-block"><?= validation_show_error('contacts_file')?></span>
+                    <input type="file" class="form-control col-sm-9" name="contacts_file" id="contacts" accept=".csv">
                 </div>
             </div>
         </div>
