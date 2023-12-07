@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Category;
 use App\Models\Contact;
 use App\Services\CategoryService;
 use App\Services\ContactService;
@@ -19,7 +20,9 @@ class ContactUploadController extends BaseController
 
     public function create(): string
     {
-        return view('contact\upload');
+        return view('contact\upload',[
+            'categories' => (new Category())->findAll()
+        ]);
     }
 
     /**

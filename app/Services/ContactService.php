@@ -10,7 +10,7 @@ use ReflectionException;
 class ContactService
 {
     private Contact $contact;
-    private CategoryService $categoryService;
+    public CategoryService $categoryService;
 
     public function __construct()
     {

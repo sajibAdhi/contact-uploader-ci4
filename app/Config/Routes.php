@@ -8,7 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+$routes->get('/', [ContactUploadController::class,'create'],['as'=>'contact.upload']);
 
 $routes->group('categories', function ($routes){
     $routes->get('upload', [CategoryUploadController::class,'create'],['as'=>'category.upload']);
