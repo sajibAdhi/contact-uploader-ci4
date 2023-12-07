@@ -22,14 +22,11 @@ class ContactUploadController extends BaseController
     public function create(): string
     {
         return view('contact\upload', [
-            'title' => 'Contact Upload',
+            'title' => 'Upload Contacts',
             'categories' => (new Category())->findAll()
         ]);
     }
 
-    /**
-     * @return RedirectResponse
-     */
     public function store(): RedirectResponse
     {
         try {

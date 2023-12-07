@@ -8,14 +8,13 @@
 <?= $this->section('content') ?>
 <div class="box box-default">
     <div class="box-header with-border">
-        <h3 class="box-title">Upload Contacts</h3>
+        <h3 class="box-title">Contact Upload Form</h3>
     </div>
     <form class="form-horizontal" action="<?= route_to('contact.upload') ?>" method="post"
           enctype="multipart/form-data">
         <?= csrf_field() ?>
 
         <div class="box-body">
-
             <!-- Category -->
             <div class="form-group <?= validation_show_error('category') ? 'has-warning' : '' ?>">
                 <label for="category" class="control-label col-sm-3">Select a category:</label>
@@ -36,9 +35,9 @@
 
             <!-- Category Name -->
             <div class="form-group <?= validation_show_error('category_name') ? 'has-warning' : '' ?>">
-                <label for="contacts" class="control-label col-sm-3"></label>
+                <label for="category_name" class="col-sm-3"></label>
                 <div class=" col-sm-9">
-                    <input type="text" class="form-control col-sm-9" name="category_name"
+                    <input type="text" class="form-control col-sm-9" name="category_name" id="category_name"
                            value="<?= set_value('category_name') ?>" placeholder="Category Name">
                     <span class="help-block"><?= validation_show_error('category_name')?></span>
                 </div>
