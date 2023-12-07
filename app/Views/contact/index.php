@@ -1,55 +1,69 @@
 <?= $this->extend('layout\app') ?>
 
 <?= $this->section('styles') ?>
-<!-- Select2 -->
-<link rel="stylesheet" href="<?= base_url() ?>bower_components/select2/dist/css/select2.min.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="<?= base_url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="box box-default">
-    <div class="box-header with-border">
-        <h3 class="box-title">Upload Contacts</h3>
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">Contacts</h3>
     </div>
-    <form class="form-horizontal" action="<?= route_to('contact.upload') ?>" method="post"
-          enctype="multipart/form-data">
-        <?= csrf_field() ?>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <table class="table table-bordered table-striped dataTable">
+            <thead>
+            <tr>
+                <th>Contact</th>
+                <th>Category</th>
+                <th>Remarks</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php /** @var \App\Models\Contact[] $contacts */ ?>
+            <?php if (empty($contacts)): ?>
+                <tr>
+                    <td colspan="3" class="text-center">No contacts found</td>
+                </tr>
+            <?php else: ?>
+                <?php foreach ($contacts as $contact): ?>
+                    <tr>
+                        <td><?= $contact->number ?></td>
+                        <td><?= $contact->category_name ?></td>
+                        <td><?= $contact->remarks ?></td>
+                    </tr>
+                <?php endforeach; ?>
 
-        <div class="box-body">
-            <div class="form-group row">
-                <label for="category" class="control-label col-sm-3">Select a category:</label>
-                <div class=" col-sm-9">
-                    <select class="form-control select2" name="category" id="category" style="width: 100%">
-                        <option value="">Select a Category</option>
-                        <?php if (!empty($categories)): ?>
-                            <?php foreach ($categories as $category): ?>
-                                <option value="<?= $category->id ?>"><?= $category->name ?></option>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </select>
-
-                    <input type="text" class="form-control col-sm-9" style="margin-top: 10px" name="category_name"
-                           placeholder="Category Name">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="contacts" class="control-label col-sm-3">Contacts CSV:</label>
-                <div class=" col-sm-9">
-                    <input type="file" class="form-control col-sm-9" name="contacts_file" id="contacts" accept=".csv">
-                </div>
-            </div>
-        </div>
-
-        <?= $this->include('components\form-submit') ?>
-    </form>
+            <?php endif; ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Contact</th>
+                <th>Category</th>
+                <th>Remarks</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- /.box-body -->
 </div>
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
-<!-- Select2 -->
-<script src="<?= base_url('bower_components/select2/dist/js/select2.full.min.js') ?>"></script>
-//Initialize Select2 Elements
+<!-- DataTables -->
+<script src="<?= base_url('bower_components/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
+<script src="<?= base_url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>"></script>
 <script>
-    $('.select2').select2()
+    $(function () {
+        $('.dataTable').DataTable({
+            'paging': true,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        })
+    })
 </script>
 <?= $this->endSection() ?>

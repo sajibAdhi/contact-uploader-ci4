@@ -69,6 +69,9 @@ class ContactService
 
     public function contacts(): array
     {
-        return $this->contact->findAll();
+        return $this->contact
+            ->select('contacts.*, categories.name as category_name')
+            ->join('categories', 'categories.id = contacts.category_id')
+            ->findAll();
     }
 }
