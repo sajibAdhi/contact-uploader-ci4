@@ -15,6 +15,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="<?= base_url('bower_components/font-awesome/css/font-awesome.min.css') ?>">
     <!-- Ionicons -->
     <link rel="stylesheet" href="<?= base_url('bower_components/Ionicons/css/ionicons.min.css') ?>">
+
+    <?= $this->renderSection('styles') ?>
+
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url('dist/css/AdminLTE.min.css') ?>">
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -60,11 +63,11 @@ desired effect
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="<?= base_url()?>" class="logo">
+        <a href="<?= base_url() ?>" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>CU</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b><?= APPLICATION_NAME?></b></span>
+            <span class="logo-lg"><b><?= APPLICATION_NAME ?></b></span>
         </a>
 
         <!-- Header Navbar -->
@@ -77,6 +80,9 @@ desired effect
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <?= $this->include('layout\content-header') ?>
+
+        <!-- Flash Message -->
+        <?= $this->include('components\flash-message') ?>
 
         <!-- Main content -->
         <section class="content container-fluid">
@@ -92,14 +98,7 @@ desired effect
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <footer class="main-footer">
-        <!-- To the right -->
-        <div class="pull-right hidden-xs">
-            Anything you want
-        </div>
-        <!-- Default to the left -->
-        <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
-    </footer>
+    <?php //echo $this->include('layout\main-footer') ?>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -183,11 +182,21 @@ desired effect
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="<?= base_url() ?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?= base_url() ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $(".alert").delay(5000).slideUp(200, function() {
+            $(this).alert('close');
+        });
+    });
+</script>
+
+<?= $this->renderSection('scripts') ?>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="<?= base_url() ?>dist/js/adminlte.min.js"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
