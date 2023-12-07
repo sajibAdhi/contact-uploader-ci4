@@ -37,15 +37,19 @@ class CategoryService
     }
 
     /**
+     * @param  $categoryId
+     * @param string|null $categoryName
+     * @return array|object|null
      * @throws ReflectionException
      */
-    public function findOrCreate($category)
+    public function findOrCreate( $categoryId, ?string $categoryName = null)
     {
-        $categoryData = $this->category->where('category', $category)->first();
+        $categoryData = $this->category->find($categoryId);
 
         if (is_null($categoryData)) {
-            $this->category->insert(['category' => $category]);
-            $categoryData = $this->category->find($this->category->getInsertID());
+           $categoryId = $this->category->insert(['name' => $categoryName]);
+
+            $categoryData = $this->category->find($categoryId);
         }
 
         return $categoryData;

@@ -18,6 +18,8 @@ class CreateCategoriesTable extends Migration
             'name' => [
                 'type'              => 'VARCHAR',
                 'constraint'        => 255,
+                'null'              => false,
+                'unique'            => true,
             ],
             'created_at DATETIME DEFAULT CURRENT_TIMESTAMP',
             'updated_at' => [

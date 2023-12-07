@@ -19,15 +19,19 @@ class ContactService
     }
 
     /**
+     * @param string $contact
+     * @param int $category_id
+     * @param string|null $remarks
+     * @return array|object|null
      * @throws ReflectionException
      */
     public function findOrInsert(string $contact, int $category_id, ?string $remarks)
     {
-        $contactData = $this->contact->where('contact', $contact)->first();
+        $contactData = $this->contact->where('number', $contact)->first();
 
         if (is_null($contactData)) {
             $this->contact->insert([
-                'contact' => $contact,
+                'number' => $contact,
                 'category_id' => $category_id,
                 'remarks' => $remarks,
             ]);
@@ -41,9 +45,9 @@ class ContactService
     /**
      * @throws ReflectionException
      */
-    public function storeUploadedCategories(UploadedFile $file): bool
+    public function storeUploadedCategories(UploadedFile $file, $category_id, $categoryName): bool
     {
-        $csvData = CsvFileReader::readCsvFile($file, ['contact', 'category']);
+        $csvData = CsvFileReader::readCsvFile($file, ['contact']);
 
         if (!$csvData) {
             return false;
@@ -51,9 +55,10 @@ class ContactService
 
         $this->contact->db->transStart();
 
-        foreach ($csvData as $datum) {
-            $category = $this->categoryService->findOrCreate($datum['category']);
+        $category = $this->categoryService->findOrCreate($category_id, $categoryName);
 
+
+        foreach ($csvData as $datum) {
             $this->findOrInsert($datum['contact'], $category->id, $datum['remarks'] ?? null);
         }
 

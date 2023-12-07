@@ -13,7 +13,7 @@ class Contact extends Model
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'contact',
+        'number',
         'category_id',
         'remarks'
     ];

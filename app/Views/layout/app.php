@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><?= $title ?? null ?> | <?= APPLICATION_NAME ?></title>
+    <title><?= $title ?? null ?> | <?= \App\Constants\ApplicationConstant::NAME ?></title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="<?= base_url('bower_components/bootstrap/dist/css/bootstrap.min.css') ?>">
@@ -65,9 +65,9 @@ desired effect
         <!-- Logo -->
         <a href="<?= base_url() ?>" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>CU</b></span>
+            <span class="logo-mini"><b><?= \App\Constants\ApplicationConstant::SHORT_NAME ?></b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b><?= APPLICATION_NAME ?></b></span>
+            <span class="logo-lg"><b><?= \App\Constants\ApplicationConstant::NAME ?></b></span>
         </a>
 
         <!-- Header Navbar -->
@@ -187,8 +187,8 @@ desired effect
 <script src="<?= base_url() ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script>
-    $(document).ready(function(){
-        $(".alert").delay(5000).slideUp(200, function() {
+    $(document).ready(function () {
+        $(".alert").delay(5000).slideUp(200, function () {
             $(this).alert('close');
         });
     });

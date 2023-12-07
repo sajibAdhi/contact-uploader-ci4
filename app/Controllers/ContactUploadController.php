@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Contact;
 use App\Services\CategoryService;
 use App\Services\ContactService;
+use CodeIgniter\HTTP\RedirectResponse;
 use ReflectionException;
 
 class ContactUploadController extends BaseController
@@ -20,18 +21,29 @@ class ContactUploadController extends BaseController
 
     public function create(): string
     {
-        return view('contact\upload',[
+        return view('contact\upload', [
+            'title' => 'Contact Upload',
             'categories' => (new Category())->findAll()
         ]);
     }
 
     /**
-     * @throws ReflectionException
+     * @return RedirectResponse
      */
-    public function store()
+    public function store(): RedirectResponse
     {
-        $file = $this->request->getFile('csv_file');
+        try {
+            $file = $this->request->getFile('contacts_file');
+            $category_id = $this->request->getPost('category');
+            $category_name = $this->request->getPost('category_name');
 
-        dd($this->contactService->storeUploadedCategories($file));
+            if ($this->contactService->storeUploadedCategories($file, $category_id, $category_name)) {
+                return redirect()->route('contact.upload')->with('success', 'Contacts uploaded successfully');
+            } else {
+                return redirect()->back()->with('error', 'Contacts upload failed');
+            }
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 }
