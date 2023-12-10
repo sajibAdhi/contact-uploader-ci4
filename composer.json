@@ -13,7 +13,8 @@
         "php": "^7.4 || ^8.0",
         "codeigniter4/framework": "^4.1.9",
         "liaison/revision": "^1.1",
-        "phpoffice/phpspreadsheet": "^1.29"
+        "phpoffice/phpspreadsheet": "^1.29",
+      "ext-intl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",

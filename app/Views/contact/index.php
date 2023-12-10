@@ -1,4 +1,4 @@
-<?= $this->extend('layout\app') ?>
+<?= $this->extend('layout/app') ?>
 
 <?= $this->section('styles') ?>
 <!-- DataTables -->

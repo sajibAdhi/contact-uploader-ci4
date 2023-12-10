@@ -15,7 +15,7 @@ class ContactContentController extends BaseController
 
     public function index(): string
     {
-        return view('contact_content\index', [
+        return view('contact_content/index', [
             'title' => 'Contact Content',
             'contacts' => $this->contactService->contactsContent(),
         ]);

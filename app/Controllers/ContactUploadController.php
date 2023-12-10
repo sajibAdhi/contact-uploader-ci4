@@ -21,7 +21,7 @@ class ContactUploadController extends BaseController
 
     public function create(): string
     {
-        return view('contact\upload', [
+        return view('contact/upload', [
             'title' => 'Upload Contacts',
             'categories' => (new Category())->findAll()
         ]);

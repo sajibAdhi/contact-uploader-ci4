@@ -72,19 +72,19 @@ desired effect
         </a>
 
         <!-- Header Navbar -->
-        <?= $this->include('layout\header-navbar') ?>
+        <?= $this->include('layout/header-navbar') ?>
     </header>
 
     <!-- Left side column. contains the logo and sidebar -->
-    <?= $this->include('layout\main-sidebar') ?>
+    <?= $this->include('layout/main-sidebar') ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <?= $this->include('layout\content-header') ?>
+        <?= $this->include('layout/content-header') ?>
 
         <!-- Flash Message -->
-        <?= $this->include('components\flash-message') ?>
+        <?= $this->include('components/flash-message') ?>
 
         <!-- Main content -->
         <section class="content container-fluid">
@@ -102,7 +102,7 @@ desired effect
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <?php //echo $this->include('layout\main-footer') ?>
+    <?php //echo $this->include('layout/main-footer') ?>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -200,7 +200,7 @@ desired effect
 
 <?= $this->renderSection('scripts') ?>
 <!-- AdminLTE App -->
-<script src="<?= base_url() ?>dist/js/adminlte.min.js"></script>
+<script src="<?= base_url('dist/js/adminlte.min.js') ?>"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

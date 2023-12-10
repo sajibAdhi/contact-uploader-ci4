@@ -1,4 +1,4 @@
-<?= $this->extend('layout\app') ?>
+<?= $this->extend('layout/app') ?>
 
 <?= $this->section('styles') ?>
 <!-- Select2 -->
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <?= $this->include('components\form-submit') ?>
+        <?= $this->include('components/form-submit') ?>
     </form>
 </div>
 <?= $this->endSection() ?>
