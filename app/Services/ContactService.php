@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Libraries\CsvFileReader;
 use App\Models\Contact;
+use App\Models\ContactContent;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use ReflectionException;
 
@@ -11,11 +12,13 @@ class ContactService
 {
     private Contact $contact;
     public CategoryService $categoryService;
+    private ContactContent $contactContent;
 
     public function __construct()
     {
         $this->categoryService = new CategoryService();
         $this->contact = new Contact();
+        $this->contactContent = new ContactContent();
     }
 
     /**
@@ -45,7 +48,7 @@ class ContactService
     /**
      * @throws ReflectionException
      */
-    public function storeUploadedCategories(UploadedFile $file, $category_id, $categoryName): bool
+    public function storeUploadedContacts(UploadedFile $file, $category_id, $categoryName): bool
     {
         $csvData = CsvFileReader::readCsvFile($file, ['contact']);
 
@@ -67,11 +70,59 @@ class ContactService
         return $this->contact->db->transStatus();
     }
 
+
+    /**
+     * @throws ReflectionException
+     */
+    public function storeUploadedContactsContent(UploadedFile $file, $category_id, $categoryName): bool
+    {
+        $csvData = CsvFileReader::readCsvFile($file, ['contact', 'content']);
+        if (!$csvData) return false;
+
+        $this->contact->db->transStart();
+
+        $category = $this->categoryService->findOrCreate($category_id, $categoryName);
+
+        foreach ($csvData as $datum) {
+            $contact = $this->findOrInsert($datum['contact'], $category->id, $datum['remarks'] ?? null);
+            $this->findOrInsertContactContent($contact->id, $datum['content'], $datum['remarks'] ?? null);
+        }
+
+        $this->contact->db->transComplete();
+
+
+        return $this->contact->db->transStatus();
+    }
+
     public function contacts(): array
     {
         return $this->contact
             ->select('contacts.*, categories.name as category_name')
             ->join('categories', 'categories.id = contacts.category_id')
             ->findAll();
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function findOrInsertContactContent(int $contactId, string $content, ?string $remarks)
+    {
+        $contactContent = $this->contactContent
+            ->select('contact_content.*')
+            ->where('contact_id', $contactId)
+            ->where('content', $content)
+            ->first();
+
+        if (is_null($contactContent)) {
+            $contactContentId = $this->contactContent->insert([
+                'contact_id' => $contactId,
+                'content' => $content,
+                'remarks' => $remarks,
+            ]);
+
+            $contactContent = $this->contactContent->find($contactContentId);
+        }
+
+        return $contactContent;
     }
 }

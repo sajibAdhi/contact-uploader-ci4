@@ -10,7 +10,7 @@ use App\Services\ContactService;
 use CodeIgniter\HTTP\RedirectResponse;
 use ReflectionException;
 
-class ContactUploadController extends BaseController
+class ContactContentUploadController extends BaseController
 {
     private ContactService $contactService;
 
@@ -21,8 +21,8 @@ class ContactUploadController extends BaseController
 
     public function create(): string
     {
-        return view('contact\upload', [
-            'title' => 'Upload Contacts',
+        return view('contact_content\upload', [
+            'title' => 'Upload Contact Content',
             'categories' => (new Category())->findAll()
         ]);
     }
@@ -34,8 +34,8 @@ class ContactUploadController extends BaseController
             $category_id = $this->request->getPost('category');
             $category_name = $this->request->getPost('category_name');
 
-            if ($this->contactService->storeUploadedContacts($file, $category_id, $category_name)) {
-                return redirect()->route('contact.upload')->with('success', 'Contacts uploaded successfully');
+            if ($this->contactService->storeUploadedContactsContent($file, $category_id, $category_name)) {
+                return redirect()->route('contact.content.upload')->with('success', 'Contact content uploaded successfully');
             } else {
                 return redirect()->back()->with('error', 'Contacts upload failed');
             }

@@ -6,13 +6,17 @@ use CodeIgniter\Model;
 
 class ContactContent extends Model
 {
-    protected $table            = 'contactcontents';
+    protected $table            = 'contact_content';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'contact_id',
+        'content',
+        'remarks'
+    ];
 
     // Dates
     protected $useTimestamps = false;

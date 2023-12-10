@@ -9,6 +9,12 @@ class CreateContactContentTable extends Migration
     public function up()
     {
         $this->forge->addField([
+            'id' => [
+                'type'              => 'BIGINT',
+                'constraint'        => 20,
+                'unsigned'          => true,
+                'auto_increment'    => true,
+            ],
             'content' => [
                 'type'              => 'VARCHAR',
                 'constraint'        => 255,
@@ -24,8 +30,9 @@ class CreateContactContentTable extends Migration
             ],
         ]);
 
+        $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('contact_id', 'contacts', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addKey(['contact_id', 'content'], true);
+        $this->forge->addUniqueKey(['content', 'contact_id']);
         $this->forge->createTable('contact_content');
     }
 
