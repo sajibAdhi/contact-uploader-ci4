@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Libraries\CsvFileReader;
+use App\Libraries\SpreadSheetFileReader;
 use App\Models\Contact;
 use App\Models\ContactContent;
 use CodeIgniter\HTTP\Files\UploadedFile;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use ReflectionException;
 
 class ContactService
@@ -50,7 +51,7 @@ class ContactService
      */
     public function storeUploadedContacts(UploadedFile $file, $category_id, $categoryName): bool
     {
-        $csvData = CsvFileReader::readCsvFile($file, ['contact']);
+        $csvData = SpreadSheetFileReader::readCsvFile($file, ['contact']);
 
         if (!$csvData) {
             return false;
@@ -73,19 +74,21 @@ class ContactService
 
     /**
      * @throws ReflectionException
+     * @throws Exception
      */
     public function storeUploadedContactsContent(UploadedFile $file, $category_id, $categoryName): bool
     {
-        $csvData = CsvFileReader::readCsvFile($file, ['contact', 'content']);
-        if (!$csvData) return false;
+        $data = SpreadSheetFileReader::readFile($file, ['MOBILE_NO', 'SMS_CONTENT']);
+
+        if (!$data) return false;
 
         $this->contact->db->transStart();
 
         $category = $this->categoryService->findOrCreate($category_id, $categoryName);
 
-        foreach ($csvData as $datum) {
-            $contact = $this->findOrInsert($datum['contact'], $category->id, $datum['remarks'] ?? null);
-            $this->findOrInsertContactContent($contact->id, $datum['content'], $datum['remarks'] ?? null);
+        foreach ($data as $datum) {
+            $contact = $this->findOrInsert($datum['MOBILE_NO'], $category->id, $datum['remarks'] ?? null);
+            $this->findOrInsertContactContent($contact->id, $datum['SMS_CONTENT'], $datum['remarks'] ?? null);
         }
 
         $this->contact->db->transComplete();
@@ -124,5 +127,14 @@ class ContactService
         }
 
         return $contactContent;
+    }
+
+    public function contactsContent(): array
+    {
+        return $this->contactContent
+            ->select('contact_content.*, contacts.number, categories.name as category_name')
+            ->join('contacts', 'contacts.id = contact_content.contact_id')
+            ->join('categories', 'categories.id = contacts.category_id')
+            ->findAll();
     }
 }

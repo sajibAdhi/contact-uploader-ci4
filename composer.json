@@ -11,7 +11,9 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "codeigniter4/framework": "^4.0"
+        "codeigniter4/framework": "^4.1.9",
+        "liaison/revision": "^1.1",
+        "phpoffice/phpspreadsheet": "^1.29"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
@@ -30,6 +32,9 @@
     },
     "config": {
         "optimize-autoloader": true,
+        "platform": {
+            "php": "7.4"
+        },
         "preferred-install": "dist",
         "sort-packages": true
     },

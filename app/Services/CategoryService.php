@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Category;
-use App\Libraries\CsvFileReader;
+use App\Libraries\SpreadSheetFileReader;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use ReflectionException;
 
@@ -21,7 +21,7 @@ class CategoryService
      */
     public function storeUploadedCategories(UploadedFile $file): bool
     {
-        $csvData = CsvFileReader::readCsvFile($file, ['category']);
+        $csvData = SpreadSheetFileReader::readCsvFile($file, ['category']);
 
         if (!$csvData) return false;
 

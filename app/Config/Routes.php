@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\CategoryUploadController;
+use App\Controllers\ContactContentController;
 use App\Controllers\ContactContentUploadController;
 use App\Controllers\ContactController;
 use App\Controllers\ContactUploadController;
@@ -26,7 +27,8 @@ $routes->group('contacts', function ($routes) {
 });
 
 $routes->group('contacts/content', function ($routes) {
+    $routes->get('/', [ContactContentController::class, 'index'], ['as' => 'contact.content.index']);
 
     $routes->get('upload', [ContactContentUploadController::class, 'create'], ['as' => 'contact.content.upload']);
-    $routes->post('upload', [ContactContentUploadController::class, 'store'], ['filter' => ContactUploadFilter::class]);
+    $routes->post('upload', [ContactContentUploadController::class, 'store'], /*['filter' => ContactUploadFilter::class]*/);
 });

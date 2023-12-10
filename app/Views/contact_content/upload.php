@@ -47,7 +47,7 @@
             <div class="form-group <?= validation_show_error('contacts_file') ? 'has-warning' : '' ?>">
                 <label for="contacts" class="control-label col-sm-3">Contacts CSV:</label>
                 <div class=" col-sm-9">
-                    <input type="file" class="form-control col-sm-9 " name="contacts_file" id="contacts" accept=".csv">
+                    <input type="file" class="form-control col-sm-9 " name="contacts_file" id="contacts" accept=".csv,.xls,.xlsx" required>
                     <span class="help-block"><?= validation_show_error('contacts_file')?></span>
                 </div>
             </div>

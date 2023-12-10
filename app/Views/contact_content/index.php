@@ -8,7 +8,7 @@
 <?= $this->section('content') ?>
 <div class="box">
     <div class="box-header">
-        <h3 class="box-title">Contacts</h3>
+        <h3 class="box-title">Contacts Contents</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
@@ -17,6 +17,7 @@
             <tr>
                 <th>Contact</th>
                 <th>Category</th>
+                <th>Content</th>
                 <th>Remarks</th>
             </tr>
             </thead>
@@ -31,19 +32,13 @@
                     <tr>
                         <td><?= $contact->number ?></td>
                         <td><?= $contact->category_name ?></td>
+                        <td><?= $contact->content ?></td>
                         <td><?= $contact->remarks ?></td>
                     </tr>
                 <?php endforeach; ?>
 
             <?php endif; ?>
             </tbody>
-            <tfoot>
-            <tr>
-                <th>Contact</th>
-                <th>Category</th>
-                <th>Remarks</th>
-            </tr>
-            </tfoot>
         </table>
     </div>
     <!-- /.box-body -->
