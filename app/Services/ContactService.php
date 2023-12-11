@@ -11,7 +11,7 @@ use ReflectionException;
 
 class ContactService
 {
-    private Contact $contact;
+    public Contact $contact;
     public CategoryService $categoryService;
     private ContactContent $contactContent;
 
@@ -23,19 +23,19 @@ class ContactService
     }
 
     /**
-     * @param string $contact
+     * @param string $number
      * @param int $category_id
      * @param string|null $remarks
      * @return array|object|null
      * @throws ReflectionException
      */
-    public function findOrInsert(string $contact, int $category_id, ?string $remarks)
+    public function findOrInsert(string $number, int $category_id, ?string $remarks)
     {
-        $contactData = $this->contact->where('number', $contact)->first();
+        $contactData = $this->contact->where('number', $number)->first();
 
         if (is_null($contactData)) {
             $this->contact->insert([
-                'number' => $contact,
+                'number' => $number,
                 'category_id' => $category_id,
                 'remarks' => $remarks,
             ]);
@@ -80,6 +80,7 @@ class ContactService
     {
         $data = SpreadSheetFileReader::readFile($file, ['MOBILE_NO', 'SMS_CONTENT']);
 
+        // If the file is empty, return false
         if (!$data) return false;
 
         $this->contact->db->transStart();
@@ -87,8 +88,11 @@ class ContactService
         $category = $this->categoryService->findOrCreate($category_id, $categoryName);
 
         foreach ($data as $datum) {
-            $contact = $this->findOrInsert($datum['MOBILE_NO'], $category->id, $datum['remarks'] ?? null);
-            $this->findOrInsertContactContent($contact->id, $datum['SMS_CONTENT'], $datum['remarks'] ?? null);
+            $number = $datum['MOBILE_NO'];
+            if ($number !== null) {
+                $contact = $this->findOrInsert($number, $category->id, $datum['remarks'] ?? null);
+                $this->findOrInsertContactContent($contact->id, $datum['SMS_CONTENT'], $datum['remarks'] ?? null);
+            }
         }
 
         $this->contact->db->transComplete();
@@ -135,6 +139,6 @@ class ContactService
             ->select('contact_content.*, contacts.number, categories.name as category_name')
             ->join('contacts', 'contacts.id = contact_content.contact_id')
             ->join('categories', 'categories.id = contacts.category_id')
-            ->findAll();
+            ->paginate(10);
     }
 }

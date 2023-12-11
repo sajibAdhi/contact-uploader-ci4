@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><?= $title ?? \App\Constants\ApplicationConstant::SHORT_NAME ?> | <?= \App\Constants\ApplicationConstant::NAME ?></title>
+    <title>
+        <?= $title ?? \App\Constants\ApplicationConstant::SHORT_NAME ?>
+        |
+        <?= \App\Constants\ApplicationConstant::NAME ?>
+    </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="<?= base_url('bower_components/bootstrap/dist/css/bootstrap.min.css') ?>">
@@ -192,9 +192,9 @@ desired effect
 
 <script>
     $(document).ready(function () {
-        $(".alert").delay(5000).slideUp(200, function () {
-            // $(this).alert('close');
-        });
+        /*$(".alert").delay(5000).slideUp(200, function () {
+            $(this).alert('close');
+        });*/
     });
 </script>
 

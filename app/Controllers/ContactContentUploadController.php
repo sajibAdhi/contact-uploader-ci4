@@ -29,7 +29,6 @@ class ContactContentUploadController extends BaseController
 
     public function store(): RedirectResponse
     {
-        set_time_limit(120);
         try {
             $file = $this->request->getFile('contacts_file');
             $category_id = $this->request->getPost('category');
@@ -38,7 +37,7 @@ class ContactContentUploadController extends BaseController
             if ($this->contactService->storeUploadedContactsContent($file, $category_id, $category_name)) {
                 return redirect()->route('contact.content.upload')->with('success', 'Contact content uploaded successfully');
             } else {
-                return redirect()->back()->withInput()->with('error', 'Contacts upload failed');
+                return redirect()->back()->withInput()->with('error', 'Contacts content upload failed');
             }
         } catch (\Exception $exception) {
             return redirect()->back()->withInput()->with('error', $exception->getMessage());

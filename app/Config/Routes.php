@@ -30,5 +30,5 @@ $routes->group('contacts/content', function ($routes) {
     $routes->get('/', [ContactContentController::class, 'index'], ['as' => 'contact.content.index']);
 
     $routes->get('upload', [ContactContentUploadController::class, 'create'], ['as' => 'contact.content.upload']);
-    $routes->post('upload', [ContactContentUploadController::class, 'store'], /*['filter' => ContactUploadFilter::class]*/);
+    $routes->post('upload', [ContactContentUploadController::class, 'store'], ['filter' => ContactUploadFilter::class]);
 });

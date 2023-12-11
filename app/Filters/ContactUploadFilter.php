@@ -26,6 +26,13 @@ class ContactUploadFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
+        $max_file_size = 2 * 1024; // 2MB
+        ini_set('memory_limit', '512M'); // Sets the memory limit to 512MB
+        set_time_limit(300); // Sets the maximum execution time to 300 seconds (5 minutes)
+        ini_set('mysql.connect_timeout', '300');
+        ini_set('default_socket_timeout', '300');
+
+
         $validation = \Config\Services::validation();
 
         $validation->setRules([
@@ -49,9 +56,9 @@ class ContactUploadFilter implements FilterInterface
                 'label' => 'Contacts File',
                 'rules' => [
                     'uploaded[contacts_file]', // checks if the file was uploaded
-                    'mime_in[contacts_file,text/csv,application/vnd.ms-excel]', // checks if the file is of type CSV or Excel
-                    'ext_in[contacts_file,csv,xls,xlsx]', // checks if file extension is CSV, XLS, or XLSX
-                    'max_size[contacts_file,1024]', // checks if the file size is less than or equal to 1024KB (1MB)
+                    'mime_in[contacts_file,text/csv,application/vnd.ms-excel,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet]', // checks if the file is of type CSV, Excel, or Excel with Macros
+                    'ext_in[contacts_file,csv,xls,xlsx,xlsm]', // checks if file extension is CSV, XLS, XLSX, or XLSM
+                    "max_size[contacts_file,$max_file_size]", // checks if the file size is less than or equal to 1024KB (1MB)
                 ],
             ]
         ]);
@@ -71,7 +78,7 @@ class ContactUploadFilter implements FilterInterface
      * @param ResponseInterface $response
      * @param array|null $arguments
      *
-     * @return mixed
+     * @return void
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
