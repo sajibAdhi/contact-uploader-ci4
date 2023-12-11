@@ -3,7 +3,7 @@
 <?= $this->section('styles') ?>
 <!-- DataTables -->
 <link rel="stylesheet" href="<?= base_url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"/>
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"/>-->
 
 <?= $this->endSection() ?>
 
@@ -62,13 +62,13 @@
 <script src="<?= base_url('bower_components/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= base_url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>"></script>
 
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<!--<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>-->
+<!--<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>-->
 <script>
     $(function () {
         $('.dataTable').DataTable({
-            dom: 'Bfrtip',
-            buttons: ['print'],
+            // dom: 'Bfrtip',
+            // buttons: ['print'],
             'paging': false,
             'lengthChange': true,
             'searching': false,
