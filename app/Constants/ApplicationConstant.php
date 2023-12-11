@@ -6,6 +6,7 @@ class ApplicationConstant
 {
     const NAME = 'Contact Uploader';
     const SHORT_NAME = 'CU';
+    const PER_PAGE = 10;
     const VERSION = '1.0.0';
 
 }

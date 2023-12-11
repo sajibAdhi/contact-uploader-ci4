@@ -3,6 +3,8 @@
 <?= $this->section('styles') ?>
 <!-- DataTables -->
 <link rel="stylesheet" href="<?= base_url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"/>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -39,7 +41,17 @@
 
             <?php endif; ?>
             </tbody>
+            <tfoot>
+            <tr>
+                <th>Contact</th>
+                <th>Category</th>
+                <th>Content</th>
+                <th>Remarks</th>
+            </tr>
+            </tfoot>
+
         </table>
+        <?= $pager->links('default', 'bootstrap4') ?>
     </div>
     <!-- /.box-body -->
 </div>
@@ -49,16 +61,21 @@
 <!-- DataTables -->
 <script src="<?= base_url('bower_components/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= base_url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
 <script>
     $(function () {
         $('.dataTable').DataTable({
-            'paging': true,
-            'lengthChange': false,
+            dom: 'Bfrtip',
+            buttons: ['print'],
+            'paging': false,
+            'lengthChange': true,
             'searching': false,
-            'ordering': true,
-            'info': true,
-            'autoWidth': false
-        })
+            'ordering': false,
+            'info': false,
+            'autoWidth': true,
+        });
     })
 </script>
 <?= $this->endSection() ?>

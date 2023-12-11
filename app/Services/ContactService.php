@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Constants\ApplicationConstant;
 use App\Libraries\SpreadSheetFileReader;
 use App\Models\Contact;
 use App\Models\ContactContent;
 use CodeIgniter\HTTP\Files\UploadedFile;
+use CodeIgniter\Pager\Pager;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use ReflectionException;
 
@@ -13,7 +15,7 @@ class ContactService
 {
     public Contact $contact;
     public CategoryService $categoryService;
-    private ContactContent $contactContent;
+    public ContactContent $contactContent;
 
     public function __construct()
     {
@@ -139,6 +141,6 @@ class ContactService
             ->select('contact_content.*, contacts.number, categories.name as category_name')
             ->join('contacts', 'contacts.id = contact_content.contact_id')
             ->join('categories', 'categories.id = contacts.category_id')
-            ->paginate(10);
+            ->paginate(ApplicationConstant::PER_PAGE);
     }
 }
