@@ -83,13 +83,13 @@ desired effect
         <!-- Content Header (Page header) -->
         <?= $this->include('layout/content-header') ?>
 
-        <!-- Flash Message -->
-        <?= $this->include('components/flash-message') ?>
-
         <!-- Main content -->
         <section class="content container-fluid">
 
-            <?= validation_list_errors() ?>
+            <!-- Flash Message -->
+            <?= view_cell('FlashMessageCell') ?>
+
+            <?php // echo validation_list_errors() ?>
 
             <!--------------------------
               | Your Page Content Here |
@@ -192,13 +192,15 @@ desired effect
 
 <script>
     $(document).ready(function () {
-        /*$(".alert").delay(5000).slideUp(200, function () {
+        $(".alert").delay(5000).slideUp(200, function () {
             $(this).alert('close');
-        });*/
+        });
     });
 </script>
 
+<!-- PageJS -->
 <?= $this->renderSection('scripts') ?>
+
 <!-- AdminLTE App -->
 <script src="<?= base_url('dist/js/adminlte.min.js') ?>"></script>
 
