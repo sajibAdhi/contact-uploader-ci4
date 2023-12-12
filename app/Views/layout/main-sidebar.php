@@ -17,14 +17,14 @@
             <!-- Category -->
             <li>
                 <a href="<?= route_to('category.index') ?>">
-                    <i class="fas fa-book"></i> <span>Category</span>
+                    <i class="fa fa-book"></i> <span>Categories</span>
                 </a>
             </li>
 
             <!-- Content -->
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-mobile"></i> <span>Content</span>
+                    <i class="fa fa-envelope"></i> <span>Content</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>

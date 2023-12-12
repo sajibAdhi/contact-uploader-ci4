@@ -1,7 +1,6 @@
 <?php
 
 use App\Controllers\CategoryController;
-use App\Controllers\CategoryUploadController;
 use App\Controllers\ContactContentController;
 use App\Controllers\ContactContentUploadController;
 use App\Controllers\ContactController;
