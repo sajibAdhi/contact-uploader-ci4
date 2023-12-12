@@ -11,7 +11,7 @@ class AnchorButtonCell extends Cell
     public function edit(): string
     {
         return $this->view('anchor_button', [
-            'title' => 'Edit',
+            'title' => '',
             'icon' => 'fa fa-edit',
             'href' => $this->href,
         ]);

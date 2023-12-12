@@ -49,7 +49,7 @@
             <tr>
                 <th>SL NO</th>
                 <th>Category Name</th>
-                <th>Action</th>
+                <th style="width: 50Px">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -61,7 +61,7 @@
                         <td><?= $category->name ?></td>
                         <td>
                             <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('category.edit', $category->id)]) ?>
-                            <?= view_cell('FormDeleteButtonCell', ['action' => route_to('category.edit', $category->id)]) ?>
+                            <!--                            --><?php //= view_cell('FormDeleteButtonCell', ['action' => route_to('category.delete', $category->id)]) ?>
 
                         </td>
                     </tr>

@@ -70,4 +70,15 @@ class CategoryController extends BaseController
                 ->withInput()->with('error', $exception->getMessage());
         }
     }
+
+    public function delete($id)
+    {
+        if ($this->categoryService->category->delete($id)) {
+            return redirect()->route('category.index')
+                ->with('success', 'Category deleted successfully');
+        } else {
+            return redirect()->route('category.index')
+                ->withInput()->with('error', 'Category deletion failed');
+        }
+    }
 }

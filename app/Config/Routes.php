@@ -23,7 +23,7 @@ $routes->group('categories', function ($routes) {
     $routes->post('/', [CategoryController::class, 'store'], ['as' => 'category.store', 'filter' => CategoryStoreFilter::class]);
     $routes->get('(:num)', [CategoryController::class, 'edit/$1'], ['as' => 'category.edit']);
     $routes->put('(:num)', [CategoryController::class, 'update/$1'], ['filter' => CategoryStoreFilter::class]);
-    $routes->get('(:num)/delete', [CategoryController::class, 'delete/$1'], ['as' => 'category.delete']);
+//    $routes->delete('(:num)', [CategoryController::class, 'delete/$1'], ['as' => 'category.delete']);
 
 });
 
