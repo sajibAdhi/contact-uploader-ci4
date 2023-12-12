@@ -1,0 +1,3 @@
+<input type="<?= $type ?? 'text' ?>" class="form-control <?= $class ?? null ?>" name="<?= $name ?? null ?>"
+       id="<?= $id ?? null ?>" value="<?= set_value($name ?? null, $default ?? null) ?>"
+       placeholder="<?= $placeholder ?? null ?>" required="<?= $required ?? 'false' ?>">
