@@ -28,6 +28,15 @@ class CreateContactContentTable extends Migration
                 'type'              => 'TEXT',
                 'null'              => true,
             ],
+            'created_at datetime default current_timestamp',
+            'updated_at' => [
+                'type'              => 'DATETIME',
+                'null'              => true,
+            ],
+            'deleted_at' => [
+                'type'              => 'DATETIME',
+                'null'              => true,
+            ],
         ]);
 
         $this->forge->addPrimaryKey('id');
@@ -38,6 +47,6 @@ class CreateContactContentTable extends Migration
 
     public function down()
     {
-        //
+        $this->forge->dropTable('contact_content');
     }
 }

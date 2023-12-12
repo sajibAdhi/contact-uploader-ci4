@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\CategoryController;
 use App\Controllers\CategoryUploadController;
 use App\Controllers\ContactContentController;
 use App\Controllers\ContactContentUploadController;
@@ -12,11 +13,13 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', [ContactUploadController::class, 'create']);
+$routes->get('/', function () {
+    return redirect()->route('category.index');
+});
 
 $routes->group('categories', function ($routes) {
-    $routes->get('upload', [CategoryUploadController::class, 'create'], ['as' => 'category.upload']);
-    $routes->post('upload', [CategoryUploadController::class, 'store']);
+    $routes->get('/', [CategoryController::class, 'index'], ['as' => 'category.index']);
+    $routes->post('/', [CategoryController::class, 'store'], ['as' => 'category.store', 'filter' => 'category-store']);
 });
 
 $routes->group('contacts', function ($routes) {

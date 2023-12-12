@@ -3,9 +3,12 @@
 namespace App\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Security\Exceptions\SecurityException;
+use Config\Services;
 
 class ContactUploadFilter implements FilterInterface
 {
@@ -26,6 +29,10 @@ class ContactUploadFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
+        if (!$request instanceof IncomingRequest) {
+            return;
+        }
+
         $max_file_size = 2 * 1024; // 2MB
         ini_set('memory_limit', '512M'); // Sets the memory limit to 512MB
         set_time_limit(300); // Sets the maximum execution time to 300 seconds (5 minutes)
@@ -33,7 +40,7 @@ class ContactUploadFilter implements FilterInterface
         ini_set('default_socket_timeout', '300');
 
 
-        $validation = \Config\Services::validation();
+        $validation = Services::validation();
 
         $validation->setRules([
             'category' => [
