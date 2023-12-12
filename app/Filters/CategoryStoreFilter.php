@@ -35,6 +35,8 @@ class CategoryStoreFilter implements FilterInterface
 
         $validation = Services::validation();
 
+        $categoryId = $request->uri->getSegment(2); // Get the category id from the URI
+
         $validation->setRules([
             'category' => [
                 'label' => 'Category',
@@ -44,7 +46,7 @@ class CategoryStoreFilter implements FilterInterface
                     'string',
                     'min_length[3]',
                     'max_length[255]',
-                    'is_unique[categories.name]'
+                    'is_unique[categories.name,id,' . $categoryId . ']' // Ignore the current category id
                 ]
             ]
         ]);
