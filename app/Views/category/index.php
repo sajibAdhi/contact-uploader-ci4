@@ -32,7 +32,7 @@
 
         <?= view_cell('FormSubmitCell', [
             'title' => ($action ?? null) == 'edit' ? 'Update' : 'Submit',
-        ]) ?>
+        ], 300) ?>
     </form>
 </div>
 

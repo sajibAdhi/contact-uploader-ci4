@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <?= view_cell('FormSubmitCell') ?>
+        <?= view_cell('FormSubmitCell', [], 300) ?>
     </form>
 </div>
 <?= $this->endSection() ?>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\CategoryService;
+use CodeIgniter\HTTP\RedirectResponse;
 use ReflectionException;
 
 class CategoryController extends BaseController
@@ -16,14 +17,23 @@ class CategoryController extends BaseController
 
     public function index(): string
     {
+        $cache = service('cache');
+
+        $key = 'categories';
+        $categories = $cache->get($key);
+
+        if ($categories === null) {
+            $categories = $this->categoryService->category->findAll();
+            $cache->save($key, $categories, 300); // Cache data for 5 minutes (300 seconds)
+        }
+
         return view('category/index', [
             'title' => 'Categories',
-            'categories' => $this->categoryService->category->findAll(),
-            'pager' => $this->categoryService->category->pager,
+            'categories' => $categories
         ]);
     }
 
-    public function store()
+    public function store(): RedirectResponse
     {
         $data = ['name' => $this->request->getPost('category')];
 
@@ -39,5 +49,15 @@ class CategoryController extends BaseController
             return redirect()->route('category.index')
                 ->withInput()->with('error', $exception->getMessage());
         }
+    }
+
+    public function edit($id): string
+    {
+        return view('category/index', [
+            'title' => 'Edit Category',
+            'action' => 'edit',
+            'categories' => $this->categoryService->category->findAll(),
+            'category' => $this->categoryService->category->find($id),
+        ]);
     }
 }

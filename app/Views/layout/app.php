@@ -87,7 +87,7 @@ desired effect
         <section class="content container-fluid">
 
             <!-- Flash Message -->
-            <?= view_cell('FlashMessageCell') ?>
+            <?= view_cell('FlashMessageCell', 300) ?>
 
             <?php // echo validation_list_errors() ?>
 
