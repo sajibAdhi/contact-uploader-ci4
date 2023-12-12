@@ -6,6 +6,7 @@ use App\Controllers\ContactContentController;
 use App\Controllers\ContactContentUploadController;
 use App\Controllers\ContactController;
 use App\Controllers\ContactUploadController;
+use App\Filters\CategoryStoreFilter;
 use App\Filters\ContactUploadFilter;
 use CodeIgniter\Router\RouteCollection;
 
@@ -19,7 +20,7 @@ $routes->get('/', function () {
 
 $routes->group('categories', function ($routes) {
     $routes->get('/', [CategoryController::class, 'index'], ['as' => 'category.index']);
-    $routes->post('/', [CategoryController::class, 'store'], ['as' => 'category.store', 'filter' => 'category-store']);
+    $routes->post('/', [CategoryController::class, 'store'], ['as' => 'category.store', 'filter' => CategoryStoreFilter::class]);
 });
 
 $routes->group('contacts', function ($routes) {
