@@ -13,6 +13,9 @@
               : route_to('category.store') ?>"
           method="post">
         <?= csrf_field() ?>
+        <?php if (($action ?? null) == 'edit'): ?>
+            <?= form_hidden('_method', 'PUT') ?>
+        <?php endif; ?>
 
         <div class="box-body">
             <!-- Category -->
@@ -57,12 +60,9 @@
                         <td><?= $index + 1 ?></td>
                         <td><?= $category->name ?></td>
                         <td>
-                            <a class="btn btn-sm" href="<?= route_to('category.edit', $category->id) ?>">
-                                <i class="fa fa-edit"></i> Edit
-                            </a>
-                            <a class="btn btn-sm" href="<?= route_to('category.delete', $category->id) ?>">
-                                <i class="fa fa-trash"></i> Delete
-                            </a>
+                            <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('category.edit', $category->id)]) ?>
+                            <?= view_cell('FormDeleteButtonCell', ['action' => route_to('category.edit', $category->id)]) ?>
+
                         </td>
                     </tr>
                 <?php endforeach; ?>
