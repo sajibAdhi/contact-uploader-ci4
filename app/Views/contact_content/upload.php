@@ -29,7 +29,7 @@
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>
-                    <span class="help-block"><?= validation_show_error('category')?></span>
+                    <span class="help-block"><?= validation_show_error('category') ?></span>
                 </div>
             </div>
 
@@ -39,7 +39,7 @@
                 <div class=" col-sm-9">
                     <input type="text" class="form-control col-sm-9" name="category_name" id="category_name"
                            value="<?= set_value('category_name') ?>" placeholder="Category Name">
-                    <span class="help-block"><?= validation_show_error('category_name')?></span>
+                    <span class="help-block"><?= validation_show_error('category_name') ?></span>
                 </div>
             </div>
 
@@ -47,13 +47,14 @@
             <div class="form-group <?= validation_show_error('contacts_file') ? 'has-warning' : '' ?>">
                 <label for="contacts" class="control-label col-sm-3">Contacts CSV:</label>
                 <div class=" col-sm-9">
-                    <input type="file" class="form-control col-sm-9 " name="contacts_file" id="contacts" accept=".csv,.xls,.xlsx" required>
-                    <span class="help-block"><?= validation_show_error('contacts_file')?></span>
+                    <input type="file" class="form-control col-sm-9 " name="contacts_file" id="contacts"
+                           accept=".csv,.xls,.xlsx" required>
+                    <span class="help-block"><?= validation_show_error('contacts_file') ?></span>
                 </div>
             </div>
         </div>
 
-        <?= $this->include('components/form-submit') ?>
+        <?= view_cell('FormSubmitCell') ?>
     </form>
 </div>
 <?= $this->endSection() ?>
