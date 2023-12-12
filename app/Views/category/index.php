@@ -11,8 +11,7 @@
           action="<?= ($action ?? null) == 'edit'
               ? route_to('category.edit', ($category->id ?? null))
               : route_to('category.store') ?>"
-          method="post"
-          enctype="multipart/form-data">
+          method="post">
         <?= csrf_field() ?>
 
         <div class="box-body">

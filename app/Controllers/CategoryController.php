@@ -17,15 +17,7 @@ class CategoryController extends BaseController
 
     public function index(): string
     {
-        $cache = service('cache');
-
-        $key = 'categories';
-        $categories = $cache->get($key);
-
-        if ($categories === null) {
-            $categories = $this->categoryService->category->findAll();
-            $cache->save($key, $categories, 300); // Cache data for 5 minutes (300 seconds)
-        }
+        $categories = $this->categoryService->category->findAll();
 
         return view('category/index', [
             'title' => 'Categories',
@@ -59,5 +51,23 @@ class CategoryController extends BaseController
             'categories' => $this->categoryService->category->findAll(),
             'category' => $this->categoryService->category->find($id),
         ]);
+    }
+
+    public function update($id): RedirectResponse
+    {
+        $data = ['name' => $this->request->getPost('category')];
+
+        try {
+            if ($this->categoryService->category->update($id, $data)) {
+                return redirect()->route('category.index')
+                    ->with('success', 'Category updated successfully');
+            } else {
+                return redirect()->route('category.index')
+                    ->withInput()->with('error', 'Category update failed');
+            }
+        } catch (\ReflectionException $exception) {
+            return redirect()->route('category.index')
+                ->withInput()->with('error', $exception->getMessage());
+        }
     }
 }
