@@ -4,6 +4,7 @@ namespace App\Libraries;
 
 
 use CodeIgniter\HTTP\Files\UploadedFile;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
@@ -77,7 +78,7 @@ class SpreadSheetFileReader
         $highestColumn = $worksheet->getHighestDataColumn();
 
         // Get all rows from the worksheet
-        $rows = $worksheet->rangeToArray("A2:$highestColumn$highestRow" );
+        $rows = $worksheet->rangeToArray("A2:$highestColumn$highestRow");
 
         foreach ($rows as $row) {
             $excelData[] = array_combine($fileHeaders, $row);
@@ -88,27 +89,44 @@ class SpreadSheetFileReader
 
     /**
      * @param UploadedFile $file
-     * @param array $array
-     * @return array|false
-     * @throws Exception
+     * @param array $expectedHeaders
+     * @return array
+     * @throws \Exception
      */
-    public static function readFile(UploadedFile $file, array $array)
+    public static function readFile(UploadedFile $file, array $expectedHeaders): array
     {
         // Check is the file is valid
-        if (!$file->isValid()) return false;
+        if (!$file->isValid()) throw new \Exception('The file is not valid');
 
-        $mimeType = $file->getClientMimeType();
+        // Load the file using PhpSpreadsheet's IOFactory
+        $spreadsheet = IOFactory::load($file->getPathname());
 
-        // read csv file
-        if ($mimeType === 'text/csv') {
-            return self::readCsvFile($file, $array);
+        // Get the active sheet
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Read the headers from the first row of the sheet
+        $actualHeaders = [];
+        for ($col = 'A'; $col <= $sheet->getHighestColumn(); $col++) {
+            $actualHeaders[] = $sheet->getCell($col . '1')->getValue();
         }
 
-        // read xls file
-        if (in_array($mimeType, ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])) {
-            return self::readExcelFile($file, $array);
+        $diff = array_diff($expectedHeaders, $actualHeaders);
+        // Check if the actual headers match the expected headers
+        if (count($diff) !== 0) {
+            // The headers do not match, return false or handle the error as needed
+            throw new \Exception('The headers do not match');
         }
 
-        return false;
+        // The headers match, continue processing the file
+        $data = [];
+        for ($row = 2; $row <= $sheet->getHighestRow(); $row++) {
+            // Read the data from the current row and add it to the data array
+            $rowData = [];
+            foreach ($actualHeaders as $index => $header) {
+                $rowData[$header] = $sheet->getCell([$index + 1, $row])->getValue();
+            }
+            $data[] = $rowData;
+        }
+        return $data;
     }
 }

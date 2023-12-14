@@ -2,7 +2,6 @@
 
 use App\Controllers\CategoryController;
 use App\Controllers\ContactContentController;
-use App\Controllers\ContactContentUploadController;
 use App\Controllers\ContactController;
 use App\Controllers\ContactUploadController;
 use App\Filters\CategoryStoreFilter;
@@ -36,6 +35,8 @@ $routes->group('contacts', function ($routes) {
 $routes->group('contacts/content', function ($routes) {
     $routes->get('/', [ContactContentController::class, 'index'], ['as' => 'contact.content.index']);
 
-    $routes->get('upload', [ContactContentUploadController::class, 'create'], ['as' => 'contact.content.upload']);
-    $routes->post('upload', [ContactContentUploadController::class, 'store'], ['filter' => ContactUploadFilter::class]);
+    $routes->get('upload', [ContactContentController::class, 'create'], ['as' => 'contact.content.upload']);
+    $routes->post('upload', [ContactContentController::class, 'store'], ['filter' => ContactUploadFilter::class]);
+
+    $routes->get('progress', [ContactContentController::class, 'progress'], ['as' => 'contact.content.progress']);
 });

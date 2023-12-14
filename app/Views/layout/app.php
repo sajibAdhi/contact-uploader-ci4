@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,8 +14,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= base_url('bower_components/font-awesome/css/font-awesome.min.css') ?>">
     <!-- Ionicons -->
-    <!--    <link rel="stylesheet" href="-->
-    <?php //= base_url('bower_components/Ionicons/css/ionicons.min.css') ?><!--">-->
+    <!--<link rel="stylesheet" href="<?php /*= base_url('bower_components/Ionicons/css/ionicons.min.css') */ ?>">-->
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <?= $this->renderSection('styles') ?>
 
@@ -118,7 +119,7 @@ desired effect
                 <h3 class="control-sidebar-heading">Recent Activity</h3>
                 <ul class="control-sidebar-menu">
                     <li>
-                        <a href="javascript:;">
+                        <a href="javascript:">
                             <i class="menu-icon fa fa-birthday-cake bg-red"></i>
 
                             <div class="menu-info">
@@ -134,7 +135,7 @@ desired effect
                 <h3 class="control-sidebar-heading">Tasks Progress</h3>
                 <ul class="control-sidebar-menu">
                     <li>
-                        <a href="javascript:;">
+                        <a href="javascript:">
                             <h4 class="control-sidebar-subheading">
                                 Custom Template Design
                                 <span class="pull-right-container">
@@ -189,6 +190,9 @@ desired effect
 <script src="<?= base_url() ?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?= base_url() ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
     $(document).ready(function () {

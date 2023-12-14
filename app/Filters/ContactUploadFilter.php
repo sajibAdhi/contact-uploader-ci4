@@ -25,7 +25,7 @@ class ContactUploadFilter implements FilterInterface
      * @param RequestInterface $request
      * @param array|null $arguments
      *
-     * @return RedirectResponse|void
+     * @return null|ResponseInterface|RedirectResponse|void
      */
     public function before(RequestInterface $request, $arguments = null)
     {
@@ -34,11 +34,6 @@ class ContactUploadFilter implements FilterInterface
         }
 
         $max_file_size = 2 * 1024; // 2MB
-        ini_set('memory_limit', '512M'); // Sets the memory limit to 512MB
-        set_time_limit(300); // Sets the maximum execution time to 300 seconds (5 minutes)
-        ini_set('mysql.connect_timeout', '300');
-        ini_set('default_socket_timeout', '300');
-
 
         $validation = Services::validation();
 
@@ -63,15 +58,19 @@ class ContactUploadFilter implements FilterInterface
                 'label' => 'Contacts File',
                 'rules' => [
                     'uploaded[contacts_file]', // checks if the file was uploaded
-                    'mime_in[contacts_file,text/csv,application/vnd.ms-excel,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet]', // checks if the file is of type CSV, Excel, or Excel with Macros
+                    'mime_in[contacts_file,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet]', // checks if the file is of type CSV or Excel
                     'ext_in[contacts_file,csv,xls,xlsx,xlsm]', // checks if file extension is CSV, XLS, XLSX, or XLSM
-                    "max_size[contacts_file,$max_file_size]", // checks if the file size is less than or equal to 1024KB (1MB)
+                    "max_size[contacts_file,$max_file_size]", // checks if the file size is less than or equal to $max_file_size
                 ],
             ]
         ]);
 
         if (!$validation->withRequest($request)->run()) {
-            return redirect()->back()->withInput();
+            if ($request->isAJAX()) {
+                return response()->setStatusCode(422)->setJSON(['errors' => $validation->getErrors()]);
+            } else {
+                return redirect()->back()->withInput();
+            }
         }
     }
 

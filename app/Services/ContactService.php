@@ -7,8 +7,7 @@ use App\Libraries\SpreadSheetFileReader;
 use App\Models\Contact;
 use App\Models\ContactContent;
 use CodeIgniter\HTTP\Files\UploadedFile;
-use CodeIgniter\Pager\Pager;
-use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use Exception;
 use ReflectionException;
 
 class ContactService
@@ -48,61 +47,6 @@ class ContactService
         return $contactData;
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function storeUploadedContacts(UploadedFile $file, $category_id, $categoryName): bool
-    {
-        $csvData = SpreadSheetFileReader::readCsvFile($file, ['contact']);
-
-        if (!$csvData) {
-            return false;
-        }
-
-        $this->contact->db->transStart();
-
-        $category = $this->categoryService->findOrCreate($category_id, $categoryName);
-
-
-        foreach ($csvData as $datum) {
-            $this->findOrInsert($datum['contact'], $category->id, $datum['remarks'] ?? null);
-        }
-
-        $this->contact->db->transComplete();
-
-        return $this->contact->db->transStatus();
-    }
-
-
-    /**
-     * @throws ReflectionException
-     * @throws Exception
-     */
-    public function storeUploadedContactsContent(UploadedFile $file, $category_id, $categoryName): bool
-    {
-        $data = SpreadSheetFileReader::readFile($file, ['MOBILE_NO', 'SMS_CONTENT']);
-
-        // If the file is empty, return false
-        if (!$data) return false;
-
-        $this->contact->db->transStart();
-
-        $category = $this->categoryService->findOrCreate($category_id, $categoryName);
-
-        foreach ($data as $datum) {
-            $number = $datum['MOBILE_NO'];
-            if ($number !== null) {
-                $contact = $this->findOrInsert($number, $category->id, $datum['remarks'] ?? null);
-                $this->findOrInsertContactContent($contact->id, $datum['SMS_CONTENT'], $datum['remarks'] ?? null);
-            }
-        }
-
-        $this->contact->db->transComplete();
-
-
-        return $this->contact->db->transStatus();
-    }
-
     public function contacts(): array
     {
         return $this->contact
@@ -112,9 +56,13 @@ class ContactService
     }
 
     /**
+     * @param int $contactId
+     * @param string $content
+     * @param string|null $remarks
+     * @return object
      * @throws ReflectionException
      */
-    private function findOrInsertContactContent(int $contactId, string $content, ?string $remarks)
+    private function findOrInsertContactContent(int $contactId, string $content, ?string $remarks): object
     {
         $contactContent = $this->contactContent
             ->select('contact_content.*')
@@ -142,5 +90,88 @@ class ContactService
             ->join('contacts', 'contacts.id = contact_content.contact_id')
             ->join('categories', 'categories.id = contacts.category_id')
             ->paginate(ApplicationConstant::PER_PAGE);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function storeUploadedContacts(UploadedFile $file, $category_id, $categoryName): bool
+    {
+        $csvData = SpreadSheetFileReader::readCsvFile($file, ['contact']);
+
+        if (!$csvData) {
+            return false;
+        }
+
+        $this->contact->db->transStart();
+
+        $category = $this->categoryService->findOrCreate($category_id, $categoryName);
+
+
+        foreach ($csvData as $datum) {
+            $this->findOrInsert($datum['contact'], $category->id, $datum['remarks'] ?? null);
+        }
+
+        $this->contact->db->transComplete();
+
+        return $this->contact->db->transStatus();
+    }
+
+    /**
+     * @throws ReflectionException
+     * @throws Exception
+     */
+    public function storeUploadedContactsContent(UploadedFile $file, $category_id, $categoryName): bool
+    {
+        $data = SpreadSheetFileReader::readFile($file, ['MOBILE_NO', 'SMS_CONTENT']);
+
+        $totalRows = count($data);
+
+        // If the file is empty, return false
+        if ($totalRows == 0) return false;
+
+        $numbLength = strlen($totalRows);
+        $divider = pow(10, $numbLength - 1);
+
+        $this->contact->db->transStart();
+
+        $category = $this->categoryService->findOrCreate($category_id, $categoryName);
+
+        $processedRows = 0;
+        foreach ($data as $datum) {
+
+            $number = $datum['MOBILE_NO'];
+            if ($number !== null) {
+                $contact = $this->findOrInsert($number, $category->id, $datum['remarks'] ?? null);
+                $this->findOrInsertContactContent($contact->id, $datum['SMS_CONTENT'], $datum['remarks'] ?? null);
+            }
+
+            $processedRows++;
+
+            // Update the progress 10 times
+            if ($processedRows % $divider == 0) {
+                $progress = ($processedRows / $totalRows) * 100;
+
+                // Start the session
+                if (session_status() !== PHP_SESSION_ACTIVE)
+                    session()->start();
+                // Store the progress in the session
+                session()->setFlashdata('upload_progress', $progress);
+                // Close the session data to the client
+                session()->close();
+            }
+
+        }
+
+        session()->setFlashdata('upload_progress', 100);
+
+        $this->contact->db->transComplete();
+
+        return $this->contact->db->transStatus();
+    }
+
+    public function getUploadProgress()
+    {
+        return session()->getFlashdata('upload_progress');
     }
 }

@@ -16,7 +16,8 @@
     "phpoffice/phpspreadsheet": "^1.29",
     "ext-intl": "*",
     "ext-zip": "*",
-    "ext-gd": "*"
+    "ext-gd": "*",
+    "ext-json": "*"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9",
