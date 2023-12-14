@@ -1,5 +1,21 @@
 {
+  "name": "contact-uploader-ci4",
+  "version": "1.0.0",
+  "description": "## What is CodeIgniter?",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "admin-lte": "2.4"
+    "admin-lte": "^3.2.0"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2"
   }
 }
