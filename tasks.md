@@ -4,7 +4,7 @@
 
 -[X] Create Category
 
--[ ] Content Upload
+-[X] Content Upload
   - progress-bar
 
 -[ ] Content List Filter:

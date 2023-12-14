@@ -1,12 +1,16 @@
 <?= $this->extend('layout/app') ?>
 
 <?= $this->section('styles') ?>
-<!-- DataTables -->
-<link rel="stylesheet" href="<?= base_url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>">
-
 <!-- Select2 -->
 <link rel="stylesheet" href="<?= base_url('bower_components/select2/dist/css/select2.min.css') ?>">
-
+<!-- bootstrap datepicker -->
+<link rel="stylesheet"
+      href="<?= base_url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') ?>">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet"
+      href="<?= base_url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') ?>">
+<!-- DataTables -->
+<link rel="stylesheet" href="<?= base_url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -21,37 +25,38 @@
             <div class="row">
 
                 <!-- category -->
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <select name="category" id="category" class="form-control select2" multiple="multiple" data-placeholder="Select a Category"
-                                style="width: 100%;">
-                            <option value="">All</option>
-                            <?php if (!empty($categories)): ?>
-                                <?php foreach ($categories as $category): ?>
-                                    <option value="<?= $category->id ?>" <?= $category->id == $selectedCategory ? 'selected' : '' ?>><?= $category->name ?></option>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                <div class="form-group col-sm-4">
+                    <label for="category">Category</label>
+                    <select name="category" id="category" class="form-control select2" multiple="multiple"
+                            data-placeholder="Select a Category"
+                            style="width: 100%;">
+                        <option value="all" <?= set_select('category', 'all', 'all') ?>>All</option>
+                        <?php if (!empty($categories)): ?>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= $category->id ?>" <?= set_select('category', $category->id) ?>><?= $category->name ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
 
-                        </select>
-                    </div>
+                    </select>
                 </div>
 
-                <!-- date-range -->
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="daterange">Date Range</label>
-                        <input type="text" name="daterange" id="daterange" class="form-control"
-                               value="<?= $selectedDateRange ?>">
+                <!-- Date range -->
+                <div class="form-group col-sm-4">
+                    <label for="daterange">Date range:</label>
+
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control " id="daterange" name="daterange">
                     </div>
+                    <!-- /.input group -->
                 </div>
 
                 <!-- limit -->
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="limit">Limit</label>
-                        <input type="number" name="limit" id="limit" class="form-control" value="<?= $selectedLimit ?>">
-                    </div>
+                <div class="form-group col-sm-4">
+                    <label for="limit">Limit</label>
+                    <input type="number" name="limit" id="limit" class="form-control">
                 </div>
             </div>
 
@@ -104,17 +109,24 @@
 <!-- DataTables -->
 <script src="<?= base_url('bower_components/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= base_url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>"></script>
-
+<!-- date-range-picker -->
+<script src="<?= base_url('bower_components/moment/min/moment.min.js') ?>"></script>
+<script src="<?= base_url('bower_components/bootstrap-daterangepicker/daterangepicker.js') ?>"></script>
+<!-- bootstrap datepicker -->
+<script src="<?= base_url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') ?>"></script>
 <!-- Select2 -->
 <script src="<?= base_url('bower_components/select2/dist/js/select2.full.min.js') ?>"></script>
+
 
 <script>
     <!-- On document ready call select2 -->
     $(document).ready(function () {
 
         // Initialize select2 with multiple select
-        $('.select2').select2({
-        });
+        $('.select2').select2({});
+
+        //Date range picker
+        $('#daterange').daterangepicker()
     });
 </script>
 <?= $this->endSection() ?>

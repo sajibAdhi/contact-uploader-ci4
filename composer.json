@@ -11,13 +11,13 @@
   },
   "require": {
     "php": "^7.4 || ^8.0",
+    "ext-gd": "*",
+    "ext-intl": "*",
+    "ext-json": "*",
+    "ext-zip": "*",
     "codeigniter4/framework": "^4.0",
     "liaison/revision": "^1.1",
-    "phpoffice/phpspreadsheet": "^1.29",
-    "ext-intl": "*",
-    "ext-zip": "*",
-    "ext-gd": "*",
-    "ext-json": "*"
+    "phpoffice/phpspreadsheet": "^1.29"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9",
@@ -40,7 +40,10 @@
       "php": "7.4"
     },
     "preferred-install": "dist",
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/installers": false
+    }
   },
   "scripts": {
     "test": "phpunit"

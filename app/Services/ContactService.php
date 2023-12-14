@@ -174,4 +174,9 @@ class ContactService
     {
         return session()->getFlashdata('upload_progress');
     }
+
+    public function categories(): array
+    {
+        return $this->categoryService->category->findAll();
+    }
 }

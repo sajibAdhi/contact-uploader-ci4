@@ -19,9 +19,9 @@ class ContactContentController extends BaseController
 
     public function index(): string
     {
-
         return view('contact_content/index', [
             'title' => 'Contact Content',
+            'categories' => $this->contactService->categories(),
             'contacts' => $this->contactService->contactsContent(),
             'pager' => $this->contactService->contactContent->pager,
         ]);
@@ -44,7 +44,7 @@ class ContactContentController extends BaseController
         set_time_limit(300); // Sets the maximum execution time to 300 seconds (5 minutes)
         ini_set('mysql.connect_timeout', '300');
         ini_set('default_socket_timeout', '300');
-        
+
         try {
             $file = $this->request->getFile('contacts_file');
             $category_id = $this->request->getPost('category');
