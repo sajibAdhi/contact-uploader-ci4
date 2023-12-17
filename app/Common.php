@@ -36,3 +36,42 @@ if (!function_exists('route_to')) {
         return base_url(Services::routes()->reverseRoute($method, ...$params));
     }
 }
+
+if (!function_exists('get_set_select')) {
+    /**
+     * Set Select
+     *
+     * Let's you set the selected value of a <select> menu via data in the POST array.
+     */
+    function get_set_select(string $field, string $value = '', bool $default = false): string
+    {
+        $request = Services::request();
+
+        // Try any old input data we may have first
+        $input = $request->getOldInput($field);
+
+        if ($input === null) {
+            $input = $request->getGet($field);
+        }
+
+        if ($input === null) {
+            return ($default === true) ? ' selected="selected"' : '';
+        }
+
+        if (is_array($input)) {
+
+            // Note: in_array('', array(0)) returns TRUE, do not use it
+            foreach ($input as &$v) {
+                if ($value === $v) {
+                    return ' selected="selected"';
+                }
+            }
+
+            return '';
+        }
+
+        return ($input === $value) ? ' selected="selected"' : '';
+    }
+}
+
+
