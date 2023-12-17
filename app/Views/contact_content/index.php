@@ -20,19 +20,21 @@
     <!-- /.box-header -->
     <div class="box-body">
         <!-- Filter Form -->
-        <form action="<?= route_to('contact.content.index') ?>" method="get">
+        <form action="<?= route_to('contact.content.index') ?>" method="GET">
             <div class="row">
 
                 <!-- category -->
                 <div class="form-group col-sm-4">
                     <label for="category">Category</label>
-                    <select name="category" id="category" class="form-control select2" multiple="multiple"
+                    <select name="categories[]" id="category" class="form-control select2" multiple
                             data-placeholder="Select a Category"
                             style="width: 100%;">
-                        <option value="all" <?= set_select('category', 'all', 'all') ?>>All</option>
+                        <option value="all" <?= get_set_select('categories', 'all') ?> >
+                            All
+                        </option>
                         <?php if (!empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>
-                                <option value="<?= $category->id ?>" <?= set_select('category', $category->id) ?>><?= $category->name ?></option>
+                                <option value="<?= $category->id ?>" <?= get_set_select('category', $category->id) ?>><?= $category->name ?></option>
                             <?php endforeach; ?>
                         <?php endif; ?>
 
@@ -60,7 +62,14 @@
 
             </div> <!-- /.row -->
 
-            <?= view_cell('ButtonCell', ['title' => 'Search', 'class' => 'btn-primary pull-right']) ?>
+            <?php
+            try {
+                echo view_cell('ButtonCell', ['title' => 'Search', 'class' => 'btn-primary pull-right']);
+            } catch (\ReflectionException $e) {
+                echo "An error occurred: " . $e->getMessage();
+            }
+            ?>
+
         </form>
         <!-- /.Filter Form -->
 
@@ -101,6 +110,7 @@
             </tfoot>
 
         </table>
+        <?php /**@var object $pager */ ?>
         <?= $pager->links('default', 'bootstrap4') ?>
     </div>
     <!-- /.box-body -->
@@ -126,10 +136,18 @@
     $(document).ready(function () {
 
         // Initialize select2 with multiple select
-        $('.select2').select2({});
+        $('.select2').select2();
 
         //Date range picker
-        $('#daterange').daterangepicker()
+        $('#daterange').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear',
+                applyLabel: 'Apply'
+            }
+        }, function (start, end) {
+            console.log("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
     });
 </script>
 <?= $this->endSection() ?>
