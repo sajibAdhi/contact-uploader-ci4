@@ -3,12 +3,11 @@
 <?= $this->section('styles') ?>
 <!-- Select2 -->
 <link rel="stylesheet" href="<?= base_url('bower_components/select2/dist/css/select2.min.css') ?>">
+<!-- daterange picker -->
+<link rel="stylesheet" href="<?= base_url() ?>bower_components/bootstrap-daterangepicker/daterangepicker.css">
 <!-- bootstrap datepicker -->
 <link rel="stylesheet"
-      href="<?= base_url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') ?>">
-<!-- bootstrap datepicker -->
-<link rel="stylesheet"
-      href="<?= base_url('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') ?>">
+      href="<?= base_url() ?>bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 <!-- DataTables -->
 <link rel="stylesheet" href="<?= base_url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>">
 <?= $this->endSection() ?>
@@ -58,9 +57,12 @@
                     <label for="limit">Limit</label>
                     <input type="number" name="limit" id="limit" class="form-control">
                 </div>
-            </div>
 
+            </div> <!-- /.row -->
+
+            <?= view_cell('ButtonCell', ['title' => 'Search', 'class' => 'btn-primary pull-right']) ?>
         </form>
+        <!-- /.Filter Form -->
 
         <table class="table table-bordered table-striped dataTable">
             <thead>
@@ -110,10 +112,11 @@
 <script src="<?= base_url('bower_components/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= base_url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>"></script>
 <!-- date-range-picker -->
-<script src="<?= base_url('bower_components/moment/min/moment.min.js') ?>"></script>
-<script src="<?= base_url('bower_components/bootstrap-daterangepicker/daterangepicker.js') ?>"></script>
+<script src="<?= base_url() ?>bower_components/moment/min/moment.min.js"></script>
+<script src="<?= base_url() ?>bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
-<script src="<?= base_url('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') ?>"></script>
+<!--<script src="--><?php //= base_url() ?><!--bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>-->
+
 <!-- Select2 -->
 <script src="<?= base_url('bower_components/select2/dist/js/select2.full.min.js') ?>"></script>
 
