@@ -7,7 +7,7 @@
 -[X] Content Upload
   - progress-bar
 
--[ ] Content List Filter:
+-[X] Content List Filter:
   - *category[all,other_categories]{multi_select}
   - date-range
   - limit

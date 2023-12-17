@@ -43,12 +43,16 @@ if (!function_exists('get_set_select')) {
      *
      * Let's you set the selected value of a <select> menu via data in the POST array.
      */
-    function get_set_select(string $field, string $value = '', bool $default = false): string
+    function set_select(string $field, string $value = '', bool $default = false): string
     {
         $request = Services::request();
 
         // Try any old input data we may have first
         $input = $request->getOldInput($field);
+
+        if ($input === null) {
+            $input = $request->getPost($field);
+        }
 
         if ($input === null) {
             $input = $request->getGet($field);
@@ -71,6 +75,38 @@ if (!function_exists('get_set_select')) {
         }
 
         return ($input === $value) ? ' selected="selected"' : '';
+    }
+}
+
+if (!function_exists('set_value')) {
+    /**
+     * Form Value
+     *
+     * Grabs a value from the POST array for the specified field so you can
+     * re-populate an input field or textarea
+     *
+     * @param string $field Field name
+     * @param string|string[] $default Default value
+     * @param bool $htmlEscape Whether to escape HTML special characters or not
+     *
+     * @return string|string[]
+     */
+    function set_value(string $field, $default = '', bool $htmlEscape = true)
+    {
+        $request = Services::request();
+
+        // Try any old input data we may have first
+        $value = $request->getOldInput($field);
+
+        if ($value === null) {
+            $value = $request->getPost($field);
+        }
+
+        if ($value === null) {
+            $value = $request->getGet($field) ?? $default;
+        }
+
+        return ($htmlEscape) ? esc($value) : $value;
     }
 }
 

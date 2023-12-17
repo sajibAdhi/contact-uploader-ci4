@@ -22,19 +22,18 @@
         <!-- Filter Form -->
         <form action="<?= route_to('contact.content.index') ?>" method="GET">
             <div class="row">
-
                 <!-- category -->
                 <div class="form-group col-sm-4">
                     <label for="category">Category</label>
                     <select name="categories[]" id="category" class="form-control select2" multiple
                             data-placeholder="Select a Category"
                             style="width: 100%;">
-                        <option value="all" <?= get_set_select('categories', 'all') ?> >
+                        <option value="all" <?= set_select('categories', 'all', true) ?> >
                             All
                         </option>
                         <?php if (!empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>
-                                <option value="<?= $category->id ?>" <?= get_set_select('category', $category->id) ?>><?= $category->name ?></option>
+                                <option value="<?= $category->id ?>" <?= set_select('categories', $category->id) ?>><?= $category->name ?></option>
                             <?php endforeach; ?>
                         <?php endif; ?>
 
@@ -49,7 +48,8 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control " id="daterange" name="daterange">
+                        <input type="text" class="form-control " id="daterange" name="daterange"
+                               value="<?= set_value('daterange') ?>">
                     </div>
                     <!-- /.input group -->
                 </div>
@@ -57,7 +57,8 @@
                 <!-- limit -->
                 <div class="form-group col-sm-4">
                     <label for="limit">Limit</label>
-                    <input type="number" name="limit" id="limit" class="form-control">
+                    <input type="number" name="limit" id="limit" class="form-control"
+                           value="<?= set_value('limit') ?>">
                 </div>
 
             </div> <!-- /.row -->
@@ -139,14 +140,13 @@
         $('.select2').select2();
 
         //Date range picker
-        $('#daterange').daterangepicker({
-            autoUpdateInput: false,
-            locale: {
-                cancelLabel: 'Clear',
-                applyLabel: 'Apply'
-            }
-        }, function (start, end) {
-            console.log("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        const daterange = $('#daterange');
+        daterange.daterangepicker({
+            autoUpdateInput: false
+        });
+
+        daterange.on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
         });
     });
 </script>

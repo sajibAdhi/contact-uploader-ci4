@@ -83,13 +83,42 @@ class ContactService
         return $contactContent;
     }
 
-    public function contactsContent(): array
+    /**
+     * @param array $filters
+     * @return array
+     */
+    public function contactsContent(array $filters = []): array
     {
-        return $this->contactContent
-            ->select('contact_content.*, contacts.number, categories.name as category_name')
+        $result = $this->contactContent
+//            ->builder()
+            ->select('contact_content.*')
+            ->select(' contacts.number')
+            ->select(' categories.name as category_name')
             ->join('contacts', 'contacts.id = contact_content.contact_id')
-            ->join('categories', 'categories.id = contacts.category_id')
-            ->paginate(ApplicationConstant::PER_PAGE);
+            ->join('categories', 'categories.id = contacts.category_id');
+
+        if ($filters['categories'] ?? null) {
+            if (!in_array('all', $filters['categories'])) {
+                $result->whereIn('contacts.category_id', $filters['categories']);
+            }
+        }
+
+        if ($filters['daterange'] ?? null) {
+            $dateRange = explode(' - ', $filters['daterange']);
+
+            $dateRange = array_map(function ($date) {
+                return date('Y-m-d', strtotime($date));
+            }, $dateRange);
+
+            $result->where('contact_content.created_at >=', $dateRange[0]);
+            $result->where('contact_content.created_at <=', $dateRange[1]);
+        }
+
+        if ($filters['limit'] ?? null) {
+            return $result->paginate($filters['limit']);
+        }
+
+        return $result->paginate(ApplicationConstant::PER_PAGE);
     }
 
     /**
@@ -173,6 +202,15 @@ class ContactService
     public function getUploadProgress()
     {
         return session()->getFlashdata('upload_progress');
+    }
+
+    public function whereContactsExist(): ContactService
+    {
+        $this->categoryService->category
+            ->select('categories.*')
+            ->join('contacts', 'contacts.category_id = categories.id', 'RIGHT')
+            ->groupBy('categories.id');
+        return $this;
     }
 
     public function categories(): array

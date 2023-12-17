@@ -6,7 +6,7 @@ use App\Models\Category;
 use App\Services\ContactService;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+use Exception;
 
 class ContactContentController extends BaseController
 {
@@ -19,10 +19,16 @@ class ContactContentController extends BaseController
 
     public function index(): string
     {
+        $filters = [
+            'categories' => $this->request->getGet('categories'),
+            'daterange' => $this->request->getGet('daterange'),
+            'limit' => $this->request->getGet('limit')
+        ];
+
         return view('contact_content/index', [
             'title' => 'Contact Content',
-            'categories' => $this->contactService->categories(),
-            'contacts' => $this->contactService->contactsContent(),
+            'categories' => $this->contactService->whereContactsExist()->categories(),
+            'contacts' => $this->contactService->contactsContent($filters),
             'pager' => $this->contactService->contactContent->pager,
         ]);
     }
@@ -70,7 +76,7 @@ class ContactContentController extends BaseController
 
             }
 
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
 
             if ($this->request->isAJAX()) {
                 return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => $exception->getMessage()]);
