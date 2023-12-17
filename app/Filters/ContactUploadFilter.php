@@ -7,7 +7,6 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Security\Exceptions\SecurityException;
 use Config\Services;
 
 class ContactUploadFilter implements FilterInterface
@@ -60,7 +59,7 @@ class ContactUploadFilter implements FilterInterface
                 'label' => 'Contacts File',
                 'rules' => [
                     'uploaded[contacts_file]', // checks if the file was uploaded
-                    'mime_in[contacts_file,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet]', // checks if the file is of type CSV or Excel
+//                    'mime_in[contacts_file,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet]', // checks if the file is of type CSV or Excel
                     'ext_in[contacts_file,csv,xls,xlsx,xlsm]', // checks if file extension is CSV, XLS, XLSX, or XLSM
                     "max_size[contacts_file,$max_file_size]", // checks if the file size is less than or equal to $max_file_size
                 ],
