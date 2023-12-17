@@ -51,7 +51,9 @@ class ContactUploadFilter implements FilterInterface
                 'rules' => [
                     'required_without[category]',
                     'string',
-                    'is_unique[categories.name]'
+                    (empty($request->getPost('category')))
+                        ? 'is_unique[categories.name]'
+                        : 'trim'
                 ]
             ],
             'contacts_file' => [
