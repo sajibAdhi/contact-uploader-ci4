@@ -35,32 +35,37 @@
                             <?php endif; ?>
                         </select>
                         <span class="help-block"><?= validation_show_error('category') ?></span>
+                        <p class="help-block">Either select a Category or write a new Category name</p>
+
                     </div>
                 </div>
 
                 <!-- Category Name -->
                 <div class="form-group <?= validation_show_error('category_name') ? 'has-warning' : '' ?>">
-                    <label for="category_name" class="col-sm-3"></label>
+                    <label for="category_name" class="control-label col-sm-3"></label>
                     <div class=" col-sm-9">
                         <input type="text" class="form-control col-sm-9" name="category_name" id="category_name"
-                               value="<?= set_value('category_name') ?>" placeholder="Category Name">
+                               value="<?= set_value('category_name') ?>"
+                               placeholder="Category name">
                         <span class="help-block"><?= validation_show_error('category_name') ?></span>
                     </div>
                 </div>
 
                 <!-- Contacts File -->
                 <div class="form-group <?= validation_show_error('contacts_file') ? 'has-warning' : '' ?>">
-                    <label for="contacts" class="control-label col-sm-3">Contacts CSV:</label>
+                    <label for="contacts" class="control-label col-sm-3">Contacts File:</label>
                     <div class=" col-sm-9">
                         <input type="file" class="form-control col-sm-9 " name="contacts_file" id="contacts"
                                accept=".csv,.xls,.xlsx" required>
                         <span class="help-block"><?= validation_show_error('contacts_file') ?></span>
+                        <p class="help-block">Please upload a CSV or Excel file. The File must contain header <b>MOBILE_NO</b>
+                            and <b>SMS_CONTENT</b>.</p>
                     </div>
                 </div>
 
             </div>
 
-            <?= view_cell('FormSubmitCell', [], 300) ?>
+            <?= view_cell('FormSubmitCell') ?>
         </form>
     </div>
 <?= $this->endSection() ?>
