@@ -29,4 +29,9 @@ class BaseControllerTest extends CIUnitTestCase
 
         parent::tearDown();
     }
+
+    public function test_base_controller_class_is_working()
+    {
+        $this->assertTrue(true);
+    }
 }

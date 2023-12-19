@@ -6,12 +6,13 @@ use CodeIgniter\Test\ControllerTestTrait;
 
 class CategoryControllerTest extends BaseControllerTest
 {
-    public function testIndexMethod()
+    public function test_index_method_return_ok_response()
     {
-        $result = $this->controller('App\Controllers\CategoryController')
+        $response = $this->controller('App\Controllers\CategoryController')
             ->execute('index');
-        $this->assertTrue($result->isOK());
-        $this->assertTrue($result->see('Categories'));
+
+        $this->assertTrue($response->isOK());
+        $this->assertTrue($response->see('Categories'));
     }
 
     // Add similar methods to test other actions of the controller

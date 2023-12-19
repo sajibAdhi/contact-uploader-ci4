@@ -49,7 +49,7 @@ class CategoryTest extends CIUnitTestCase
      * @dataProvider categoryProvider
      * @throws ReflectionException
      */
-    public function testCreateCategory($name)
+    public function test_category_model_insert_successfully($name)
     {
         $lastCategoryId = $this->category->insert(['name' => $name]);
 
@@ -64,7 +64,7 @@ class CategoryTest extends CIUnitTestCase
      * @dataProvider categoryProvider
      * @throws ReflectionException
      */
-    public function testUpdateCategory($initialName, $updatedName)
+    public function test_category_model_update_successfully($initialName, $updatedName)
     {
         // Insert the  category
         $lastCategoryId = $this->category->insert(['name' => $initialName]);
@@ -89,7 +89,7 @@ class CategoryTest extends CIUnitTestCase
     /**
      * @throws ReflectionException
      */
-    public function testDeleteCategory()
+    public function test_category_model_delete_successfully()
     {
         $lastCategoryId = $this->category->insert(['name' => 'Test Category',]);
 

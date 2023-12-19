@@ -35,7 +35,7 @@ class CategoryStoreFilter implements FilterInterface
 
         $validation = Services::validation();
 
-        $categoryId = $request->uri->getSegment(2); // Get the category id from the URI
+        $categoryId = $request->getUri()->getSegment(2); // Get the category id from the URI
 
         $validation->setRules([
             'category' => [
@@ -52,7 +52,7 @@ class CategoryStoreFilter implements FilterInterface
         ]);
 
         if (!$validation->withRequest($request)->run()) {
-            return redirect()->back()->withInput()->with('error', 'Invalid input');
+            return redirect()->back()->withInput()->with('error', 'Invalid Form Data');
         }
     }
 
