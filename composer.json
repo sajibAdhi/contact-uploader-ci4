@@ -16,14 +16,14 @@
     "ext-json": "*",
     "ext-zip": "*",
     "codeigniter4/framework": "^4.0",
-    "codeigniter4/shield": "@dev",
+    "codeigniter4/shield": "*",
     "liaison/revision": "^1.1",
-    "mihatori/codeignitervite": "^1.1",
     "phpoffice/phpspreadsheet": "^1.29"
   },
   "require-dev": {
     "codeigniter/coding-standard": "^1.7",
     "fakerphp/faker": "^1.9",
+    "mihatori/codeignitervite": "^1.1",
     "mikey179/vfsstream": "^1.6",
     "phpunit/php-code-coverage": "^9.2",
     "phpunit/phpunit": "^9.6"
@@ -49,5 +49,7 @@
   },
   "scripts": {
     "test": "phpunit"
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
