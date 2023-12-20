@@ -13,9 +13,10 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
+<!-- Filter Form Box -->
 <div class="box">
     <div class="box-header">
-        <h3 class="box-title">Contacts Contents</h3>
+        <h3 class="box-title">Contacts Contents Search</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
@@ -63,18 +64,23 @@
 
             </div> <!-- /.row -->
 
-            <?php
-            try {
-                echo view_cell('ButtonCell', ['title' => 'Search', 'class' => 'btn-primary pull-right']);
-            } catch (\ReflectionException $e) {
-                echo "An error occurred: " . $e->getMessage();
-            }
-            ?>
+            <?= view_cell(\App\Cells\ButtonCell::class, ['title' => 'Search', 'class' => 'btn-primary pull-right']) ?>
 
         </form>
         <!-- /.Filter Form -->
+    </div>
+    <!-- /.box-body -->
+</div>
 
-        <table class="table table-hover table-bordered dataTable">
+<!-- Contact Content Table Box-->
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">Contacts Contents</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+
+        <table class="table table-sm table-responsive table-hover table-bordered">
             <thead>
             <tr>
                 <th>Contact</th>
