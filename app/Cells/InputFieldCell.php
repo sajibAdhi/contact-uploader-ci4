@@ -12,6 +12,7 @@ class InputFieldCell extends Cell
     public $defaultValue;
     public $type;
     public $placeholder;
+    public $required;
 
     public function mount()
     {
@@ -21,5 +22,6 @@ class InputFieldCell extends Cell
         $this->defaultValue = $this->defaultValue ?? '';
         $this->type = $this->type ?? 'text';
         $this->placeholder = $this->placeholder ?? ' ';
+        $this->required = $this->required ?? false;
     }
 }
