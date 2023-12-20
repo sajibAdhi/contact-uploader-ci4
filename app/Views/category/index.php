@@ -44,7 +44,7 @@
         <h3 class="box-title">Categories</h3>
     </div>
     <div class="box-body">
-        <table class="table table-bordered table-striped dataTable">
+        <table class="table table-sm table-bordered table-striped table-hover">
             <thead>
             <tr>
                 <th>SL NO</th>
