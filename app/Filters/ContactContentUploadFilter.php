@@ -9,7 +9,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
-class ContactUploadFilter implements FilterInterface
+class ContactContentUploadFilter implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -55,21 +55,31 @@ class ContactUploadFilter implements FilterInterface
                         : 'trim'
                 ]
             ],
+            'date' => [
+                'label' => 'Date',
+                'rules' => [
+                    'required',
+                    'trim',
+                    'string',
+                    'valid_date',
+                ],
+            ],
             'contacts_file' => [
                 'label' => 'Contacts File',
                 'rules' => [
                     'uploaded[contacts_file]', // checks if the file was uploaded
-//                    'mime_in[contacts_file,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet]', // checks if the file is of type CSV or Excel
                     'ext_in[contacts_file,csv,xls,xlsx,xlsm]', // checks if file extension is CSV, XLS, XLSX, or XLSM
                     "max_size[contacts_file,$max_file_size]", // checks if the file size is less than or equal to $max_file_size
                 ],
             ]
         ]);
 
+
         if (!$validation->withRequest($request)->run()) {
             if ($request->isAJAX()) {
                 return response()->setStatusCode(422)->setJSON(['errors' => $validation->getErrors()]);
             } else {
+                dd($request->getPost());
                 return redirect()->back()->withInput();
             }
         }

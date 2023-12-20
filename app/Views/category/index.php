@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <?= view_cell('FormSubmitCell', [
+        <?= view_cell(\App\Cells\FormSubmitCell::class, [
             'title' => ($action ?? null) == 'edit' ? 'Update' : 'Submit',
         ], 300) ?>
     </form>

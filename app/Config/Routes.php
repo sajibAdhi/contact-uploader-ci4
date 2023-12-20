@@ -5,7 +5,7 @@ use App\Controllers\ContactContentController;
 use App\Controllers\ContactController;
 use App\Controllers\ContactUploadController;
 use App\Filters\CategoryStoreFilter;
-use App\Filters\ContactUploadFilter;
+use App\Filters\ContactContentUploadFilter;
 use CodeIgniter\Router\RouteCollection;
 
 
@@ -28,14 +28,14 @@ $routes->group('contacts', function ($routes) {
     $routes->get('/', [ContactController::class, 'index'], ['as' => 'contact.index']);
 
     $routes->get('upload', [ContactUploadController::class, 'create'], ['as' => 'contact.upload']);
-    $routes->post('upload', [ContactUploadController::class, 'store'], ['filter' => ContactUploadFilter::class]);
+    $routes->post('upload', [ContactUploadController::class, 'store'], ['filter' => ContactContentUploadFilter::class]);
 });
 
 $routes->group('contacts/content', function ($routes) {
     $routes->get('/', [ContactContentController::class, 'index'], ['as' => 'contact.content.index']);
 
     $routes->get('upload', [ContactContentController::class, 'create'], ['as' => 'contact.content.upload']);
-    $routes->post('upload', [ContactContentController::class, 'store'], ['filter' => ContactUploadFilter::class]);
+    $routes->post('upload', [ContactContentController::class, 'store'], ['filter' => ContactContentUploadFilter::class]);
 
     $routes->get('progress', [ContactContentController::class, 'progress'], ['as' => 'contact.content.progress']);
 });

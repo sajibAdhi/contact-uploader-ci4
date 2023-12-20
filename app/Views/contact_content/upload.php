@@ -18,11 +18,6 @@
             <?= csrf_field() ?>
 
             <div class="box-body">
-                <div class="progress">
-                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-
                 <!-- Category -->
                 <div class="form-group <?= validation_show_error('category') ? 'has-warning' : '' ?>">
                     <label for="category" class="control-label col-sm-3">Select a category:</label>
@@ -49,6 +44,7 @@
                     'placeholder' => 'Category name'
                 ]) ?>
 
+                <!-- Date -->
                 <?= view_cell(\App\Cells\DateInputFieldCell::class, [
                     'label' => 'Date',
                     'id' => 'date',
@@ -65,6 +61,11 @@
                         <p class="help-block">Please upload a CSV or Excel file. The File must contain header
                             <b>MOBILE_NO</b>
                             and <b>SMS_CONTENT</b>.</p>
+                        <div class="progress">
+                            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width: 0%" aria-valuenow="0"
+                                 aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -97,8 +98,12 @@
                     success: function (data) {
                         // Update your progress bar here
                         let progress = data.progress;
-                        $('#progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
-
+                        // if progress not null
+                        console.log(progress);
+                        if (progress) {
+                            progress = Math.round(progress);
+                            $('#progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).html(progress + '%');
+                        }
                     }
                 });
             }
@@ -121,12 +126,14 @@
                     processData: false,
                     beforeSend: function () {
                         $('#upload-form').find('input, button').prop('disabled', true);
+                        $('#progress-bar').css('width', 0 + '%').attr('aria-valuenow', 0).html(0 + '%');
+
                         // Disable the Select2 dropdown
                         category.prop('disabled', true);
                         category.select2().trigger('change');
 
-                        // Start the interval when the AJAX request starts call updateProgress every 5 second
-                        intervalId = setInterval(updateProgress, 2000);
+                        // Start the interval when the AJAX request starts call updateProgress every 1 second
+                        intervalId = setInterval(updateProgress, 1000);
                     },
                     success: function (data) {
                         if (data.status === 'success') {
@@ -157,6 +164,9 @@
 
                         // Clear the interval when the AJAX request is completed
                         clearInterval(intervalId);
+
+                        // Fill the progress bar
+                        $('#progress-bar').css('width', 100 + '%').attr('aria-valuenow', 100).html(100 + '%');
                     }
                 });
 
