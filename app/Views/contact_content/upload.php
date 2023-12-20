@@ -2,7 +2,10 @@
 
 <?= $this->section('styles') ?>
     <!-- Select2 -->
-    <link rel="stylesheet" href="<?= base_url() ?>bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="<?= base_url('bower_components/select2/dist/css/select2.min.css') ?>">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet"
+          href="<?= base_url() ?>bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -46,10 +49,10 @@
                     'placeholder' => 'Category name'
                 ]) ?>
 
-                <?= view_cell(\App\Cells\InputFieldCell::class, [
+                <?= view_cell(\App\Cells\DateInputFieldCell::class, [
                     'label' => 'Date',
                     'id' => 'date',
-                    'name' => 'date'
+                    'name' => 'date',
                 ]) ?>
 
                 <!-- Contacts File -->
@@ -75,13 +78,18 @@
 <?= $this->section('scripts') ?>
     <!-- Select2 -->
     <script src="<?= base_url('bower_components/select2/dist/js/select2.full.min.js') ?>"></script>
-
+    <!-- bootstrap datepicker -->
+    <script src="<?= base_url() ?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(document).ready(function () {
 
             //Initialize Select2 Elements
             $('.select2').select2()
 
+            //Date picker
+            $('.datepicker').datepicker({
+                autoclose: true
+            })
 
             function updateProgress() {
                 $.ajax({
