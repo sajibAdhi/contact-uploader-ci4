@@ -4,10 +4,10 @@
     <section class="sidebar">
 
         <!-- Sidebar user panel (optional) -->
-        <?php //echo $this->include('layout\sidebar-user-panel') ?>
+        <?php // echo $this->include('layout\sidebar-user-panel')?>
 
         <!-- search form (Optional) -->
-        <?php //echo $this->include('layout\sidebar-search-form') ?>
+        <?php // echo $this->include('layout\sidebar-search-form')?>
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->

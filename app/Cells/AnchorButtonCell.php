@@ -12,18 +12,18 @@ class AnchorButtonCell extends Cell
     {
         return $this->view('anchor_button', [
             'title' => '',
-            'icon' => 'fa fa-edit',
-            'href' => $this->href,
+            'icon'  => 'fa fa-edit',
+            'href'  => $this->href,
         ]);
     }
 
     public function delete(): string
     {
         return $this->view('anchor_button', [
-            'title' => 'Delete',
-            'icon' => 'fa fa-trash',
+            'title'   => 'Delete',
+            'icon'    => 'fa fa-trash',
             'onclick' => 'return confirm(\'Are you sure you want to delete this item?\')',
-            'href' => $this->href,
+            'href'    => $this->href,
         ]);
     }
 }

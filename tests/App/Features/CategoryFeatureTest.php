@@ -8,7 +8,10 @@ use CodeIgniter\Test\FeatureTestTrait;
 use Config\Services;
 use Exception;
 
-class CategoryFeatureTest extends CIUnitTestCase
+/**
+ * @internal
+ */
+final class CategoryFeatureTest extends CIUnitTestCase
 {
     use FeatureTestTrait;
 
@@ -33,10 +36,10 @@ class CategoryFeatureTest extends CIUnitTestCase
     }
 
     /**
-     * @throws RedirectException
      * @throws Exception
+     * @throws RedirectException
      */
-    public function test_all_category_list_showing_successfully()
+    public function testAllCategoryListShowingSuccessfully()
     {
         $result = $this->get('/categories');
         $result->assertStatus(200);
@@ -44,27 +47,27 @@ class CategoryFeatureTest extends CIUnitTestCase
     }
 
     /**
-     * @throws RedirectException
      * @throws Exception
+     * @throws RedirectException
      */
-    public function test_category_name_store_successfully()
+    public function testCategoryNameStoreSuccessfully()
     {
         $output = $this->post('/categories', [
-            'category' => 'Test Category',
-            csrf_token() => csrf_hash()
+            'category'   => 'Test Category',
+            csrf_token() => csrf_hash(),
         ]);
 
         $this->assertTrue($output->isRedirect());
 
         // Assert that the session has the success message
-        $this->assertEquals('Category created successfully', session('success'));
+        $this->assertSame('Category created successfully', session('success'));
     }
 
     /**
-     * @throws RedirectException
      * @throws Exception
+     * @throws RedirectException
      */
-    public function test_category_edit_view_successfully()
+    public function testCategoryEditViewSuccessfully()
     {
         $result = $this->get('/categories/1');
         $result->assertStatus(200);
@@ -72,37 +75,37 @@ class CategoryFeatureTest extends CIUnitTestCase
     }
 
     /**
-     * @throws RedirectException
      * @throws Exception
+     * @throws RedirectException
      * @todo test_category_name_update_successfully
      */
-    public function test_category_name_update_successfully()
+    public function testCategoryNameUpdateSuccessfully()
     {
         $output = $this->post('categories', [
-            'category' => 'Test Category',
-            csrf_token() => csrf_hash()
+            'category'   => 'Test Category',
+            csrf_token() => csrf_hash(),
         ]);
 
         $this->assertTrue($output->isRedirect());
 
         // Assert that the session has the success message
-        $this->assertEquals('Category created successfully', session('success'));
+        $this->assertSame('Category created successfully', session('success'));
     }
 
     /**
-     * @throws RedirectException
      * @throws Exception
+     * @throws RedirectException
      * @todo test_category_is_deleted_successfully
      */
-//    public function test_category_is_deleted_successfully()
-//    {
-//        $output = $this->delete('/categories/1', [
-//            csrf_token() => csrf_hash()
-//        ]);
-//
-//        $this->assertTrue($output->isRedirect());
-//
-//        // Assert that the session has the success message
-//        $this->assertEquals('Category deleted successfully', session('success'));
-//    }
+    //    public function test_category_is_deleted_successfully()
+    //    {
+    //        $output = $this->delete('/categories/1', [
+    //            csrf_token() => csrf_hash()
+    //        ]);
+    //
+    //        $this->assertTrue($output->isRedirect());
+    //
+    //        // Assert that the session has the success message
+    //        $this->assertEquals('Category deleted successfully', session('success'));
+    //    }
 }

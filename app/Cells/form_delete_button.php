@@ -4,7 +4,7 @@
     <?= csrf_field() ?>
     <?= form_hidden('_method', 'DELETE') ?>
     <button type="submit" class="btn btn-sm">
-        <?php if (!empty($icon)): ?>
+        <?php if (! empty($icon)): ?>
             <i class="<?= $icon ?>"></i>
         <?php endif; ?>
         <?= $buttonTitle ?? null ?>

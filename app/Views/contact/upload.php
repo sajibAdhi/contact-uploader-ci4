@@ -21,7 +21,7 @@
                 <div class=" col-sm-9">
                     <select class="form-control select2" name="category" id="category" style="width: 100%">
                         <option value="">Select a Category</option>
-                        <?php if (!empty($categories)): ?>
+                        <?php if (! empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>
                                 <option value="<?= $category->id ?>" <?= set_select('category', $category->id) ?>>
                                     <?= $category->name ?>

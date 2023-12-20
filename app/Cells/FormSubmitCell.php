@@ -10,6 +10,6 @@ class FormSubmitCell extends Cell
 
     public function mount()
     {
-        $this->title = $this->title ?? 'Submit';
+        $this->title ??= 'Submit';
     }
 }

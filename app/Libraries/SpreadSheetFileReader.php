@@ -2,41 +2,39 @@
 
 namespace App\Libraries;
 
-
 use CodeIgniter\HTTP\Files\UploadedFile;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
-use function PHPUnit\Framework\matches;
 
 class SpreadSheetFileReader
 {
     /**
-     * @param UploadedFile $file
-     * @param array $headers
-     *
-     * @return false|array
+     * @return array|false
      */
     public static function readCsvFile(UploadedFile $file, array $headers)
     {
         $csvData = [];
 
         // Check is the file is valid and text/csv type
-        if (!$file->isValid() || $file->getClientMimeType() !== 'text/csv') return false;
+        if (! $file->isValid() || $file->getClientMimeType() !== 'text/csv') {
+            return false;
+        }
 
+        if (($handle = fopen($file->getTempName(), 'rb')) === false) {
+            return false;
+        }
 
-        if (($handle = fopen($file->getTempName(), "r")) === false) return false;
-
-        $fileHeaders = fgetcsv($handle, 1000, ",");
+        $fileHeaders = fgetcsv($handle, 1000, ',');
 
         // Check if all elements in $headers are present in $fileHeader
         $diff = array_diff($headers, $fileHeaders);
-        if (!empty($diff)) return false;
+        if (! empty($diff)) {
+            return false;
+        }
 
-
-        while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-            $row = array_combine($fileHeaders, $data);
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            $row       = array_combine($fileHeaders, $data);
             $csvData[] = $row;
         }
 
@@ -46,15 +44,16 @@ class SpreadSheetFileReader
     }
 
     /**
-     * @param UploadedFile $file
-     * @param array $headers
      * @return array|false
+     *
      * @throws Exception
      */
     public static function readExcelFile(UploadedFile $file, array $headers)
     {
         // Check is the file is excel type
-        if (!in_array($file->getClientMimeType(), ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])) return false;
+        if (! in_array($file->getClientMimeType(), ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], true)) {
+            return false;
+        }
 
         // Load the spreadsheet reader library
         $spreadsheet = new Xlsx();
@@ -71,14 +70,16 @@ class SpreadSheetFileReader
         $diff = array_diff($headers, $fileHeaders);
 
         // If $diff is not an empty array, return false
-        if (count($diff) !== 0) return false;
+        if (count($diff) !== 0) {
+            return false;
+        }
 
         // Get the highest row that contains data
-        $highestRow = $worksheet->getHighestDataRow();
+        $highestRow    = $worksheet->getHighestDataRow();
         $highestColumn = $worksheet->getHighestDataColumn();
 
         // Get all rows from the worksheet
-        $rows = $worksheet->rangeToArray("A2:$highestColumn$highestRow");
+        $rows = $worksheet->rangeToArray("A2:{$highestColumn}{$highestRow}");
 
         foreach ($rows as $row) {
             $excelData[] = array_combine($fileHeaders, $row);
@@ -88,15 +89,14 @@ class SpreadSheetFileReader
     }
 
     /**
-     * @param UploadedFile $file
-     * @param array $expectedHeaders
-     * @return array
      * @throws \Exception
      */
     public static function readFile(UploadedFile $file, array $expectedHeaders): array
     {
         // Check is the file is valid
-        if (!$file->isValid()) throw new \Exception('The file is not valid');
+        if (! $file->isValid()) {
+            throw new \Exception('The file is not valid');
+        }
 
         // Load the file using PhpSpreadsheet's IOFactory
         $spreadsheet = IOFactory::load($file->getPathname());
@@ -106,6 +106,7 @@ class SpreadSheetFileReader
 
         // Read the headers from the first row of the sheet
         $actualHeaders = [];
+
         for ($col = 'A'; $col <= $sheet->getHighestColumn(); $col++) {
             $actualHeaders[] = $sheet->getCell($col . '1')->getValue();
         }
@@ -119,14 +120,17 @@ class SpreadSheetFileReader
 
         // The headers match, continue processing the file
         $data = [];
+
         for ($row = 2; $row <= $sheet->getHighestRow(); $row++) {
             // Read the data from the current row and add it to the data array
             $rowData = [];
+
             foreach ($actualHeaders as $index => $header) {
                 $rowData[$header] = $sheet->getCell([$index + 1, $row])->getValue();
             }
             $data[] = $rowData;
         }
+
         return $data;
     }
 }

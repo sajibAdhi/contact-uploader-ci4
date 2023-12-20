@@ -24,7 +24,7 @@
                     <div class=" col-sm-9">
                         <select class="form-control select2" name="category" id="category" style="width: 100%">
                             <option value="">Select a Category</option>
-                            <?php if (!empty($categories)): ?>
+                            <?php if (! empty($categories)): ?>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= $category->id ?>" <?= set_select('category', $category->id) ?>>
                                         <?= $category->name ?>
@@ -39,16 +39,16 @@
 
                 <!-- Category Name -->
                 <?= view_cell(\App\Cells\InputFieldCell::class, [
-                    'id' => 'categoryName',
-                    'name' => 'category_name',
-                    'placeholder' => 'Category name'
+                    'id'          => 'categoryName',
+                    'name'        => 'category_name',
+                    'placeholder' => 'Category name',
                 ]) ?>
 
                 <!-- Date -->
                 <?= view_cell(\App\Cells\DateInputFieldCell::class, [
                     'label' => 'Date',
-                    'id' => 'date',
-                    'name' => 'date',
+                    'id'    => 'date',
+                    'name'  => 'date',
                 ]) ?>
 
                 <!-- Contacts File -->

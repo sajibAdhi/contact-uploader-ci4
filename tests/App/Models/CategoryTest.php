@@ -5,16 +5,18 @@ namespace Tests\App\Models;
 use App\Models\Category;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
-use CodeIgniter\Test\Fabricator;
 use ReflectionException;
 
-class CategoryTest extends CIUnitTestCase
+/**
+ * @internal
+ */
+final class CategoryTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
 
     protected Category $category;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -26,7 +28,7 @@ class CategoryTest extends CIUnitTestCase
         $this->category = new Category();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         // Rollback migrations after each test
         $migrate = \Config\Services::migrations();
@@ -36,7 +38,7 @@ class CategoryTest extends CIUnitTestCase
         parent::tearDown();
     }
 
-    public function categoryProvider(): array
+    public static function categoryProvider(): iterable
     {
         return [
             ['Test Category1', 'Test Category1 Updated'],
@@ -47,31 +49,38 @@ class CategoryTest extends CIUnitTestCase
 
     /**
      * @dataProvider categoryProvider
+     *
+     * @param mixed $name
+     *
      * @throws ReflectionException
      */
-    public function test_category_model_insert_successfully($name)
+    public function testCategoryModelInsertSuccessfully($name)
     {
         $lastCategoryId = $this->category->insert(['name' => $name]);
 
         $category = $this->category->find($lastCategoryId);
 
-        $this->assertEquals($name, $category->name);
+        $this->assertSame($name, $category->name);
 
         $this->seeInDatabase('categories', ['id' => $lastCategoryId, 'name' => $name]);
     }
 
     /**
      * @dataProvider categoryProvider
+     *
+     * @param mixed $initialName
+     * @param mixed $updatedName
+     *
      * @throws ReflectionException
      */
-    public function test_category_model_update_successfully($initialName, $updatedName)
+    public function testCategoryModelUpdateSuccessfully($initialName, $updatedName)
     {
         // Insert the  category
         $lastCategoryId = $this->category->insert(['name' => $initialName]);
 
         $category = $this->category->find($lastCategoryId);
 
-        $this->assertEquals($initialName, $category->name);
+        $this->assertSame($initialName, $category->name);
 
         // Update the category
         $this->category->update($lastCategoryId, ['name' => $updatedName]);
@@ -80,7 +89,7 @@ class CategoryTest extends CIUnitTestCase
         $updatedCategory = $this->category->find($lastCategoryId);
 
         // Assert the updated name
-        $this->assertEquals($updatedName, $updatedCategory->name);
+        $this->assertSame($updatedName, $updatedCategory->name);
 
         // Assert database state
         $this->seeInDatabase('categories', ['id' => $lastCategoryId, 'name' => $updatedName]);
@@ -89,9 +98,9 @@ class CategoryTest extends CIUnitTestCase
     /**
      * @throws ReflectionException
      */
-    public function test_category_model_delete_successfully()
+    public function testCategoryModelDeleteSuccessfully()
     {
-        $lastCategoryId = $this->category->insert(['name' => 'Test Category',]);
+        $lastCategoryId = $this->category->insert(['name' => 'Test Category']);
 
         $this->category->delete($lastCategoryId);
 

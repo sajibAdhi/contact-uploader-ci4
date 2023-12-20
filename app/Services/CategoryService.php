@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Category;
 use App\Libraries\SpreadSheetFileReader;
+use App\Models\Category;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use ReflectionException;
 
@@ -23,11 +23,13 @@ class CategoryService
     {
         $csvData = SpreadSheetFileReader::readCsvFile($file, ['category']);
 
-        if (!$csvData) return false;
+        if (! $csvData) {
+            return false;
+        }
 
         $this->category->db->transStart();
 
-        foreach ($csvData as $datum){
+        foreach ($csvData as $datum) {
             $this->findOrCreate($datum['category']);
         }
 
@@ -37,17 +39,16 @@ class CategoryService
     }
 
     /**
-     * @param  $categoryId
-     * @param string|null $categoryName
      * @return array|object|null
+     *
      * @throws ReflectionException
      */
-    public function findOrCreate( $categoryId, ?string $categoryName = null)
+    public function findOrCreate($categoryId, ?string $categoryName = null)
     {
         $categoryData = $this->category->find($categoryId);
 
-        if (is_null($categoryData)) {
-           $categoryId = $this->category->insert(['name' => $categoryName]);
+        if (null === $categoryData) {
+            $categoryId = $this->category->insert(['name' => $categoryName]);
 
             $categoryData = $this->category->find($categoryId);
         }

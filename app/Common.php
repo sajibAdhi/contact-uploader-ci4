@@ -16,7 +16,7 @@
 
 use CodeIgniter\Config\Services;
 
-if (!function_exists('route_to')) {
+if (! function_exists('route_to')) {
     /**
      * Given a route name or controller/method string and any params,
      * will attempt to build the relative URL to the
@@ -25,7 +25,7 @@ if (!function_exists('route_to')) {
      * NOTE: This requires the controller/method to
      * have a route defined in the routes Config file.
      *
-     * @param string $method Route name or Controller::method
+     * @param string     $method    Route name or Controller::method
      * @param int|string ...$params One or more parameters to be passed to the route.
      *                              The last parameter allows you to set the locale.
      *
@@ -37,7 +37,7 @@ if (!function_exists('route_to')) {
     }
 }
 
-if (!function_exists('get_set_select')) {
+if (! function_exists('get_set_select')) {
     /**
      * Set Select
      *
@@ -63,7 +63,6 @@ if (!function_exists('get_set_select')) {
         }
 
         if (is_array($input)) {
-
             // Note: in_array('', array(0)) returns TRUE, do not use it
             foreach ($input as &$v) {
                 if ($value === $v) {
@@ -78,16 +77,16 @@ if (!function_exists('get_set_select')) {
     }
 }
 
-if (!function_exists('set_value')) {
+if (! function_exists('set_value')) {
     /**
      * Form Value
      *
      * Grabs a value from the POST array for the specified field so you can
      * re-populate an input field or textarea
      *
-     * @param string $field Field name
-     * @param string|string[] $default Default value
-     * @param bool $htmlEscape Whether to escape HTML special characters or not
+     * @param string          $field      Field name
+     * @param string|string[] $default    Default value
+     * @param bool            $htmlEscape Whether to escape HTML special characters or not
      *
      * @return string|string[]
      */
@@ -109,5 +108,3 @@ if (!function_exists('set_value')) {
         return ($htmlEscape) ? esc($value) : $value;
     }
 }
-
-

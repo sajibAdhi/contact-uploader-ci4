@@ -21,14 +21,13 @@ class ContactContentUploadFilter implements FilterInterface
      * sent back to the client, allowing for error pages,
      * redirects, etc.
      *
-     * @param RequestInterface $request
      * @param array|null $arguments
      *
-     * @return null|ResponseInterface|RedirectResponse|void
+     * @return RedirectResponse|ResponseInterface|void|null
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (!$request instanceof IncomingRequest) {
+        if (! $request instanceof IncomingRequest) {
             return;
         }
 
@@ -42,7 +41,7 @@ class ContactContentUploadFilter implements FilterInterface
                 'rules' => [
                     'permit_empty',
                     'numeric',
-                    'is_not_unique[categories.id]'
+                    'is_not_unique[categories.id]',
                 ],
             ],
             'category_name' => [
@@ -52,8 +51,8 @@ class ContactContentUploadFilter implements FilterInterface
                     'string',
                     (empty($request->getPost('category')))
                         ? 'is_unique[categories.name]'
-                        : 'trim'
-                ]
+                        : 'trim',
+                ],
             ],
             'date' => [
                 'label' => 'Date',
@@ -69,19 +68,18 @@ class ContactContentUploadFilter implements FilterInterface
                 'rules' => [
                     'uploaded[contacts_file]', // checks if the file was uploaded
                     'ext_in[contacts_file,csv,xls,xlsx,xlsm]', // checks if file extension is CSV, XLS, XLSX, or XLSM
-                    "max_size[contacts_file,$max_file_size]", // checks if the file size is less than or equal to $max_file_size
+                    "max_size[contacts_file,{$max_file_size}]", // checks if the file size is less than or equal to $max_file_size
                 ],
-            ]
+            ],
         ]);
 
-
-        if (!$validation->withRequest($request)->run()) {
+        if (! $validation->withRequest($request)->run()) {
             if ($request->isAJAX()) {
                 return response()->setStatusCode(422)->setJSON(['errors' => $validation->getErrors()]);
-            } else {
-                dd($request->getPost());
-                return redirect()->back()->withInput();
             }
+            dd($request->getPost());
+
+            return redirect()->back()->withInput();
         }
     }
 
@@ -91,14 +89,11 @@ class ContactContentUploadFilter implements FilterInterface
      * to stop execution of other after filters, short of
      * throwing an Exception or Error.
      *
-     * @param RequestInterface $request
-     * @param ResponseInterface $response
      * @param array|null $arguments
      *
      * @return void
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        //
     }
 }

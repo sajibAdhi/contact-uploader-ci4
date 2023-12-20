@@ -5,15 +5,15 @@
 <!-- Category Create Section -->
 <div class="box box-primary">
     <div class="box-header with-border">
-        <h3 class="box-title"><?= ($action ?? null) == 'edit' ? 'Edit Category' : 'Create Category' ?></h3>
+        <h3 class="box-title"><?= ($action ?? null) === 'edit' ? 'Edit Category' : 'Create Category' ?></h3>
     </div>
     <form class="form-horizontal"
-          action="<?= ($action ?? null) == 'edit'
+          action="<?= ($action ?? null) === 'edit'
               ? route_to('category.edit', ($category->id ?? null))
               : route_to('category.store') ?>"
           method="post">
         <?= csrf_field() ?>
-        <?php if (($action ?? null) == 'edit'): ?>
+        <?php if (($action ?? null) === 'edit'): ?>
             <?= form_hidden('_method', 'PUT') ?>
         <?php endif; ?>
 
@@ -33,7 +33,7 @@
         </div>
 
         <?= view_cell(\App\Cells\FormSubmitCell::class, [
-            'title' => ($action ?? null) == 'edit' ? 'Update' : 'Submit',
+            'title' => ($action ?? null) === 'edit' ? 'Update' : 'Submit',
         ], 300) ?>
     </form>
 </div>
@@ -54,14 +54,14 @@
             </thead>
             <tbody>
             <?php /** @var \App\Models\Category[] $categories */ ?>
-            <?php if (!empty($categories)): ?>
+            <?php if (! empty($categories)): ?>
                 <?php foreach ($categories as $index => $category): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
                         <td><?= $category->name ?></td>
                         <td>
                             <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('category.edit', $category->id)]) ?>
-                            <!--                            --><?php //= view_cell('FormDeleteButtonCell', ['action' => route_to('category.delete', $category->id)]) ?>
+                            <!--                            --><?php // = view_cell('FormDeleteButtonCell', ['action' => route_to('category.delete', $category->id)])?>
 
                         </td>
                     </tr>

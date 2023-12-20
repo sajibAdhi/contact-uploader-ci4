@@ -3,12 +3,13 @@
 namespace App\Features;
 
 use CodeIgniter\Test\CIUnitTestCase;
-use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
-use Config\Database;
 use Config\Services;
 
-class BaseFeatureTestCase extends CIUnitTestCase
+/**
+ * @internal
+ */
+final class BaseFeatureTestCase extends CIUnitTestCase
 {
     use FeatureTestTrait;
 
@@ -32,7 +33,7 @@ class BaseFeatureTestCase extends CIUnitTestCase
         parent::tearDownAfterClass();
     }
 
-    public function test_base_feature_test_case_class_is_working()
+    public function testBaseFeatureTestCaseClassIsWorking()
     {
         $this->assertTrue(true);
     }

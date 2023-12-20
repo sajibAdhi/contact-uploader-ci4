@@ -20,10 +20,10 @@ class Filters extends BaseConfig
      * @phpstan-var array<string, class-string|list<class-string>>
      */
     public array $aliases = [
-        'csrf' => CSRF::class,
-        'toolbar' => DebugToolbar::class,
-        'honeypot' => Honeypot::class,
-        'invalidchars' => InvalidChars::class,
+        'csrf'          => CSRF::class,
+        'toolbar'       => DebugToolbar::class,
+        'honeypot'      => Honeypot::class,
+        'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
     ];
 

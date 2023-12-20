@@ -15,7 +15,7 @@ class Contact extends Model
     protected $allowedFields    = [
         'number',
         'category_id',
-        'remarks'
+        'remarks',
     ];
 
     // Dates

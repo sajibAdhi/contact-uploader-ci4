@@ -16,12 +16,12 @@ class InputFieldCell extends Cell
 
     public function mount()
     {
-        $this->label = $this->label ?? '';
-        $this->id = $this->id ?? '';
-        $this->name = $this->name ?? '';
-        $this->defaultValue = $this->defaultValue ?? '';
-        $this->type = $this->type ?? 'text';
-        $this->placeholder = $this->placeholder ?? ' ';
-        $this->required = $this->required ?? false;
+        $this->label ??= '';
+        $this->id ??= '';
+        $this->name ??= '';
+        $this->defaultValue ??= '';
+        $this->type ??= 'text';
+        $this->placeholder ??= ' ';
+        $this->required ??= false;
     }
 }

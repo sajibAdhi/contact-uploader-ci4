@@ -16,7 +16,7 @@ class ContactContent extends Model
         'contact_id',
         'content',
         'date',
-        'remarks'
+        'remarks',
     ];
 
     // Dates

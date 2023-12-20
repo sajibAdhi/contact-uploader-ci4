@@ -19,26 +19,24 @@ class ContactContentService
     public function __construct()
     {
         $this->categoryService = new CategoryService();
-        $this->contact = new Contact();
-        $this->contactContent = new ContactContent();
+        $this->contact         = new Contact();
+        $this->contactContent  = new ContactContent();
     }
 
     /**
-     * @param string $number
-     * @param int $category_id
-     * @param string|null $remarks
      * @return array|object|null
+     *
      * @throws ReflectionException
      */
     public function findOrInsert(string $number, int $category_id, ?string $remarks)
     {
         $contactData = $this->contact->where('number', $number)->first();
 
-        if (is_null($contactData)) {
+        if (null === $contactData) {
             $this->contact->insert([
-                'number' => $number,
+                'number'      => $number,
                 'category_id' => $category_id,
-                'remarks' => $remarks,
+                'remarks'     => $remarks,
             ]);
 
             $contactData = $this->contact->find($this->contact->getInsertID());
@@ -56,10 +54,8 @@ class ContactContentService
     }
 
     /**
-     * @param int $contactId
-     * @param string $content
-     * @param string|null $remarks
-     * @return object
+     * @param mixed $date
+     *
      * @throws ReflectionException
      */
     private function findOrInsertContactContent(int $contactId, string $content, $date, ?string $remarks): object
@@ -70,12 +66,12 @@ class ContactContentService
             ->where('content', $content)
             ->first();
 
-        if (is_null($contactContent)) {
+        if (null === $contactContent) {
             $contactContentId = $this->contactContent->insert([
                 'contact_id' => $contactId,
-                'content' => $content,
-                'date' => $date,
-                'remarks' => $remarks,
+                'content'    => $content,
+                'date'       => $date,
+                'remarks'    => $remarks,
             ]);
 
             $contactContent = $this->contactContent->find($contactContentId);
@@ -84,10 +80,6 @@ class ContactContentService
         return $contactContent;
     }
 
-    /**
-     * @param array $filters
-     * @return array
-     */
     public function contactsContent(array $filters = []): array
     {
         $result = $this->contactContent
@@ -99,7 +91,7 @@ class ContactContentService
             ->join('categories', 'categories.id = contacts.category_id');
 
         if ($filters['categories'] ?? null) {
-            if (!in_array('all', $filters['categories'])) {
+            if (! in_array('all', $filters['categories'], true)) {
                 $result->whereIn('contacts.category_id', $filters['categories']);
             }
         }
@@ -107,9 +99,7 @@ class ContactContentService
         if ($filters['daterange'] ?? null) {
             $dateRange = explode(' - ', $filters['daterange']);
 
-            $dateRange = array_map(function ($date) {
-                return date('Y-m-d', strtotime($date));
-            }, $dateRange);
+            $dateRange = array_map(static fn ($date) => date('Y-m-d', strtotime($date)), $dateRange);
 
             $result->where('contact_content.created_at >=', $dateRange[0]);
             $result->where('contact_content.created_at <=', $dateRange[1]);
@@ -123,20 +113,22 @@ class ContactContentService
     }
 
     /**
+     * @param mixed $category_id
+     * @param mixed $categoryName
+     *
      * @throws ReflectionException
      */
     public function storeUploadedContacts(UploadedFile $file, $category_id, $categoryName): bool
     {
         $csvData = SpreadSheetFileReader::readCsvFile($file, ['contact']);
 
-        if (!$csvData) {
+        if (! $csvData) {
             return false;
         }
 
         $this->contact->db->transStart();
 
         $category = $this->categoryService->findOrCreate($category_id, $categoryName);
-
 
         foreach ($csvData as $datum) {
             $this->findOrInsert($datum['contact'], $category->id, $datum['remarks'] ?? null);
@@ -148,8 +140,12 @@ class ContactContentService
     }
 
     /**
-     * @throws ReflectionException
+     * @param mixed $categoryId
+     * @param mixed $categoryName
+     * @param mixed $date
+     *
      * @throws Exception
+     * @throws ReflectionException
      */
     public function storeUploadedContactsContent(UploadedFile $file, $categoryId, $categoryName, $date): bool
     {
@@ -158,10 +154,12 @@ class ContactContentService
         $totalRows = count($data);
 
         // If the file is empty, return false
-        if ($totalRows == 0) return false;
+        if ($totalRows === 0) {
+            return false;
+        }
 
         $numbLength = strlen($totalRows);
-        $divider = pow(10, $numbLength - 1);
+        $divider    = 10 ** ($numbLength - 1);
 
         $date = date('Y-m-d', strtotime($date));
 
@@ -170,8 +168,8 @@ class ContactContentService
         $categoryId = $this->categoryService->findOrCreate($categoryId, $categoryName)->id;
 
         $processedRows = 0;
-        foreach ($data as $datum) {
 
+        foreach ($data as $datum) {
             $number = $datum['MOBILE_NO'];
             if ($number !== null) {
                 $contactId = $this->findOrInsert($number, $categoryId, $datum['remarks'] ?? null)->id;
@@ -181,18 +179,18 @@ class ContactContentService
             $processedRows++;
 
             // Update the progress 10 times
-            if ($processedRows % $divider == 0) {
+            if ($processedRows % $divider === 0) {
                 $progress = ($processedRows / $totalRows) * 100;
 
                 // Start the session
-                if (session_status() !== PHP_SESSION_ACTIVE)
+                if (session_status() !== PHP_SESSION_ACTIVE) {
                     session()->start();
+                }
                 // Store the progress in the session
                 session()->setFlashdata('upload_progress', $progress);
                 // Close the session data to the client
                 session()->close();
             }
-
         }
 
         session()->setFlashdata('upload_progress', 100);
@@ -213,6 +211,7 @@ class ContactContentService
             ->select('categories.*')
             ->join('contacts', 'contacts.category_id = categories.id', 'RIGHT')
             ->groupBy('categories.id');
+
         return $this;
     }
 

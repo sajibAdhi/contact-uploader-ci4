@@ -14,10 +14,10 @@ class DateInputFieldCell extends Cell
 
     public function mount()
     {
-        $this->label = $this->label ?? '';
-        $this->id = $this->id ?? '';
-        $this->name = $this->name ?? '';
-        $this->defaultValue = $this->defaultValue ?? '';
-        $this->placeholder = $this->placeholder ?? 'mm/dd/yyyy';
+        $this->label ??= '';
+        $this->id ??= '';
+        $this->name ??= '';
+        $this->defaultValue ??= '';
+        $this->placeholder ??= 'mm/dd/yyyy';
     }
 }

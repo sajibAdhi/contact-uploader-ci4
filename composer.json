@@ -16,11 +16,13 @@
     "ext-json": "*",
     "ext-zip": "*",
     "codeigniter4/framework": "^4.0",
+    "codeigniter4/shield": "@dev",
     "liaison/revision": "^1.1",
     "mihatori/codeignitervite": "^1.1",
     "phpoffice/phpspreadsheet": "^1.29"
   },
   "require-dev": {
+    "codeigniter/coding-standard": "^1.7",
     "fakerphp/faker": "^1.9",
     "mikey179/vfsstream": "^1.6",
     "phpunit/php-code-coverage": "^9.2",
@@ -43,10 +45,7 @@
       "php": "7.4"
     },
     "preferred-install": "dist",
-    "sort-packages": true,
-    "allow-plugins": {
-      "composer/installers": false
-    }
+    "sort-packages": true
   },
   "scripts": {
     "test": "phpunit"

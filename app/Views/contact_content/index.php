@@ -32,7 +32,7 @@
                         <option value="all" <?= set_select('categories', 'all', true) ?> >
                             All
                         </option>
-                        <?php if (!empty($categories)): ?>
+                        <?php if (! empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>
                                 <option value="<?= $category->id ?>" <?= set_select('categories', $category->id) ?>><?= $category->name ?></option>
                             <?php endforeach; ?>
@@ -119,7 +119,7 @@
             </tr>
             </tfoot>
         </table>
-        <?php /**@var object $pager */ ?>
+        <?php /*@var object $pager */ ?>
         <?= $pager->links('default', 'bootstrap4') ?>
     </div>
     <!-- /.box-body -->
@@ -131,7 +131,7 @@
 <script src="<?= base_url() ?>bower_components/moment/min/moment.min.js"></script>
 <script src="<?= base_url() ?>bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
-<!--<script src="--><?php //= base_url() ?><!--bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>-->
+<!--<script src="--><?php // = base_url()?><!--bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>-->
 
 <!-- Select2 -->
 <script src="<?= base_url('bower_components/select2/dist/js/select2.full.min.js') ?>"></script>

@@ -7,7 +7,6 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Security\Exceptions\SecurityException;
 use Config\Services;
 
 class CategoryStoreFilter implements FilterInterface
@@ -22,14 +21,13 @@ class CategoryStoreFilter implements FilterInterface
      * sent back to the client, allowing for error pages,
      * redirects, etc.
      *
-     * @param RequestInterface $request
      * @param array|null $arguments
      *
      * @return RedirectResponse|void
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (!$request instanceof IncomingRequest) {
+        if (! $request instanceof IncomingRequest) {
             return;
         }
 
@@ -46,12 +44,12 @@ class CategoryStoreFilter implements FilterInterface
                     'string',
                     'min_length[3]',
                     'max_length[255]',
-                    'is_unique[categories.name,id,' . $categoryId . ']' // Ignore the current category id
-                ]
-            ]
+                    'is_unique[categories.name,id,' . $categoryId . ']', // Ignore the current category id
+                ],
+            ],
         ]);
 
-        if (!$validation->withRequest($request)->run()) {
+        if (! $validation->withRequest($request)->run()) {
             return redirect()->back()->withInput()->with('error', 'Invalid Form Data');
         }
     }
@@ -62,14 +60,11 @@ class CategoryStoreFilter implements FilterInterface
      * to stop execution of other after filters, short of
      * throwing an Exception or Error.
      *
-     * @param RequestInterface $request
-     * @param ResponseInterface $response
      * @param array|null $arguments
      *
      * @return void
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        //
     }
 }

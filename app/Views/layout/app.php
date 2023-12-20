@@ -14,7 +14,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= base_url('bower_components/font-awesome/css/font-awesome.min.css') ?>">
     <!-- Ionicons -->
-    <!--<link rel="stylesheet" href="<?php /*= base_url('bower_components/Ionicons/css/ionicons.min.css') */ ?>">-->
+    <!--<link rel="stylesheet" href="<?php /* = base_url('bower_components/Ionicons/css/ionicons.min.css') */ ?>">-->
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
@@ -90,7 +90,7 @@ desired effect
             <!-- Flash Message -->
             <?= view_cell('FlashMessageCell', 300) ?>
 
-            <?php // echo validation_list_errors() ?>
+            <?php // echo validation_list_errors()?>
 
             <!--------------------------
               | Your Page Content Here |
@@ -103,7 +103,7 @@ desired effect
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <?php //echo $this->include('layout/main-footer') ?>
+    <?php // echo $this->include('layout/main-footer')?>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
