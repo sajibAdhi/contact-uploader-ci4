@@ -141,3 +141,24 @@
 #--------------------------------------------------------------------
 
 # curlrequest.shareOptions = true
+
+#--------------------------------------------------------------------
+# Email
+#--------------------------------------------------------------------
+
+# email.fromEmail = ''
+# email.fromName = ''
+
+#--------------------------------------------------------------------
+# Codeigniter vite
+#--------------------------------------------------------------------
+
+# VITE_AUTO_INJECTING=false
+# VITE_EXCLUDED_ROUTES=''
+# VITE_ORIGIN='http://localhost:3479'
+# VITE_PORT=3479
+# VITE_BUILD_DIR='build'
+# VITE_ENTRY_FILE='main.js'
+# VITE_RESOURCES_DIR='resources'
+# VITE_FRAMEWORK='vue'
+# VITE_BACKUP_FILE=''
