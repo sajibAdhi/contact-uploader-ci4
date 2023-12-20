@@ -12,7 +12,7 @@ class FormDeleteButtonCell extends Cell
 
     public function mount()
     {
-        $this->buttonTitle = $this->buttonTitle ?? 'Delete';
-        $this->icon = 'fa fa-trash';
+        $this->buttonTitle = $this->buttonTitle ?? '';
+        $this->icon = $this->icon ?? 'fa fa-trash';
     }
 }
