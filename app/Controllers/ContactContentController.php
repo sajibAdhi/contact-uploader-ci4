@@ -3,18 +3,18 @@
 namespace App\Controllers;
 
 use App\Models\Category;
-use App\Services\ContactService;
+use App\Services\ContactContentService;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use Exception;
 
 class ContactContentController extends BaseController
 {
-    private ContactService $contactService;
+    private ContactContentService $contactService;
 
     public function __construct()
     {
-        $this->contactService = new ContactService();
+        $this->contactService = new ContactContentService();
     }
 
     public function index(): string
@@ -55,8 +55,9 @@ class ContactContentController extends BaseController
             $file = $this->request->getFile('contacts_file');
             $category_id = $this->request->getPost('category');
             $category_name = $this->request->getPost('category_name');
+            $date = $this->request->getPost('date');
 
-            $isUploaded = $this->contactService->storeUploadedContactsContent($file, $category_id, $category_name);
+            $isUploaded = $this->contactService->storeUploadedContactsContent($file, $category_id, $category_name, $date);
 
             if ($this->request->isAJAX()) {
 

@@ -15,6 +15,7 @@ class ContactContent extends Model
     protected $allowedFields    = [
         'contact_id',
         'content',
+        'date',
         'remarks'
     ];
 

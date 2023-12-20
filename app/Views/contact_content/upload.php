@@ -99,7 +99,6 @@
                         // Update your progress bar here
                         let progress = data.progress;
                         // if progress not null
-                        console.log(progress);
                         if (progress) {
                             progress = Math.round(progress);
                             $('#progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).html(progress + '%');
@@ -126,7 +125,7 @@
                     processData: false,
                     beforeSend: function () {
                         $('#upload-form').find('input, button').prop('disabled', true);
-                        $('#progress-bar').css('width', 0 + '%').attr('aria-valuenow', 0).html(0 + '%');
+                        $('#progress-bar').css('width', 0 + '%').attr('aria-valuenow', 0);
 
                         // Disable the Select2 dropdown
                         category.prop('disabled', true);
@@ -166,7 +165,7 @@
                         clearInterval(intervalId);
 
                         // Fill the progress bar
-                        $('#progress-bar').css('width', 100 + '%').attr('aria-valuenow', 100).html(100 + '%');
+                        $('#progress-bar').css('width', 100 + '%').attr('aria-valuenow', 100);
                     }
                 });
 

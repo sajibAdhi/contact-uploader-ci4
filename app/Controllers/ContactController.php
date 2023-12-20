@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Services\ContactService;
+use App\Services\ContactContentService;
 
 class ContactController extends BaseController
 {
-    private ContactService $contactService;
+    private ContactContentService $contactService;
 
     public function __construct()
     {
-        $this->contactService = new ContactService();
+        $this->contactService = new ContactContentService();
     }
 
     public function index(): string

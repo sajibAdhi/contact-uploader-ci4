@@ -2,21 +2,17 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\Category;
-use App\Models\Contact;
-use App\Services\CategoryService;
-use App\Services\ContactService;
+use App\Services\ContactContentService;
 use CodeIgniter\HTTP\RedirectResponse;
-use ReflectionException;
 
 class ContactUploadController extends BaseController
 {
-    private ContactService $contactService;
+    private ContactContentService $contactService;
 
     public function __construct()
     {
-        $this->contactService = new ContactService();
+        $this->contactService = new ContactContentService();
     }
 
     public function create(): string

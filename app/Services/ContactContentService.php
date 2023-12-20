@@ -10,7 +10,7 @@ use CodeIgniter\HTTP\Files\UploadedFile;
 use Exception;
 use ReflectionException;
 
-class ContactService
+class ContactContentService
 {
     public Contact $contact;
     public CategoryService $categoryService;
@@ -62,7 +62,7 @@ class ContactService
      * @return object
      * @throws ReflectionException
      */
-    private function findOrInsertContactContent(int $contactId, string $content, ?string $remarks): object
+    private function findOrInsertContactContent(int $contactId, string $content, $date, ?string $remarks): object
     {
         $contactContent = $this->contactContent
             ->select('contact_content.*')
@@ -74,6 +74,7 @@ class ContactService
             $contactContentId = $this->contactContent->insert([
                 'contact_id' => $contactId,
                 'content' => $content,
+                'date' => $date,
                 'remarks' => $remarks,
             ]);
 
@@ -150,7 +151,7 @@ class ContactService
      * @throws ReflectionException
      * @throws Exception
      */
-    public function storeUploadedContactsContent(UploadedFile $file, $category_id, $categoryName): bool
+    public function storeUploadedContactsContent(UploadedFile $file, $categoryId, $categoryName, $date): bool
     {
         $data = SpreadSheetFileReader::readFile($file, ['MOBILE_NO', 'SMS_CONTENT']);
 
@@ -162,17 +163,19 @@ class ContactService
         $numbLength = strlen($totalRows);
         $divider = pow(10, $numbLength - 1);
 
+        $date = date('Y-m-d', strtotime($date));
+
         $this->contact->db->transStart();
 
-        $category = $this->categoryService->findOrCreate($category_id, $categoryName);
+        $categoryId = $this->categoryService->findOrCreate($categoryId, $categoryName)->id;
 
         $processedRows = 0;
         foreach ($data as $datum) {
 
             $number = $datum['MOBILE_NO'];
             if ($number !== null) {
-                $contact = $this->findOrInsert($number, $category->id, $datum['remarks'] ?? null);
-                $this->findOrInsertContactContent($contact->id, $datum['SMS_CONTENT'], $datum['remarks'] ?? null);
+                $contactId = $this->findOrInsert($number, $categoryId, $datum['remarks'] ?? null)->id;
+                $this->findOrInsertContactContent($contactId, $datum['SMS_CONTENT'], $date, $datum['remarks'] ?? null);
             }
 
             $processedRows++;
@@ -204,7 +207,7 @@ class ContactService
         return session()->getFlashdata('upload_progress');
     }
 
-    public function whereContactsExist(): ContactService
+    public function whereContactsExist(): ContactContentService
     {
         $this->categoryService->category
             ->select('categories.*')

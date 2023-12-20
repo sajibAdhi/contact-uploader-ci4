@@ -10,32 +10,36 @@ class CreateContactContentTable extends Migration
     {
         $this->forge->addField([
             'id' => [
-                'type'              => 'BIGINT',
-                'constraint'        => 20,
-                'unsigned'          => true,
-                'auto_increment'    => true,
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => true,
+                'auto_increment' => true,
             ],
             'content' => [
-                'type'              => 'VARCHAR',
-                'constraint'        => 255,
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'contact_id' => [
-                'type'              => 'BIGINT',
-                'constraint'        => 20,
-                'unsigned'          => true,
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => true,
+            ],
+            'date' => [
+                'type' => 'DATE',
+                'null' => true,
             ],
             'remarks' => [
-                'type'              => 'TEXT',
-                'null'              => true,
+                'type' => 'TEXT',
+                'null' => true,
             ],
             'created_at datetime default current_timestamp',
             'updated_at' => [
-                'type'              => 'DATETIME',
-                'null'              => true,
+                'type' => 'DATETIME',
+                'null' => true,
             ],
             'deleted_at' => [
-                'type'              => 'DATETIME',
-                'null'              => true,
+                'type' => 'DATETIME',
+                'null' => true,
             ],
         ]);
 
