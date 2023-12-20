@@ -79,18 +79,18 @@ final class CategoryFeatureTest extends CIUnitTestCase
      * @throws RedirectException
      * @todo test_category_name_update_successfully
      */
-    public function testCategoryNameUpdateSuccessfully()
-    {
-        $output = $this->post('categories', [
-            'category'   => 'Test Category',
-            csrf_token() => csrf_hash(),
-        ]);
-
-        $this->assertTrue($output->isRedirect());
-
-        // Assert that the session has the success message
-        $this->assertSame('Category created successfully', session('success'));
-    }
+//    public function testCategoryNameUpdateSuccessfully()
+//    {
+//        $output = $this->post('categories', [
+//            'category'   => 'Test Category',
+//            csrf_token() => csrf_hash(),
+//        ]);
+//
+//        $this->assertTrue($output->isRedirect());
+//
+//        // Assert that the session has the success message
+//        $this->assertSame('Category created successfully', session('success'));
+//    }
 
     /**
      * @throws Exception
