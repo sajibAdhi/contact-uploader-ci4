@@ -94,7 +94,7 @@
             <?php /** @var \App\Models\Contact[] $contacts */ ?>
             <?php if (empty($contacts)): ?>
                 <tr>
-                    <td colspan="3" class="text-center">No contacts found</td>
+                    <td colspan="5" class="text-center">No data found</td>
                 </tr>
             <?php else: ?>
                 <?php foreach ($contacts as $contact): ?>
@@ -119,7 +119,7 @@
             </tr>
             </tfoot>
         </table>
-        <?php /*@var object $pager */ ?>
+        <?php /* @var object $pager */ ?>
         <?= $pager->links('default', 'bootstrap4') ?>
     </div>
     <!-- /.box-body -->

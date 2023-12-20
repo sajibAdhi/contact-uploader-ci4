@@ -66,9 +66,19 @@
                         </td>
                     </tr>
                 <?php endforeach; ?>
-
+            <?php else: ?>
+                <tr>
+                    <td colspan="3" class="text-center">No Category Found</td>
+                </tr>
             <?php endif; ?>
             </tbody>
+            <tfoot>
+            <tr>
+                <th>SL NO</th>
+                <th>Category Name</th>
+                <th>Action</th>
+            </tr>
+            </tfoot>
         </table>
 
     </div>
