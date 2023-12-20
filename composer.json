@@ -17,6 +17,7 @@
     "ext-zip": "*",
     "codeigniter4/framework": "^4.0",
     "liaison/revision": "^1.1",
+    "mihatori/codeignitervite": "^1.1",
     "phpoffice/phpspreadsheet": "^1.29"
   },
   "require-dev": {
