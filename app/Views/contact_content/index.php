@@ -44,11 +44,11 @@
                 <div class="form-group col-sm-4">
                     <label for="daterange">Date range:</label>
 
-                    <div class="input-group">
+                    <div class="input-group daterange">
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control " id="daterange" name="daterange"
+                        <input type="text" class="form-control " name="daterange"
                                value="<?= set_value('daterange') ?>">
                     </div>
                     <!-- /.input group -->
@@ -74,11 +74,12 @@
         </form>
         <!-- /.Filter Form -->
 
-        <table class="table table-bordered table-striped dataTable">
+        <table class="table table-hover table-bordered dataTable">
             <thead>
             <tr>
                 <th>Contact</th>
                 <th>Category</th>
+                <th>Date</th>
                 <th>Content</th>
                 <th>Remarks</th>
             </tr>
@@ -94,6 +95,7 @@
                     <tr>
                         <td><?= $contact->number ?></td>
                         <td><?= $contact->category_name ?></td>
+                        <td><?= $contact->date ?></td>
                         <td><?= $contact->content ?></td>
                         <td><?= $contact->remarks ?></td>
                     </tr>
@@ -105,11 +107,11 @@
             <tr>
                 <th>Contact</th>
                 <th>Category</th>
+                <th>Date</th>
                 <th>Content</th>
                 <th>Remarks</th>
             </tr>
             </tfoot>
-
         </table>
         <?php /**@var object $pager */ ?>
         <?= $pager->links('default', 'bootstrap4') ?>
@@ -119,9 +121,6 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
-<!-- DataTables -->
-<script src="<?= base_url('bower_components/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
-<script src="<?= base_url('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') ?>"></script>
 <!-- date-range-picker -->
 <script src="<?= base_url() ?>bower_components/moment/min/moment.min.js"></script>
 <script src="<?= base_url() ?>bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
@@ -140,7 +139,7 @@
         $('.select2').select2();
 
         //Date range picker
-        const daterange = $('#daterange');
+        const daterange = $('.daterange');
         daterange.daterangepicker({
             autoUpdateInput: false
         });
