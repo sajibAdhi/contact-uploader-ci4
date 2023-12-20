@@ -13,6 +13,8 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', static fn () => redirect()->route('category.index'));
 
+service('auth')->routes($routes);
+
 $routes->group('categories', static function ($routes) {
     $routes->get('/', [CategoryController::class, 'index'], ['as' => 'category.index']);
     $routes->post('/', [CategoryController::class, 'store'], ['as' => 'category.store', 'filter' => CategoryStoreFilter::class]);
