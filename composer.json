@@ -16,7 +16,7 @@
     "ext-json": "*",
     "ext-zip": "*",
     "codeigniter4/framework": "^4.0",
-    "codeigniter4/shield": "*",
+    "codeigniter4/shield": "^1.0@beta",
     "liaison/revision": "^1.1",
     "phpoffice/phpspreadsheet": "^1.29"
   },
@@ -42,7 +42,7 @@
   "config": {
     "optimize-autoloader": true,
     "platform": {
-      "php": "7.4"
+      "php": "^7.4"
     },
     "preferred-install": "dist",
     "sort-packages": true
