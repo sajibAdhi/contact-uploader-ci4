@@ -95,6 +95,8 @@ desired effect
             <!--------------------------
               | Your Page Content Here |
               -------------------------->
+            <div id="app"></div>
+
             <?= $this->renderSection('content') ?>
 
         </section>
