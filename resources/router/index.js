@@ -1,17 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import ProductList from '../views/ProductList.vue'
+import {createRouter, createWebHistory} from 'vue-router';
+import CategoryIndex from "@/pages/CartegoryIndex.vue";
+
 
 const routes = [
     {
-        path: '/',
-        name: 'ProductList',
-        component: ProductList
+        path: '/categories',
+        name: 'CategoryIndex',
+        component: CategoryIndex
     }
-]
+];
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHistory(),
     routes
-})
+});
 
-export default router
+export default router;
