@@ -39,6 +39,8 @@ class CategoryService
     }
 
     /**
+     * @param mixed $categoryId
+     *
      * @return array|object|null
      *
      * @throws ReflectionException

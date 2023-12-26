@@ -48,6 +48,7 @@
     "sort-packages": true
   },
   "scripts": {
+    "cs-fix": "vendor/bin/php-cs-fixer fix --verbose",
     "test": "phpunit"
   },
   "minimum-stability": "dev",
