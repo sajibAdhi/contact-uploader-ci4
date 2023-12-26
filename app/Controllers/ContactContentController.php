@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\Category;
+use App\Models\CategoryModel;
 use App\Services\ContactContentService;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -37,7 +37,7 @@ class ContactContentController extends BaseController
     {
         return view('contact_content/upload', [
             'title'      => 'Upload Contact Content',
-            'categories' => (new Category())->findAll(),
+            'categories' => (new CategoryModel())->findAll(),
         ]);
     }
 

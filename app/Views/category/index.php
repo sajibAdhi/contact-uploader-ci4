@@ -53,7 +53,7 @@
             </tr>
             </thead>
             <tbody>
-            <?php /** @var App\Models\Category[] $categories */ ?>
+            <?php /** @var App\Models\CategoryModel[] $categories */ ?>
             <?php if (! empty($categories)): ?>
                 <?php foreach ($categories as $index => $category): ?>
                     <tr>

@@ -6,10 +6,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\FeatureTestTrait;
 use Config\Services;
 
-/**
- * @internal
- */
-final class BaseFeatureTestCase extends CIUnitTestCase
+class BaseFeatureTestCase extends CIUnitTestCase
 {
     use FeatureTestTrait;
 

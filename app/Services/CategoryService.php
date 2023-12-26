@@ -3,17 +3,17 @@
 namespace App\Services;
 
 use App\Libraries\SpreadSheetFileReader;
-use App\Models\Category;
+use App\Models\CategoryModel;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use ReflectionException;
 
 class CategoryService
 {
-    public Category $category;
+    public CategoryModel $category;
 
     public function __construct()
     {
-        $this->category = new Category();
+        $this->category = new CategoryModel();
     }
 
     /**

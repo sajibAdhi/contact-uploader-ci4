@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\Category;
+use App\Models\CategoryModel;
 use App\Services\ContactContentService;
 use CodeIgniter\HTTP\RedirectResponse;
 use Exception;
@@ -20,7 +20,7 @@ class ContactUploadController extends BaseController
     {
         return view('contact/upload', [
             'title'      => 'Upload Contacts',
-            'categories' => (new Category())->findAll(),
+            'categories' => (new CategoryModel())->findAll(),
         ]);
     }
 

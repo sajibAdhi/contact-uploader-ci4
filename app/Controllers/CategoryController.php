@@ -20,7 +20,7 @@ class CategoryController extends BaseController
         $categories = $this->categoryService->category->findAll();
 
         return view('category/index', [
-            'title'      => 'Categories',
+            'title' => 'Categories',
             'categories' => $categories,
         ]);
     }
@@ -46,10 +46,10 @@ class CategoryController extends BaseController
     public function edit($id): string
     {
         return view('category/index', [
-            'title'      => 'Edit Category',
-            'action'     => 'edit',
+            'title' => 'Edit Category',
+            'action' => 'edit',
             'categories' => $this->categoryService->category->findAll(),
-            'category'   => $this->categoryService->category->find($id),
+            'category' => $this->categoryService->category->find($id),
         ]);
     }
 
@@ -71,14 +71,14 @@ class CategoryController extends BaseController
         }
     }
 
-    public function delete($id)
+    public function delete(int $id): RedirectResponse
     {
         if ($this->categoryService->category->delete($id)) {
             return redirect()->route('category.index')
                 ->with('success', 'Category deleted successfully');
+        } else {
+            return redirect()->route('category.index')
+                ->with('error', 'Category deletion failed');
         }
-
-        return redirect()->route('category.index')
-            ->withInput()->with('error', 'Category deletion failed');
     }
 }

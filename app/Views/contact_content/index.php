@@ -91,7 +91,7 @@
             </tr>
             </thead>
             <tbody>
-            <?php /** @var App\Models\Contact[] $contacts */ ?>
+            <?php /** @var App\Models\ContactModel[] $contacts */ ?>
             <?php if (empty($contacts)): ?>
                 <tr>
                     <td colspan="5" class="text-center">No data found</td>

@@ -4,23 +4,23 @@ namespace App\Services;
 
 use App\Constants\ApplicationConstant;
 use App\Libraries\SpreadSheetFileReader;
-use App\Models\Contact;
-use App\Models\ContactContent;
+use App\Models\ContactModel;
+use App\Models\ContactContentModel;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use Exception;
 use ReflectionException;
 
 class ContactContentService
 {
-    public Contact $contact;
+    public ContactModel $contact;
     public CategoryService $categoryService;
-    public ContactContent $contactContent;
+    public ContactContentModel $contactContent;
 
     public function __construct()
     {
         $this->categoryService = new CategoryService();
-        $this->contact         = new Contact();
-        $this->contactContent  = new ContactContent();
+        $this->contact         = new ContactModel();
+        $this->contactContent  = new ContactContentModel();
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Tests\App\Models;
 
-use App\Models\Category;
+use App\Models\CategoryModel;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use ReflectionException;
@@ -14,7 +14,7 @@ final class CategoryTest extends CIUnitTestCase
 {
     use DatabaseTestTrait;
 
-    protected Category $category;
+    protected CategoryModel $category;
 
     protected function setUp(): void
     {
@@ -25,7 +25,7 @@ final class CategoryTest extends CIUnitTestCase
         $migrate->setNamespace('App');
         $migrate->latest();
 
-        $this->category = new Category();
+        $this->category = new CategoryModel();
     }
 
     protected function tearDown(): void

@@ -4,18 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ContactContent extends Model
+class ContactModel extends Model
 {
-    protected $table            = 'contact_content';
+    protected $table            = 'contacts';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'contact_id',
-        'content',
-        'date',
+        'number',
+        'category_id',
         'remarks',
     ];
 
