@@ -1,4 +1,4 @@
-<div class="form-group <?= validation_show_error($name ?? null) ? 'has-warning' : '' ?>">
+<div class="form-group <?= validation_show_error($name ?? '') ? 'has-warning' : '' ?>">
     <label for="<?= $id ?? null ?>" class="control-label col-sm-3">
         <?= $label ?? null ?>:
     </label>
