@@ -12,10 +12,10 @@
                    class="form-control pull-right "
                    id="<?= $id ?? null ?>"
                    name="<?= $name ?? null ?>"
-                   value="<?= set_value($name ?? null, $defaultValue ?? null) ?>"
+                   value="<?= set_value($name ?? '', $defaultValue ?? null) ?>"
                    placeholder="<?= $placeholder ?? null ?>"
             >
         </div>
-        <span class="help-block"><?= validation_show_error($name ?? null) ?></span>
+        <span class="help-block"><?= validation_show_error($name ?? '') ?></span>
     </div>
 </div>
