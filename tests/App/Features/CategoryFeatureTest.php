@@ -3,46 +3,21 @@
 namespace Tests\App\Features;
 
 use CodeIgniter\HTTP\Exceptions\RedirectException;
-use CodeIgniter\Test\CIUnitTestCase;
-use CodeIgniter\Test\FeatureTestTrait;
-use Config\Services;
 use Exception;
 
 /**
  * @internal
  */
-final class CategoryFeatureTest extends CIUnitTestCase
+final class CategoryFeatureTest extends BaseFeatureTestCase
 {
-    use FeatureTestTrait;
-
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        // setup migrations
-        $migration = Services::migrations();
-        $migration->setNamespace('App');
-        $migration->latest();
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        // setup migrations
-        $migration = Services::migrations();
-        $migration->setNamespace('App');
-        $migration->regress();
-
-        parent::tearDownAfterClass();
-    }
-
     /**
      * @throws Exception
      * @throws RedirectException
      */
-    public function testAllCategoryListShowingSuccessfully()
+    public function testCategoryListShowingSuccessfully()
     {
         $result = $this->get('/categories');
-        $result->assertStatus(200);
+
         $result->assertSee('Categories');
     }
 
@@ -50,17 +25,37 @@ final class CategoryFeatureTest extends CIUnitTestCase
      * @throws Exception
      * @throws RedirectException
      */
-    public function testCategoryNameStoreSuccessfully()
+    public function testCategoryNameStoreSuccessfullyWithValidData()
     {
-        $output = $this->post('/categories', [
-            'category'   => 'Test Category',
+        $category = 'Test Category1';
+        $result   = $this->post('/categories', [
+            'category'   => $category,
             csrf_token() => csrf_hash(),
         ]);
 
-        $this->assertTrue($output->isRedirect());
+        $result->assertOK();
+        $result->assertRedirect();
+        $result->assertSessionHas('success', 'Category created successfully');
+        $result->assertSessionMissing('error');
+        $result->assertSessionMissing('_ci_validation_errors');
+        $result->assertSee($category);
+    }
 
-        // Assert that the session has the success message
-        $this->assertSame('Category created successfully', session('success'));
+    /**
+     * @throws Exception
+     * @throws RedirectException
+     */
+    public function testCategoryNameStoreFailedWithDuplicateData()
+    {
+        $result = $this->post('/categories', [
+            'category'   => 'Test Category1',
+            csrf_token() => csrf_hash(),
+        ]);
+
+        $result->assertOK();
+        $result->assertRedirect();
+        $result->assertSessionHas('error', 'Invalid Form Data');
+        $result->assertSessionHas('_ci_validation_errors');
     }
 
     /**
@@ -70,8 +65,10 @@ final class CategoryFeatureTest extends CIUnitTestCase
     public function testCategoryEditViewSuccessfully()
     {
         $result = $this->get('/categories/1');
-        $result->assertStatus(200);
+
         $result->assertSee('Edit Category');
+        $result->assertSee('Test Category1');
+        $result->assertSee('Update');
     }
 
     /**
@@ -79,33 +76,32 @@ final class CategoryFeatureTest extends CIUnitTestCase
      * @throws RedirectException
      * @todo test_category_name_update_successfully
      */
-//    public function testCategoryNameUpdateSuccessfully()
-//    {
-//        $output = $this->post('categories', [
-//            'category'   => 'Test Category',
-//            csrf_token() => csrf_hash(),
-//        ]);
-//
-//        $this->assertTrue($output->isRedirect());
-//
-//        // Assert that the session has the success message
-//        $this->assertSame('Category created successfully', session('success'));
-//    }
+    //    public function testCategoryNameUpdateSuccessfully()
+    //    {
+    //        $category = 'Updated Test Category1';
+    //        $result = $this->put('categories/1', [
+    //            'category' => $category,
+    //            csrf_token() => csrf_hash(),
+    //        ]);
+    //
+    //        $result->assertOK();
+    //        $result->assertRedirect();
+    //        $result->assertSessionHas('success', 'Category updated successfully');
+    //    }
 
     /**
      * @throws Exception
      * @throws RedirectException
      * @todo test_category_is_deleted_successfully
      */
-    //    public function test_category_is_deleted_successfully()
-    //    {
-    //        $output = $this->delete('/categories/1', [
-    //            csrf_token() => csrf_hash()
-    //        ]);
-    //
-    //        $this->assertTrue($output->isRedirect());
-    //
-    //        // Assert that the session has the success message
-    //        $this->assertEquals('Category deleted successfully', session('success'));
-    //    }
+    public function testCategoryIsDeletedSuccessfully()
+    {
+        $result = $this->delete('/categories/1', [
+            csrf_token() => csrf_hash(),
+        ]);
+
+        $result->assertOK();
+        $result->assertRedirectTo('/categories');
+        $result->assertSessionHas('success', 'Category deleted successfully');
+    }
 }
