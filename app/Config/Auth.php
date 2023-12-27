@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Config;
 
 use CodeIgniter\Shield\Authentication\Actions\ActionInterface;
+use CodeIgniter\Shield\Authentication\Actions\Email2FA;
+use CodeIgniter\Shield\Authentication\Actions\EmailActivator;
 use CodeIgniter\Shield\Authentication\AuthenticatorInterface;
 use CodeIgniter\Shield\Authentication\Authenticators\AccessTokens;
 use CodeIgniter\Shield\Authentication\Authenticators\HmacSha256;
@@ -96,8 +98,8 @@ class Auth extends ShieldAuth
      * @var array<string, class-string<ActionInterface>|null>
      */
     public array $actions = [
-        'register' => null,
-        'login'    => null,
+        'register' => EmailActivator::class,
+        'login'    => Email2FA::class,
     ];
 
     /**
