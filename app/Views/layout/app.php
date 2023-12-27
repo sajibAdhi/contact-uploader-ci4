@@ -27,13 +27,6 @@
           apply the skin class to the body tag so the changes take effect. -->
     <link rel="stylesheet" href="<?= base_url('dist/css/skins/skin-blue.min.css') ?>">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -51,9 +44,9 @@ desired effect
 |               | skin-red                                |
 |               | skin-green                              |
 |---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
+|components OPTIONS | fixed                                   |
+|               | components-boxed                            |
+|               | components-top-nav                          |
 |               | sidebar-collapse                        |
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
@@ -73,16 +66,16 @@ desired effect
         </a>
 
         <!-- Header Navbar -->
-        <?= $this->include('layout/header-navbar') ?>
+        <?= $this->include('components/header-navbar') ?>
     </header>
 
     <!-- Left side column. contains the logo and sidebar -->
-    <?= $this->include('layout/main-sidebar') ?>
+    <?= $this->include('components/main-sidebar') ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <?= $this->include('layout/content-header') ?>
+        <?= $this->include('components/content-header') ?>
 
         <!-- Main content -->
         <section class="content container-fluid">
@@ -105,7 +98,7 @@ desired effect
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <?php // echo $this->include('layout/main-footer')?>
+    <?php // echo $this->include('components/main-footer')?>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
