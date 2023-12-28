@@ -5,10 +5,7 @@ namespace Tests\App\Features;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
 use Exception;
 
-/**
- * @internal
- */
-final class CategoryFeatureTest extends BaseFeatureTestCase
+class CategoryFeatureTest extends BaseFeatureTestCase
 {
     /**
      * @throws Exception
