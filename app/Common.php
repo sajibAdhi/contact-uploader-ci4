@@ -34,7 +34,7 @@ if (! function_exists('route_to')) {
     function route_to(string $method, ...$params)
     {
         return Services::routes()->reverseRoute($method, ...$params);
-//        return base_url(Services::routes()->reverseRoute($method, ...$params));
+        //        return base_url(Services::routes()->reverseRoute($method, ...$params));
     }
 }
 

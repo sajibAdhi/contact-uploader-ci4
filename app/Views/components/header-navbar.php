@@ -4,5 +4,5 @@
         <span class="sr-only">Toggle navigation</span>
     </a>
     <!-- Navbar Right Menu -->
-    <?php echo $this->include('components/header-navbar-right-menu') ?>
+    <?= $this->include('components/header-navbar-right-menu') ?>
 </nav>

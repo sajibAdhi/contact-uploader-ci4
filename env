@@ -148,6 +148,7 @@
 
 # email.fromEmail = ''
 # email.fromName = ''
+# email.mailType = 'text'
 
 #--------------------------------------------------------------------
 # Codeigniter vite

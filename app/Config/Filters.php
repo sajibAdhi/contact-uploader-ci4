@@ -44,8 +44,8 @@ class Filters extends BaseConfig
                     'login*',
                     'register',
                     'auth/a/*',
-                    'logout'
-                ]
+                    'logout',
+                ],
             ],
         ],
         'after' => [

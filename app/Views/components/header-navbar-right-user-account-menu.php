@@ -2,7 +2,7 @@
     <!-- Menu Toggle Button -->
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <!-- The user image in the navbar-->
-        <img src="<?= base_url("dist/img/avatar5.png") ?>" class="user-image" alt="<?= auth()->user()->username ?>">
+        <img src="<?= base_url('dist/img/avatar5.png') ?>" class="user-image" alt="<?= auth()->user()->username ?>">
         <!-- hidden-xs hides the username on small devices so only the image appears. -->
         <span class="hidden-xs"><?= auth()->user()->username ?></span>
     </a>
@@ -10,7 +10,7 @@
 
         <!-- The user image in the menu -->
         <li class="user-header">
-            <img src="<?= base_url("dist/img/avatar5.png") ?>" class="img-circle" alt="<?= auth()->user()->username ?>">
+            <img src="<?= base_url('dist/img/avatar5.png') ?>" class="img-circle" alt="<?= auth()->user()->username ?>">
 
             <p>
                 <?= auth()->user()->username ?> - {{ Designation}}
@@ -19,7 +19,7 @@
         </li>
 
         <!-- Menu Body -->
-        <?php # echo $this->include('components/header-navbar-right-user-menu-body')?>
+        <?php // echo $this->include('components/header-navbar-right-user-menu-body')?>
 
         <!-- Menu Footer-->
         <li class="user-footer">
