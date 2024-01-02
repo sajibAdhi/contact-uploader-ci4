@@ -58,7 +58,7 @@ class ContactContentService
      *
      * @throws ReflectionException
      */
-    private function findOrInsertContactContent(int $contactId, string $content, $date, ?string $remarks): object
+    private function findOrInsertContactContent(int $contactId, string $content, $date, ?string $remarks): void
     {
         $contactContent = $this->contactContent
             ->select('contact_content.*')
@@ -77,7 +77,6 @@ class ContactContentService
             $contactContent = $this->contactContent->find($contactContentId);
         }
 
-        return $contactContent;
     }
 
     public function contactsContent(array $filters = []): array
@@ -149,7 +148,7 @@ class ContactContentService
      */
     public function storeUploadedContactsContent(UploadedFile $file, $categoryId, $categoryName, $date): bool
     {
-        $data = SpreadSheetFileReader::readFile($file, ['MOBILE_NO', 'SMS_CONTENT']);
+        $data = SpreadSheetFileReader::readFile($file, ['AGGREGATED_NAME', 'DATE', 'SENDER_NO', 'DESTINATION_NO', 'OPERATOR_NAME', 'SMS_CONTENT', 'STATUS']);
 
         $totalRows = count($data);
 
@@ -173,6 +172,7 @@ class ContactContentService
             $number = $datum['MOBILE_NO'];
             if ($number !== null) {
                 $contactId = $this->findOrInsert($number, $categoryId, $datum['remarks'] ?? null)->id;
+
                 $this->findOrInsertContactContent($contactId, $datum['SMS_CONTENT'], $date, $datum['remarks'] ?? null);
             }
 

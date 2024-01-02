@@ -6,7 +6,7 @@
   - set system date as date on form.
   - let user select created category.
   - On category Excel file headers should be:
-    - aggregated_name
+    - aggregator_name
     - date
     - sender_no
     - destination_no
