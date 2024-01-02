@@ -23,7 +23,7 @@
     </li>
 
     <!-- SETTING -->
-    <li class="treeview">
+    <li>
         <a href="<?= base_url(route_to('settings')) ?>">
             <i class="fa fa-gears"></i> <span>Settings</span>
         </a>
