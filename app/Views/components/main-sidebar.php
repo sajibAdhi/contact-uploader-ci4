@@ -11,30 +11,7 @@
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->
-        <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">HEADER</li>
-
-            <!-- Category -->
-            <li>
-                <a href="<?= route_to('category.index') ?>">
-                    <i class="fa fa-book"></i> <span>Categories</span>
-                </a>
-            </li>
-
-            <!-- Content -->
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-envelope"></i> <span>Content</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="<?= route_to('contact.content.index') ?>">List</a></li>
-                    <li><a href="<?= route_to('contact.content.upload') ?>">Upload Contact</a></li>
-                </ul>
-            </li>
-        </ul>
+        <?= $this->include('components/main-sidebar-menu') ?>
         <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
