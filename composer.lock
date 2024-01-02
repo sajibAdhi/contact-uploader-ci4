@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5637be0634646de12e3fe08a7448af7d",
+    "content-hash": "5a050834f514701ed41a4005ccc828fe",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -1954,57 +1954,6 @@
                 }
             ],
             "time": "2023-12-24T14:38:51+00:00"
-        },
-        {
-            "name": "mihatori/codeignitervite",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/firtadokei/codeigniter-vitejs.git",
-                "reference": "221343365925867a70028a63431d9276d04ee3df"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/firtadokei/codeigniter-vitejs/zipball/221343365925867a70028a63431d9276d04ee3df",
-                "reference": "221343365925867a70028a63431d9276d04ee3df",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4 || ^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Mihatori\\CodeigniterVite\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mihatori Kei",
-                    "email": "mihatorikei@gmail.com",
-                    "homepage": "https://github.com/firtadokei/"
-                }
-            ],
-            "description": "Integrate viteJs in codeiginter4 framework",
-            "homepage": "https://github.com/firtadokei/codeigniter-vitejs",
-            "keywords": [
-                "codeigniter",
-                "codeigniter spa",
-                "codeigniter-reactJs",
-                "codeigniter-svelteJs",
-                "codeigniter-viteJs",
-                "codeigniter-vueJs",
-                "codeigniter4"
-            ],
-            "support": {
-                "issues": "https://github.com/firtadokei/codeigniter-vitejs/issues",
-                "source": "https://github.com/firtadokei/codeigniter-vitejs/tree/v1.1.1"
-            },
-            "time": "2022-11-18T03:05:23+00:00"
         },
         {
             "name": "mikey179/vfsstream",
