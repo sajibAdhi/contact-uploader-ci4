@@ -14,31 +14,10 @@
  * @see: https://codeigniter.com/user_guide/extending/common.html
  */
 
+use App\Services\SettingService;
 use CodeIgniter\Config\Services;
 
-if (! function_exists('route_to')) {
-    /**
-     * Given a route name or controller/method string and any params,
-     * will attempt to build the relative URL to the
-     * matching route.
-     *
-     * NOTE: This requires the controller/method to
-     * have a route defined in the routes Config file.
-     *
-     * @param string     $method    Route name or Controller::method
-     * @param int|string ...$params One or more parameters to be passed to the route.
-     *                              The last parameter allows you to set the locale.
-     *
-     * @return false|string The route (URI path relative to baseURL) or false if not found.
-     */
-    function route_to(string $method, ...$params)
-    {
-        return Services::routes()->reverseRoute($method, ...$params);
-        //        return base_url(Services::routes()->reverseRoute($method, ...$params));
-    }
-}
-
-if (! function_exists('get_set_select')) {
+if (!function_exists('get_set_select')) {
     /**
      * Set Select
      *
@@ -78,16 +57,16 @@ if (! function_exists('get_set_select')) {
     }
 }
 
-if (! function_exists('set_value')) {
+if (!function_exists('set_value')) {
     /**
      * Form Value
      *
      * Grabs a value from the POST array for the specified field so you can
      * re-populate an input field or textarea
      *
-     * @param string          $field      Field name
-     * @param string|string[] $default    Default value
-     * @param bool            $htmlEscape Whether to escape HTML special characters or not
+     * @param string $field Field name
+     * @param string|string[] $default Default value
+     * @param bool $htmlEscape Whether to escape HTML special characters or not
      *
      * @return string|string[]
      */
@@ -107,5 +86,19 @@ if (! function_exists('set_value')) {
         }
 
         return ($htmlEscape) ? esc($value) : $value;
+    }
+}
+
+if (!function_exists('settingService')) {
+
+    /**
+     * @param string|null $filed
+     * @return SettingService|string
+     */
+    function settingService(string $filed = null)
+    {
+        $settingService = new SettingService();
+
+        return $filed ? $settingService->getSetting($filed) : $settingService;
     }
 }

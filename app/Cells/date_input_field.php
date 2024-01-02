@@ -13,7 +13,6 @@
                    id="<?= $id ?? null ?>"
                    name="<?= $name ?? null ?>"
                    value="<?= set_value($name ?? '', $defaultValue ?? null) ?>"
-                   placeholder="<?= $placeholder ?? 'YYYY-MM-DD' ?>"
                 <?= $readonly ?? false ? 'readonly' : '' ?>
             >
         </div>

@@ -22,7 +22,6 @@ class SettingService
         $this->settingFiledPrefix = "user_id_" . auth()->id();
     }
 
-
     public function getSettings(): array
     {
         $settings = [];
@@ -44,4 +43,8 @@ class SettingService
         return $this->db->transStatus();
     }
 
+    public function getSetting($field): string
+    {
+        return setting("$this->settingFiledPrefix.$field");
+    }
 }

@@ -42,8 +42,8 @@
                 'label' => 'Date',
                 'id' => 'date',
                 'name' => 'date',
-                'defaultValue' => date('Y-m-d'),
-//                'readonly' => true,
+                'defaultValue' => date(settingService('date_format')),
+                'readonly' => true,
             ]) ?>
 
             <!-- Contacts File -->
