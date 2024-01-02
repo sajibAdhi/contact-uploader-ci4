@@ -13,15 +13,5 @@ class InputFieldCell extends Cell
     public $type;
     public $placeholder;
     public $required;
-
-    public function mount()
-    {
-        $this->label ??= '';
-        $this->id ??= '';
-        $this->name ??= '';
-        $this->defaultValue ??= '';
-        $this->type ??= 'text';
-        $this->placeholder ??= ' ';
-        $this->required ??= false;
-    }
+    public $readonly;
 }
