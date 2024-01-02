@@ -14,6 +14,6 @@
         <?= $this->include('components/header-navbar-right-user-account-menu') ?>
 
         <!-- Control Sidebar Toggle Button -->
-        <!--        --><?php // echo $this->include('components/header-navbar-right-control-sidebar-toggle-button')?>
+<!--        --><?php //= $this->include('components/header-navbar-right-control-sidebar-toggle-button') ?>
     </ul>
 </div>
