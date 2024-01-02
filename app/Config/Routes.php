@@ -4,6 +4,7 @@ use App\Controllers\CategoryController;
 use App\Controllers\ContactContentController;
 use App\Controllers\ContactController;
 use App\Controllers\ContactUploadController;
+use App\Controllers\SettingController;
 use App\Filters\CategoryStoreFilter;
 use App\Filters\ContactContentUploadFilter;
 use CodeIgniter\Router\RouteCollection;
@@ -11,9 +12,14 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', static fn () => redirect()->route('category.index'));
+$routes->get('/', static fn() => redirect()->route('category.index'));
 
 service('auth')->routes($routes);
+
+$routes->group('settings', static function ($routes) {
+    $routes->get('/', [SettingController::class, 'index'], ['as' => 'settings']);
+    $routes->post('/', [SettingController::class, 'store']);
+});
 
 $routes->group('categories', static function ($routes) {
     $routes->get('/', [CategoryController::class, 'index'], ['as' => 'category.index']);
