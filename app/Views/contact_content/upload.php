@@ -10,69 +10,66 @@
 
 <?= $this->section('content') ?>
     <div class="box box-default">
+
         <div class="box-header with-border">
             <h3 class="box-title">Contact Content Upload Form</h3>
         </div>
-        <form id="upload-form" class="form-horizontal" action="<?= route_to('contact.content.upload') ?>" method="post"
-              enctype="multipart/form-data">
-            <?= csrf_field() ?>
 
-            <div class="box-body">
-                <!-- Category -->
-                <div class="form-group <?= validation_show_error('category') ? 'has-warning' : '' ?>">
-                    <label for="category" class="control-label col-sm-3">Select a category:</label>
-                    <div class=" col-sm-9">
-                        <select class="form-control select2" name="category" id="category" style="width: 100%">
-                            <option value="">Select a Category</option>
-                            <?php if (! empty($categories)): ?>
-                                <?php foreach ($categories as $category): ?>
-                                    <option value="<?= $category->id ?>" <?= set_select('category', $category->id) ?>>
-                                        <?= $category->name ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </select>
-                        <span class="help-block"><?= validation_show_error('category') ?></span>
-                        <p class="help-block">Either select a Category or write a new Category name</p>
-                    </div>
+        <?= form_open_multipart(route_to('contact.content.upload'), ['id' => 'upload-form', 'class' => 'form-horizontal']) ?>
+
+        <div class="box-body">
+            <!-- Category -->
+            <div class="form-group <?= validation_show_error('category') ? 'has-warning' : '' ?>">
+                <label for="category" class="control-label col-sm-3">Select a category:</label>
+                <div class=" col-sm-9">
+                    <select class="form-control select2" name="category" id="category" style="width: 100%">
+                        <option value="">Select a Category</option>
+                        <?php if (!empty($categories)): ?>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= $category->id ?>" <?= set_select('category', $category->id) ?>>
+                                    <?= $category->name ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                    <span class="help-block"><?= validation_show_error('category') ?></span>
+                    <p class="help-block">Either select a Category or write a new Category name</p>
                 </div>
-
-                <!-- Category Name -->
-                <?= view_cell(\App\Cells\InputFieldCell::class, [
-                    'id'          => 'categoryName',
-                    'name'        => 'category_name',
-                    'placeholder' => 'Category name',
-                ]) ?>
-
-                <!-- Date -->
-                <?= view_cell(\App\Cells\DateInputFieldCell::class, [
-                    'label' => 'Date',
-                    'id'    => 'date',
-                    'name'  => 'date',
-                ]) ?>
-
-                <!-- Contacts File -->
-                <div class="form-group <?= validation_show_error('contacts_file') ? 'has-warning' : '' ?>">
-                    <label for="contacts" class="control-label col-sm-3">Contacts File:</label>
-                    <div class=" col-sm-9">
-                        <input type="file" class="form-control" name="contacts_file" id="contacts"
-                               accept=".csv,.xls,.xlsx" required>
-                        <span class="help-block"><?= validation_show_error('contacts_file') ?></span>
-                        <p class="help-block">Please upload a CSV or Excel file. The File must contain header
-                            <b>MOBILE_NO</b>
-                            and <b>SMS_CONTENT</b>.</p>
-                        <div class="progress">
-                            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
-                                 role="progressbar" style="width: 0%" aria-valuenow="0"
-                                 aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
-            <?= view_cell(\App\Cells\FormSubmitCell::class) ?>
-        </form>
+            <!-- Date -->
+            <?= view_cell(\App\Cells\DateInputFieldCell::class, [
+                'label' => 'Date',
+                'id' => 'date',
+                'name' => 'date',
+                'defaultValue' => date('Y-m-d'),
+//                'readonly' => true,
+            ]) ?>
+
+            <!-- Contacts File -->
+            <div class="form-group <?= validation_show_error('contacts_file') ? 'has-warning' : '' ?>">
+                <label for="contacts" class="control-label col-sm-3">Contacts File:</label>
+                <div class=" col-sm-9">
+                    <input type="file" class="form-control" name="contacts_file" id="contacts"
+                           accept=".csv,.xls,.xlsx" required>
+                    <span class="help-block"><?= validation_show_error('contacts_file') ?></span>
+                    <p class="help-block">Please upload a CSV or Excel file. The File must contain header
+                        <b>MOBILE_NO</b>
+                        and <b>SMS_CONTENT</b>.</p>
+                    <div class="progress">
+                        <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                             role="progressbar" style="width: 0%" aria-valuenow="0"
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <?= view_cell(\App\Cells\FormSubmitCell::class) ?>
+
+        <?= form_close() ?>
+
     </div>
 <?= $this->endSection() ?>
 
@@ -89,7 +86,8 @@
 
             //Date picker
             $('.datepicker').datepicker({
-                autoclose: true
+                autoclose: true,
+                format: 'yyyy-mm-dd',
             })
 
             function updateProgress() {
