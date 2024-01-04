@@ -44,3 +44,7 @@ $routes->group('contacts/content', static function ($routes) {
 
     $routes->get('progress', [ContactContentController::class, 'progress'], ['as' => 'contact.content.progress']);
 });
+
+$routes->get('test', static function () {
+    return view('test');
+});
