@@ -16,7 +16,9 @@ class BaseFeatureTestCase extends CIUnitTestCase
 
         // run migrations off all namespaces
         $migration = Services::migrations();
-        $migration->latest();
+        $migration->setNamespace('CodeIgniter\Shield')->latest();
+        $migration->setNamespace('CodeIgniter\Settings')->latest();
+        $migration->setNamespace('App')->latest();
 
     }
 
