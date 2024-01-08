@@ -14,17 +14,16 @@ class BaseFeatureTestCase extends CIUnitTestCase
     {
         parent::setUpBeforeClass();
 
-        // setup migrations
+        // run migrations off all namespaces
         $migration = Services::migrations();
-        $migration->setNamespace('App');
         $migration->latest();
+
     }
 
     public static function tearDownAfterClass(): void
     {
         // setup migrations
         $migration = Services::migrations();
-        $migration->setNamespace('App');
         $migration->regress();
 
         parent::tearDownAfterClass();
