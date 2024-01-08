@@ -17,6 +17,7 @@
     "ext-zip": "*",
     "codeigniter4/framework": "^4.0",
     "codeigniter4/shield": "^1.0@beta",
+    "codeigniter4/translations": "^4.4",
     "liaison/revision": "^1.1",
     "phpoffice/phpspreadsheet": "^1.29"
   },

@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\AggregatorController;
 use App\Controllers\CategoryController;
 use App\Controllers\ContactContentController;
 use App\Controllers\ContactController;
@@ -16,9 +17,9 @@ $routes->get('/', static fn() => redirect()->route('category.index'));
 
 service('auth')->routes($routes);
 
-$routes->group('settings', static function ($routes) {
-    $routes->get('/', [SettingController::class, 'index'], ['as' => 'settings']);
-    $routes->post('/', [SettingController::class, 'store']);
+$routes->group('aggregators', static function ($routes) {
+    $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'aggregator.index']);
+    $routes->post('/', [AggregatorController::class, 'store'], ['as' => 'aggregator.store']);
 });
 
 $routes->group('categories', static function ($routes) {
@@ -45,6 +46,7 @@ $routes->group('contacts/content', static function ($routes) {
     $routes->get('progress', [ContactContentController::class, 'progress'], ['as' => 'contact.content.progress']);
 });
 
-$routes->get('test', static function () {
-    return view('test');
+$routes->group('settings', static function ($routes) {
+    $routes->get('/', [SettingController::class, 'index'], ['as' => 'settings']);
+    $routes->post('/', [SettingController::class, 'store']);
 });

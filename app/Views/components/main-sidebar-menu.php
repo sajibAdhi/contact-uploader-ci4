@@ -8,6 +8,14 @@
         </a>
     </li>
 
+    <!-- aggregators -->
+    <li>
+        <a href="<?= route_to('aggregator.index') ?>">
+            <i class="fa fa-book"></i>
+            <span>Aggregators</span>
+        </a>
+    </li>
+
     <!-- Content -->
     <li class="treeview">
         <a href="#">
