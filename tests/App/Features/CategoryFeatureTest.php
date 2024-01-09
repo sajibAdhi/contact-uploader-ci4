@@ -4,6 +4,7 @@ namespace Tests\App\Features;
 
 use CodeIgniter\HTTP\Exceptions\RedirectException;
 use Exception;
+use Tests\Support\Features\BaseFeatureTestCase;
 
 class CategoryFeatureTest extends BaseFeatureTestCase
 {
@@ -13,8 +14,9 @@ class CategoryFeatureTest extends BaseFeatureTestCase
      */
     public function testCategoryListShowingSuccessfully()
     {
-        $result = $this->get('/categories');
-
+        // request as user
+        $result = $this->withUser()->get('/categories');
+        dd($result->response()->getBody());
         $result->assertSee('Categories');
     }
 
@@ -25,8 +27,8 @@ class CategoryFeatureTest extends BaseFeatureTestCase
     public function testCategoryNameStoreSuccessfullyWithValidData()
     {
         $category = 'Test Category1';
-        $result   = $this->post('/categories', [
-            'category'   => $category,
+        $result = $this->post('/categories', [
+            'category' => $category,
             csrf_token() => csrf_hash(),
         ]);
 
@@ -44,7 +46,7 @@ class CategoryFeatureTest extends BaseFeatureTestCase
     public function testCategoryNameStoreFailedWithDuplicateData()
     {
         $result = $this->post('/categories', [
-            'category'   => 'Test Category1',
+            'category' => 'Test Category1',
             csrf_token() => csrf_hash(),
         ]);
 

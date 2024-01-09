@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Features;
+namespace Tests\Support\Features;
 
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\FeatureTestTrait;
@@ -14,12 +14,19 @@ class BaseFeatureTestCase extends CIUnitTestCase
     {
         parent::setUpBeforeClass();
 
-        // run migrations off all namespaces
+        // run migrations
         $migration = Services::migrations();
         $migration->setNamespace('CodeIgniter\Shield')->latest();
         $migration->setNamespace('CodeIgniter\Settings')->latest();
         $migration->setNamespace('App')->latest();
 
+        // run seeds
+        dd(Services::seed());
+        $seeder = DB:seeder();
+        $seeder->setNamespace('App')->call('UserSeeder');
+
+        // insert data using factories
+        $seeder->setNamespace('App')->call('CategorySeeder');
     }
 
     public static function tearDownAfterClass(): void
