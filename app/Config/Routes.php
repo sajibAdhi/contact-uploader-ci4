@@ -50,3 +50,8 @@ $routes->group('settings', static function ($routes) {
     $routes->get('/', [SettingController::class, 'index'], ['as' => 'settings']);
     $routes->post('/', [SettingController::class, 'store']);
 });
+
+$routes->get('test',static function () {
+    return view('test');
+});
+

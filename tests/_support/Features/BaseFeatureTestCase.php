@@ -19,14 +19,6 @@ class BaseFeatureTestCase extends CIUnitTestCase
         $migration->setNamespace('CodeIgniter\Shield')->latest();
         $migration->setNamespace('CodeIgniter\Settings')->latest();
         $migration->setNamespace('App')->latest();
-
-        // run seeds
-        dd(Services::seed());
-        $seeder = DB:seeder();
-        $seeder->setNamespace('App')->call('UserSeeder');
-
-        // insert data using factories
-        $seeder->setNamespace('App')->call('CategorySeeder');
     }
 
     public static function tearDownAfterClass(): void
