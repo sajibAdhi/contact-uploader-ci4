@@ -19,7 +19,8 @@
     "codeigniter4/shield": "^1.0@beta",
     "codeigniter4/translations": "^4.4",
     "liaison/revision": "^1.1",
-    "phpoffice/phpspreadsheet": "^1.29"
+    "phpoffice/phpspreadsheet": "^1.29",
+    "ext-curl": "*"
   },
   "require-dev": {
     "codeigniter/coding-standard": "^1.7",

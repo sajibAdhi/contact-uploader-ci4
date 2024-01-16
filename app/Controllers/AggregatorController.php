@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Services\AggregatorService;
-use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\HTTP\RedirectResponse;
+use ReflectionException;
 
 class AggregatorController extends BaseController
 {
@@ -21,5 +21,58 @@ class AggregatorController extends BaseController
             'title' => 'Aggregators',
             'aggregators' => $this->aggregatorService->aggregator->findAll(),
         ]);
+    }
+
+    public function store(): RedirectResponse
+    {
+        $data = $this->getPost();
+
+        try {
+            if ($this->aggregatorService->aggregator->insert($data)) {
+                return redirect()->route('aggregator.index')
+                    ->with('success', 'aggregator created successfully');
+            }
+
+            return redirect()->route('aggregator.index')
+                ->withInput()->with('error', 'aggregator creation failed');
+        } catch (ReflectionException $exception) {
+            return redirect()->route('aggregator.index')
+                ->withInput()->with('error', $exception->getMessage());
+        }
+    }
+
+    public function edit($id): string
+    {
+        return view('aggregator/index', [
+            'title' => 'Edit aggregator',
+            'action' => 'edit',
+            'aggregators' => $this->aggregatorService->aggregator->findAll(),
+            'aggregator' => $this->aggregatorService->aggregator->find($id),
+        ]);
+    }
+
+    public function update($id): RedirectResponse
+    {
+        $data = $this->getPost();
+
+        try {
+            if ($this->aggregatorService->aggregator->update($id, $data)) {
+                return redirect()->route('aggregator.index')
+                    ->with('success', 'aggregator updated successfully');
+            }
+
+            return redirect()->route('aggregator.index')
+                ->withInput()->with('error', 'aggregator update failed');
+        } catch (ReflectionException $exception) {
+            return redirect()->route('aggregator.index')
+                ->withInput()->with('error', $exception->getMessage());
+        }
+    }
+
+    private function getPost(): object
+    {
+        return (object)[
+            'name' => $this->request->getPost('aggregator')
+        ];
     }
 }

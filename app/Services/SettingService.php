@@ -22,7 +22,7 @@ class SettingService
         $this->settingFiledPrefix = "user_id_" . auth()->id();
     }
 
-    public function getSettings(): array
+    public function getUserSettings(): array
     {
         $settings = [];
         foreach ($this->settingFields as $field) {
@@ -32,7 +32,7 @@ class SettingService
         return $settings;
     }
 
-    public function setSettings($settings): bool
+    public function setUserSettings($settings): bool
     {
         $this->db->transStart();
         foreach ($this->settingFields as $field) {

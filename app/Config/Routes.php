@@ -20,6 +20,9 @@ service('auth')->routes($routes);
 $routes->group('aggregators', static function ($routes) {
     $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'aggregator.index']);
     $routes->post('/', [AggregatorController::class, 'store'], ['as' => 'aggregator.store']);
+    $routes->get('(:num)', [AggregatorController::class, 'edit/$1'], ['as' => 'aggregator.edit']);
+    $routes->put('(:num)', [AggregatorController::class, 'update/$1']);
+    $routes->delete('(:num)', [AggregatorController::class, 'delete/$1'], ['as' => 'aggregator.delete']);
 });
 
 $routes->group('categories', static function ($routes) {
