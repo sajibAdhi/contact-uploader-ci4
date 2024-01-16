@@ -130,6 +130,10 @@
                 "codeigniter",
                 "codeigniter4"
             ],
+            "support": {
+                "issues": "https://github.com/codeigniter4/settings/issues",
+                "source": "https://github.com/codeigniter4/settings/tree/v2.2.0"
+            },
             "time": "2024-01-06T07:10:58+00:00"
         },
         {
@@ -1986,6 +1990,10 @@
                 "standards",
                 "static analysis"
             ],
+            "support": {
+                "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.47.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/keradus",
@@ -2222,6 +2230,10 @@
                 "parser",
                 "php"
             ],
+            "support": {
+                "issues": "https://github.com/nikic/PHP-Parser/issues",
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.0.0"
+            },
             "time": "2024-01-07T17:17:35+00:00"
         },
         {
@@ -4839,5 +4851,5 @@
     "platform-overrides": {
         "php": "7.4.3"
     },
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.6.0"
 }
