@@ -42,7 +42,7 @@
                 'label' => 'Date',
                 'id' => 'date',
                 'name' => 'date',
-                'defaultValue' => date(settingService('date_format')),
+                'defaultValue' => date(settingService()->getUserSetting('php_date_format')),
                 'readonly' => true,
             ]) ?>
 

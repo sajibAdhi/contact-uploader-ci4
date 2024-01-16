@@ -92,13 +92,10 @@ if (!function_exists('set_value')) {
 if (!function_exists('settingService')) {
 
     /**
-     * @param string|null $filed
-     * @return SettingService|string
+     * @return SettingService
      */
-    function settingService(string $filed = null)
+    function settingService(): SettingService
     {
-        $settingService = new SettingService();
-
-        return $filed ? $settingService->getSetting($filed) : $settingService;
+        return new SettingService();
     }
 }

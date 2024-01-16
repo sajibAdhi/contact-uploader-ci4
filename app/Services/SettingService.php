@@ -6,12 +6,15 @@ use App\Libraries\SpreadSheetFileReader;
 use App\Models\CategoryModel;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use CodeIgniter\Model;
+use CodeIgniter\Settings\Settings;
 use ReflectionException;
 
 class SettingService
 {
     private array $settingFields = [
-        'date_format',
+        'php_date_format',
+
+        'js_date_format',
     ];
     private \CodeIgniter\Database\BaseConnection $db;
     private string $settingFiledPrefix;
@@ -43,7 +46,11 @@ class SettingService
         return $this->db->transStatus();
     }
 
-    public function getSetting($field): string
+    /**
+     * @param string $field
+     * @return array|bool|float|int|object|string|null
+     */
+    public function getUserSetting(string $field)
     {
         return setting("$this->settingFiledPrefix.$field");
     }
