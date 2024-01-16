@@ -51,7 +51,7 @@
                 <label for="contacts" class="control-label col-sm-3">Contacts File:</label>
                 <div class=" col-sm-9">
                     <input type="file" class="form-control" name="contacts_file" id="contacts"
-                           accept=".csv,.xls,.xlsx" required>
+                           accept=".csv" required>
                     <span class="help-block"><?= validation_show_error('contacts_file') ?></span>
                     <p class="help-block">Please upload a CSV or Excel file. The File must contain header
                         <b>MOBILE_NO</b>

@@ -23,7 +23,6 @@
     "ext-curl": "*"
   },
   "require-dev": {
-    "codeigniter/coding-standard": "^1.7",
     "fakerphp/faker": "^1.9",
     "mikey179/vfsstream": "^1.6",
     "phpunit/php-code-coverage": "^9.2",
