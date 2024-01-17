@@ -3,6 +3,7 @@
 namespace OperatorBill\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\HTTP\RedirectResponse;
 use OperatorBill\Models\OperatorModel;
 use OperatorBill\Services\OperatorBillService;
 
@@ -33,22 +34,21 @@ class OperatorBillController extends BaseController
     /**
      * @throws \ReflectionException
      */
-    public function store()
+    public function store(): RedirectResponse
     {
-        dd($this->request->getPost(), $this->request->getFiles());
-
         /** Validate The Data */
         $this->storeValidation();
 
         // If the validation passes then get the posted data
         $postData = $this->request->getPost();
+        $files = $this->request->getFiles();
 
         // Insert the posted data into the database
-        $this->operatorBillService->store($postData);
+        if ($this->operatorBillService->store($postData, $files['file_upload'])) {
+            return redirect()->route('operator_bill.index')->with('success', 'Operator Bill Created Successfully');
+        }
 
-        // Redirect to a success page
-        return redirect()->to('/success');
-
+        return redirect()->back()->withInput()->with('error', 'Something went wrong');
     }
 
     public function storeValidation()
@@ -66,7 +66,7 @@ class OperatorBillController extends BaseController
             'sms_rate' => 'required|numeric',
             'sms_amount' => 'required|numeric',
             'sms_amount_with_vat' => 'required|numeric',
-            'file_upload' => 'uploaded[file_upload]|max_size[file_upload,1024]|ext_in[file_upload,pdf,jpg,png]'
+            'file_upload.*' => 'uploaded[file_upload]|max_size[file_upload,1024]|ext_in[file_upload,pdf,jpg,png]'
         ];
 
         // Validate the posted data

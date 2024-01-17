@@ -33,7 +33,6 @@ class CreteBillFilesTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('operator_bill_id', 'operator_bills', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('bill_files');
     }
 

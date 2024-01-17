@@ -4,26 +4,18 @@ namespace OperatorBill\Models;
 
 use CodeIgniter\Model;
 
-class OperatorBillModel extends Model
+class BillFileModel extends Model
 {
-    protected $table            = 'operator_bills';
+    protected $table            = 'bill_files';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'year',
-        'month',
-        'operator_id',
-        'successful_calls',
-        'effective_duration',
-        'voice_amount',
-        'voice_amount_with_vat',
-        'sms_count',
-        'sms_rate',
-        'sms_amount',
-        'sms_amount_with_vat',
+        'operator_bill_id',
+        'file_name',
+        'file_path',
     ];
 
     // Dates

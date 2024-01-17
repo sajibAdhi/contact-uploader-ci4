@@ -65,7 +65,6 @@ class CreteOperatorBillsTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('operator_id','operators','id','CASCADE','CASCADE');
         $this->forge->createTable('operator_bills');
 
     }
