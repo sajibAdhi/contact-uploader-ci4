@@ -4,17 +4,34 @@
     <!-- Category Create Section -->
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= 'Add Bill' ?></h3>
+            <h3 class="box-title"><?= 'Add Operator Bill' ?></h3>
         </div>
         <?= form_open_multipart(route_to('operator_bill.create'), ['class' => 'form-horizontal']) ?>
 
         <div class="box-body">
 
+            <!-- Operator -->
+            <div class="form-group">
+                <label for="operator" class="control-label col-sm-3">Operator:</label>
+                <div class="col-sm-9">
+                    <select name="operator" id="operator" class="form-control" required>
+                        <?php if (!empty($operators)): ?>
+                            <option value="">Select Operator</option>
+                            <?php foreach ($operators as $operator): ?>
+                                <option value="<?= $operator->id ?>"><?= $operator->name ?></option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No Operator Found</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+            </div>
+
             <!-- Year -->
             <div class="form-group">
                 <label for="year" class="control-label col-sm-3">Year:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="year" id="year" required>
+                    <input type="number" class="form-control" name="year" id="year" pattern="[0-9]{4}" required>
                 </div>
             </div>
 
@@ -22,23 +39,7 @@
             <div class="form-group">
                 <label for="month" class="control-label col-sm-3">Month:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="month" id="month" required>
-                </div>
-            </div>
-
-            <!-- Client Name -->
-            <div class="form-group">
-                <label for="client_name" class="control-label col-sm-3">Client Name:</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" name="client_name" id="client_name" required>
-                </div>
-            </div>
-
-            <!-- Client Address -->
-            <div class="form-group">
-                <label for="client_address" class="control-label col-sm-3">Client Address:</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" name="client_address" id="client_address" required>
+                    <input type="number" class="form-control" name="month" id="month" min="1" max="12" required>
                 </div>
             </div>
 
@@ -54,7 +55,8 @@
             <div class="form-group">
                 <label for="effective_duration" class="control-label col-sm-3">Effective Duration (minutes):</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="effective_duration" id="effective_duration" required>
+                    <input type="number" class="form-control" name="effective_duration" id="effective_duration"
+                           required>
                 </div>
             </div>
 
@@ -70,7 +72,8 @@
             <div class="form-group">
                 <label for="voice_amount_with_vat" class="control-label col-sm-3">Voice Amount with VAT:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="voice_amount_with_vat" id="voice_amount_with_vat" required>
+                    <input type="number" class="form-control" name="voice_amount_with_vat" id="voice_amount_with_vat"
+                           required>
                 </div>
             </div>
 
@@ -102,7 +105,8 @@
             <div class="form-group">
                 <label for="sms_amount_with_vat" class="control-label col-sm-3">SMS Amount with VAT:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_amount_with_vat" id="sms_amount_with_vat" required>
+                    <input type="number" class="form-control" name="sms_amount_with_vat" id="sms_amount_with_vat"
+                           required>
                 </div>
             </div>
 
@@ -110,14 +114,69 @@
             <div class="form-group">
                 <label for="file_upload" class="control-label col-sm-3">File Upload:</label>
                 <div class="col-sm-9">
-                    <?= form_upload(['name' => 'file_upload', 'id' => 'file_upload', 'class' => 'form-control']) ?>
+                    <?= form_upload(['name' => 'file_upload[]', 'id' => 'file_upload', 'class' => 'form-control', 'multiple' => 'multiple']) ?>
                 </div>
             </div>
+
+            <style>
+                .responsive-preview {
+                    width: 100%;
+                    height: auto;
+                }
+                .preview-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 10px; /* adjust as needed */
+                }
+            </style>
+            <div class="form-group">
+                <label class="control-label col-sm-3">File Preview:</label>
+                <div class="col-sm-9 preview-grid" id="file_preview">
+                    <!-- File previews will be added here -->
+                </div>
+            </div>
+
         </div>
 
         <?= view_cell(\App\Cells\FormSubmitCell::class, [
             'title' => ($action ?? null) === 'edit' ? 'Update' : 'Submit',
         ], 300) ?>
+
         <?= form_close() ?>
+
     </div>
+<?= $this->endSection() ?>
+
+
+<?= $this->section('scripts') ?>
+    <script>
+        document.getElementById('file_upload').addEventListener('change', function(e) {
+            // Get the selected files
+            var files = e.target.files;
+
+            // Get the file preview container
+            var previewContainer = document.getElementById('file_preview');
+
+            // Clear the preview container
+            previewContainer.innerHTML = '';
+
+            // Loop through each file
+            for (var i = 0; i < files.length; i++) {
+                // Check the file type
+                if (files[i].type.startsWith('image/')) {
+                    // Create a new image element for image files
+                    var img = document.createElement('img');
+                    img.src = URL.createObjectURL(files[i]);
+                    img.className = 'responsive-preview'; // Add the responsive-preview class
+                    previewContainer.appendChild(img);
+                } else if (files[i].type === 'application/pdf') {
+                    // Create a new object element for PDF files
+                    var obj = document.createElement('object');
+                    obj.data = URL.createObjectURL(files[i]);
+                    obj.className = 'responsive-preview'; // Add the responsive-preview class
+                    previewContainer.appendChild(obj);
+                }
+            }
+        });
+    </script>
 <?= $this->endSection() ?>
