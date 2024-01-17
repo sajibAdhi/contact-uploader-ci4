@@ -1,11 +1,10 @@
 <?php namespace OperatorBill\Services;
 
-use OperatorBill\Models\OperatorBillModel;
 class OperatorBillService
 {
     public function __construct()
     {
-        $this->operatorBillModel = new OperatorBillModel();
+
     }
 
     public function store($data)
