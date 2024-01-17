@@ -15,8 +15,6 @@ use App\Filters\ContactContentUploadFilter;
 
 $routes->get('/', static fn() => redirect()->route('category.index'));
 
-service('auth')->routes($routes);
-
 $routes->group('aggregators', static function ($routes) {
     $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'aggregator.index']);
     $routes->post('/', [AggregatorController::class, 'store'], ['as' => 'aggregator.store']);

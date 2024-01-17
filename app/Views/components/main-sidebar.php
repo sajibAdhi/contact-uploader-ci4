@@ -11,7 +11,14 @@
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->
-        <?= $this->include('components/main-sidebar-menu') ?>
+        <!-- if the url is base_url/operator_bills then include the 'OperatorBill\Views\components\main-sidebar-menu' -->
+
+        <?php if (strpos(current_url(), base_url() . 'operator_bills') === 0) : ?>
+            <?= $this->include('OperatorBill\Views\components\main-sidebar-menu'); ?>
+        <?php else: ?>
+            <?= $this->include('components/main-sidebar-menu'); ?>
+        <?php endif; ?>
+
         <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
