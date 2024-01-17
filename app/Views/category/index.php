@@ -1,5 +1,19 @@
 <?= $this->extend('layout/app') ?>
 
+
+<?= $this->section('styles') ?>
+<!-- Select2 -->
+<link rel="stylesheet" href="<?= base_url('bower_components/select2/dist/css/select2.min.css') ?>">
+<!-- daterange picker -->
+<link rel="stylesheet" href="<?= base_url() ?>bower_components/bootstrap-daterangepicker/daterangepicker.css">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet"
+      href="<?= base_url() ?>bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="<?= base_url('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') ?>">
+<?= $this->endSection() ?>
+
+
 <?= $this->section('content') ?>
 
 <!-- Category Create Section -->

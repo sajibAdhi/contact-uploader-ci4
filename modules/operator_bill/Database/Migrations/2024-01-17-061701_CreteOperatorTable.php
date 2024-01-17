@@ -15,17 +15,28 @@ class CreteOperatorTable extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'operator_name' => [
+            'name' => [
                 'type' => 'VARCHAR',
-                'constraint' => '255',
+                'constraint' => '100',
             ],
-            'operator_address' => [
+            'address' => [
                 'type' => 'TEXT',
             ],
+            'phone' => [
+                'type' => 'VARCHAR',
+                'constraint' => '15',
+            ],
+            'email' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+            ],
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp',
+            'deleted_at datetime default null',
         ]);
-
         $this->forge->addKey('id', true);
         $this->forge->createTable('operators');
+
     }
 
     public function down()
