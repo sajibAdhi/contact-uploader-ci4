@@ -12,9 +12,9 @@
 
             <!-- Operator -->
             <div class="form-group">
-                <label for="operator" class="control-label col-sm-3">Operator:</label>
+                <label for="operator_id" class="control-label col-sm-3">Operator:</label>
                 <div class="col-sm-9">
-                    <select name="operator" id="operator" class="form-control" required>
+                    <select name="operator_id" id="operator_id" class="form-control" required>
                         <?php if (!empty($operators)): ?>
                             <option value="">Select Operator</option>
                             <?php foreach ($operators as $operator): ?>

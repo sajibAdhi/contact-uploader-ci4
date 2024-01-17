@@ -4,45 +4,45 @@ namespace OperatorBill\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RedirectResponse;
-use OperatorBill\Models\OperatorModel;
 use OperatorBill\Services\OperatorBillService;
+use ReflectionException;
 
 class OperatorBillController extends BaseController
 {
-    private OperatorModel $operatorBillModel;
     private OperatorBillService $operatorBillService;
 
     public function __construct()
     {
-        $this->operatorBillModel = new OperatorModel();
         $this->operatorBillService = new OperatorBillService();
     }
 
     public function index(): string
     {
-        return operator_bill_view('index');
+        return operator_bill_view('index', [
+            'title' => 'Operator Bills',
+            'operatorBills' => $this->operatorBillService->findAll(),
+        ]);
     }
 
     public function create(): string
     {
         return operator_bill_view('create', [
             'title' => 'Add Operator Bill',
-            'operators' => $this->operatorBillModel->findAll(),
+            'operators' => $this->operatorBillService->operatorModel->findAll(),
         ]);
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function store(): RedirectResponse
     {
         /** Validate The Data */
         $this->storeValidation();
 
-        // If the validation passes then get the posted data
+        // If the validation passes, then get the posted data
         $postData = $this->request->getPost();
         $files = $this->request->getFiles();
-
         // Insert the posted data into the database
         if ($this->operatorBillService->store($postData, $files['file_upload'])) {
             return redirect()->route('operator_bill.index')->with('success', 'Operator Bill Created Successfully');
@@ -55,7 +55,7 @@ class OperatorBillController extends BaseController
     {
         // Define validation rules
         $rules = [
-            'operator' => 'required',
+            'operator' => 'required|integer',
             'year' => 'required|numeric',
             'month' => 'required|numeric',
             'successful_calls' => 'required|numeric',

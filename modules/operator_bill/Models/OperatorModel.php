@@ -10,11 +10,11 @@ class OperatorModel extends Model
     protected $primaryKey = 'id';
 
     protected $returnType = 'object';
-    protected $useSoftDeletes = false;
+    protected $useSoftDeletes = true;
 
     protected $allowedFields = ['name', 'address', 'phone', 'email'];
 
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
