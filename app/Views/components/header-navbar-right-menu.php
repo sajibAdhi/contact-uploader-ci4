@@ -11,7 +11,7 @@
         <!--        --><?php // echo $this->include('components/header-navbar-right-task-menu')?>
 
         <!-- User Account Menu -->
-        <?= $this->include('components/header-navbar-right-user-account-menu') ?>
+<!--        --><?php //= $this->include('components/header-navbar-right-user-account-menu') ?>
 
         <!-- Control Sidebar Toggle Button -->
 <!--        --><?php //= $this->include('components/header-navbar-right-control-sidebar-toggle-button') ?>

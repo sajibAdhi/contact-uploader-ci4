@@ -50,12 +50,12 @@ class CreateSmsTable extends Migration
 
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('contact_id', 'contacts', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addUniqueKey(['content', 'contact_id']);
+//        $this->forge->addUniqueKey(['content', 'contact_id']);
         $this->forge->createTable('sms');
     }
 
     public function down()
     {
-        //
+        $this->forge->dropTable('sms');
     }
 }
