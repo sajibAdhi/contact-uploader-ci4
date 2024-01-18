@@ -13,7 +13,7 @@ use App\Controllers\SettingController;
 use App\Filters\CategoryStoreFilter;
 use App\Filters\ContactContentUploadFilter;
 
-$routes->get('/', static fn() => redirect()->route('category.index'));
+$routes->get('/', static fn() => redirect()->to('operator_bills'));
 
 $routes->group('aggregators', static function ($routes) {
     $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'aggregator.index']);
