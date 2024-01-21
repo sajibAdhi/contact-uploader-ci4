@@ -16,10 +16,10 @@
   - updated_at
   - deleted_at
 
-- [ ] SBN Form Builder
-  - name
-  - description
-  - operator_type
+- [ ] SBN Form Fields
+  - sbn_id
+  - sms 
+  - voice
   - created_at
   - updated_at
   - deleted_at
