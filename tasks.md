@@ -1,5 +1,55 @@
 ## Tasks:
 
+### 2024-01-21
+
+![2024-01-21 tasks](./2024_01_21_tasks.png)
+
+
+- [ ] Operator Type (meta-data) 
+  - name ['Mobile', 'IOS', 'IGW', 'ICX']
+
+
+- [ ] SBN CRUD
+  - name
+  - description
+  - created_at
+  - updated_at
+  - deleted_at
+
+- [ ] SBN Form Builder
+  - name
+  - description
+  - operator_type
+  - created_at
+  - updated_at
+  - deleted_at
+
+- [ ] Operator (feature-update)
+  - Operator Type
+
+- [ ] Operator Bill (feature-update)
+  - SBN (options)
+  - Operator_Type (options)
+  - Operator (depends on operator_type) (options to many)
+  - Year (options)[2020 - 2030]
+  - month (options)[1 - 12]
+  - SMS Rate (no need)
+
+```
+RITT -> FORM {voice,sms}
+QTECH -> FORM {voice,sms}
+IGW -> FORM {voice}
+ICX -> FORM {voice}
+```
+  
+- [ ] Operator Bill Report Serch (feature-request)
+  - SBN (options)
+  - Operator (options)
+  - year
+  - month
+  
+---
+
 ### 2024-01-16
 
 
