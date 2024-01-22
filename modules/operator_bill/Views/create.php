@@ -12,7 +12,9 @@
 
             <!-- Operator -->
             <div class="form-group">
-                <label for="operator_id" class="control-label col-sm-3">Operator:</label>
+                <label for="operator_id" class="control-label col-sm-3">
+                    Operator: <span class="text-danger">*</span>
+                </label>
                 <div class="col-sm-9">
                     <select name="operator_id" id="operator_id" class="form-control" required>
                         <?php if (!empty($operators)): ?>
@@ -29,7 +31,9 @@
 
             <!-- Year -->
             <div class="form-group">
-                <label for="year" class="control-label col-sm-3">Year:</label>
+                <label for="year" class="control-label col-sm-3">
+                    Year: <span class="text-danger">*</span>
+                </label>
                 <div class="col-sm-9">
                     <input type="number" class="form-control" name="year" id="year" pattern="[0-9]{4}" required>
                 </div>
@@ -37,7 +41,9 @@
 
             <!-- Month -->
             <div class="form-group">
-                <label for="month" class="control-label col-sm-3">Month:</label>
+                <label for="month" class="control-label col-sm-3">
+                    Month: <span class="text-danger">*</span>
+                </label>
                 <div class="col-sm-9">
                     <input type="number" class="form-control" name="month" id="month" min="1" max="12" required>
                 </div>
@@ -47,7 +53,7 @@
             <div class="form-group">
                 <label for="successful_calls" class="control-label col-sm-3">Successful Calls:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="successful_calls" id="successful_calls" required>
+                    <input type="number" class="form-control" name="successful_calls" id="successful_calls">
                 </div>
             </div>
 
@@ -55,8 +61,7 @@
             <div class="form-group">
                 <label for="effective_duration" class="control-label col-sm-3">Effective Duration (minutes):</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="effective_duration" id="effective_duration"
-                           required>
+                    <input type="number" class="form-control" name="effective_duration" id="effective_duration">
                 </div>
             </div>
 
@@ -64,7 +69,7 @@
             <div class="form-group">
                 <label for="voice_amount" class="control-label col-sm-3">Voice Amount:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="voice_amount" id="voice_amount" required>
+                    <input type="number" class="form-control" name="voice_amount" id="voice_amount">
                 </div>
             </div>
 
@@ -72,8 +77,7 @@
             <div class="form-group">
                 <label for="voice_amount_with_vat" class="control-label col-sm-3">Voice Amount with VAT:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="voice_amount_with_vat" id="voice_amount_with_vat"
-                           required>
+                    <input type="number" class="form-control" name="voice_amount_with_vat" id="voice_amount_with_vat">
                 </div>
             </div>
 
@@ -81,7 +85,7 @@
             <div class="form-group">
                 <label for="sms_count" class="control-label col-sm-3">SMS Count:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_count" id="sms_count" required>
+                    <input type="number" class="form-control" name="sms_count" id="sms_count" >
                 </div>
             </div>
 
@@ -89,7 +93,7 @@
             <div class="form-group">
                 <label for="sms_rate" class="control-label col-sm-3">SMS Rate:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_rate" id="sms_rate" required>
+                    <input type="number" class="form-control" name="sms_rate" id="sms_rate" >
                 </div>
             </div>
 
@@ -97,7 +101,7 @@
             <div class="form-group">
                 <label for="sms_amount" class="control-label col-sm-3">SMS Amount:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_amount" id="sms_amount" required>
+                    <input type="number" class="form-control" name="sms_amount" id="sms_amount" >
                 </div>
             </div>
 
@@ -105,8 +109,7 @@
             <div class="form-group">
                 <label for="sms_amount_with_vat" class="control-label col-sm-3">SMS Amount with VAT:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_amount_with_vat" id="sms_amount_with_vat"
-                           required>
+                    <input type="number" class="form-control" name="sms_amount_with_vat" id="sms_amount_with_vat">
                 </div>
             </div>
 

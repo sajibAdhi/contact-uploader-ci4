@@ -73,4 +73,13 @@ class OperatorBillService
 
         return $operatorBills;
     }
+
+    public function find(int $id)
+    {
+        $operatorBill = $this->operatorBillModel->find($id);
+        $operatorBill->operator = $this->operatorModel->find($operatorBill->operator_id);
+        $operatorBill->files = $this->billFileModel->where('operator_bill_id', $operatorBill->id)->findAll();
+
+        return $operatorBill;
+    }
 }

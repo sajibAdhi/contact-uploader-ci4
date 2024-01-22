@@ -53,7 +53,7 @@ ICX -> FORM {voice}
 ### 2024-01-16
 
 
-- [ ] Operator Bills Report
+- [X] Operator Bills Report
   - year
   - month
   - client_name
@@ -67,19 +67,6 @@ ICX -> FORM {voice}
   - sms_amount
   - sms_amount_with_vat
   - file_upload
-  
----
-
-### 2024-01-15
-
-- [ ] Bills
-  - Operator Wise Bill
-  - Service Type
-  - Count
-  - Rate
-  - Vat
-  - Total Bill
-  - File Upload
 
 ---
 

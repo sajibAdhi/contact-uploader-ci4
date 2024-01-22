@@ -189,14 +189,6 @@ desired effect
 <!-- Toastr -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-<script>
-    $(document).ready(function () {
-        $(".alert").delay(5000).slideUp(200, function () {
-            $(this).alert('close');
-        });
-    });
-</script>
-
 <!-- PageJS -->
 <?= $this->renderSection('scripts') ?>
 

@@ -37,29 +37,19 @@ class OperatorController extends BaseController
      */
     public function store()
     {
-        $rules = [
-            'operator_name' => 'required',
-            'operator_address' => 'required',
-            'operator_phone' => 'required',
-            'operator_email' => 'required|valid_email',
-        ];
+        try {
+            // Get the validated data
+            $data = $this->postData();
 
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            if ($this->operatorModel->insert($data)) {
+                // Redirect the user back to the form with a success message
+                return redirect()->route('operator_bill.operator.index')->with('success', 'Operator created successfully');
+            } else {
+                return redirect()->back()->withInput()->with('_ci_validation_errors', $this->operatorModel->errors());
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
-
-        // Get the validated data
-        $data = [
-            'name' => $this->request->getPost('operator_name'),
-            'address' => $this->request->getPost('operator_address'),
-            'phone' => $this->request->getPost('operator_phone'),
-            'email' => $this->request->getPost('operator_email'),
-        ];
-
-        $this->operatorModel->save($data);
-
-        // Redirect the user back to the form with a success message
-        return redirect()->route('operator_bill.operator.index')->with('success', 'Operator created successfully');
     }
 
     public function edit(int $id): string
@@ -78,28 +68,42 @@ class OperatorController extends BaseController
      */
     public function update(int $id)
     {
-        $rules = [
-            'operator_name' => 'required',
-            'operator_address' => 'required',
-            'operator_phone' => 'required',
-            'operator_email' => 'required|valid_email',
-        ];
+        try {
+            // Get the validated data
+            $data = $this->postData();
 
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            if ($this->operatorModel->update($id, $data)) {
+                return redirect()->route('operator_bill.operator.index')->with('success', 'Operator updated successfully');
+            } else {
+                return redirect()->back()->withInput()->with('_ci_validation_errors', $this->operatorModel->errors());
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
+    }
 
-        // Get the validated data
-        $data = [
+    public function delete(int $id)
+    {
+        try{
+            if ($this->operatorModel->delete($id)) {
+                return redirect()->route('operator_bill.operator.index')->with('success', 'Operator deleted successfully');
+            } else {
+                return redirect()->back()->with('_ci_validation_errors', $this->operatorModel->errors());
+            }
+        }catch (\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    /** ----------------------------------------------------------------------------------------------- */
+
+    private function postData()
+    {
+        return [
             'name' => $this->request->getPost('operator_name'),
             'address' => $this->request->getPost('operator_address'),
             'phone' => $this->request->getPost('operator_phone'),
             'email' => $this->request->getPost('operator_email'),
         ];
-
-        $this->operatorModel->update($id, $data);
-
-        // Redirect the user back to the form with a success message
-        return redirect()->route('operator_bill.operator.index')->with('success', 'Operator updated successfully');
     }
 }

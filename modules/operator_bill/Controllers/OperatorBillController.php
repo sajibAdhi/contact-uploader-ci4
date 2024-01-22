@@ -51,7 +51,17 @@ class OperatorBillController extends BaseController
         return redirect()->back()->withInput()->with('error', 'Something went wrong');
     }
 
-    public function storeValidation()
+    public function edit(int $id): string
+    {
+        return operator_bill_view('create', [
+            'title' => 'Edit Operator Bill',
+            'action' => 'edit',
+            'operatorBill' => $this->operatorBillService->find($id),
+            'operators' => $this->operatorBillService->operatorModel->findAll(),
+        ]);
+    }
+
+    private function storeValidation()
     {
         // Define validation rules
         $rules = [
