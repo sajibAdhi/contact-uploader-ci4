@@ -18,16 +18,16 @@
         <?php endif; ?>
 
         <div class="box-body">
-            <!-- Category -->
-            <div class="form-group <?= validation_show_error('category') ? 'has-warning' : '' ?>">
-                <label for="category" class="control-label col-sm-3">
-                    Category: <span class="text-danger">*</span>
+            <!-- aggregator -->
+            <div class="form-group <?= validation_show_error('aggregator') ? 'has-warning' : '' ?>">
+                <label for="aggregator" class="control-label col-sm-3">
+                    Aggregator: <span class="text-danger">*</span>
                 </label>
                 <div class=" col-sm-9">
-                    <input type="text" class="form-control col-sm-9" name="category" id="category"
-                           value="<?= set_value('category', $aggregator->name ?? null) ?>" placeholder="Category Name"
+                    <input type="text" class="form-control col-sm-9" name="aggregator" id="aggregator"
+                           value="<?= set_value('aggregator', $aggregator->name ?? null) ?>" placeholder="Aggregator Name"
                            required>
-                    <span class="help-block"><?= validation_show_error('category') ?></span>
+                    <span class="help-block"><?= validation_show_error('aggregator') ?></span>
                 </div>
             </div>
         </div>
@@ -47,8 +47,8 @@
         <table class="table table-sm table-bordered table-striped table-hover">
             <thead>
             <tr>
-                <th>SL NO</th>
-                <th>Category Name</th>
+                <th>ID</th>
+                <th>Aggregator Name</th>
                 <th style="width: 50Px">Action</th>
             </tr>
             </thead>
@@ -57,11 +57,11 @@
             <?php if (!empty($aggregators)): ?>
                 <?php foreach ($aggregators as $index => $aggregator): ?>
                     <tr>
-                        <td><?= $index + 1 ?></td>
+                        <td><?= $aggregator->id ?></td>
                         <td><?= $aggregator->name ?></td>
                         <td>
-                            <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('category.edit', $aggregator->id)]) ?>
-                            <!--                            --><?php // = view_cell('FormDeleteButtonCell', ['action' => route_to('category.delete', $aggregator->id)])?>
+                            <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('aggregator.edit', $aggregator->id)]) ?>
+                            <!--                            --><?php // = view_cell('FormDeleteButtonCell', ['action' => route_to('aggregator.delete', $aggregator->id)])?>
 
                         </td>
                     </tr>
@@ -72,13 +72,6 @@
                 </tr>
             <?php endif; ?>
             </tbody>
-            <tfoot>
-            <tr>
-                <th>SL NO</th>
-                <th>Category Name</th>
-                <th>Action</th>
-            </tr>
-            </tfoot>
         </table>
 
     </div>

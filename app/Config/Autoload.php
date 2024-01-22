@@ -46,7 +46,8 @@ class Autoload extends AutoloadConfig
      */
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
-        'Config'      => APPPATH . 'Config',
+        'Config' => APPPATH . 'Config',
+        'OperatorBill' => ROOTPATH . 'modules/operator_bill',
     ];
 
     /**
@@ -84,7 +85,9 @@ class Autoload extends AutoloadConfig
      * @var string[]
      * @phpstan-var list<string>
      */
-    public $files = [];
+    public $files = [
+        ROOTPATH . 'modules/operator_bill/Common.php',
+    ];
 
     /**
      * -------------------------------------------------------------------

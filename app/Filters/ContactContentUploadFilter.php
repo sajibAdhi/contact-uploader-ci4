@@ -39,19 +39,9 @@ class ContactContentUploadFilter implements FilterInterface
             'category' => [
                 'label' => 'Category',
                 'rules' => [
-                    'permit_empty',
+                    'required',
                     'numeric',
                     'is_not_unique[categories.id]',
-                ],
-            ],
-            'category_name' => [
-                'label' => 'Category Name',
-                'rules' => [
-                    'required_without[category]',
-                    'string',
-                    (empty($request->getPost('category')))
-                        ? 'is_unique[categories.name]'
-                        : 'trim',
                 ],
             ],
             'date' => [
@@ -67,7 +57,7 @@ class ContactContentUploadFilter implements FilterInterface
                 'label' => 'Contacts File',
                 'rules' => [
                     'uploaded[contacts_file]', // checks if the file was uploaded
-                    'ext_in[contacts_file,csv,xls,xlsx,xlsm]', // checks if file extension is CSV, XLS, XLSX, or XLSM
+                    'ext_in[contacts_file,csv]', // checks if file extension is CSV, XLS, XLSX, or XLSM
                     "max_size[contacts_file,{$max_file_size}]", // checks if the file size is less than or equal to $max_file_size
                 ],
             ],
@@ -77,7 +67,6 @@ class ContactContentUploadFilter implements FilterInterface
             if ($request->isAJAX()) {
                 return response()->setStatusCode(422)->setJSON(['errors' => $validation->getErrors()]);
             }
-            dd($request->getPost());
 
             return redirect()->back()->withInput();
         }

@@ -19,8 +19,8 @@ class ContactContentService
     public function __construct()
     {
         $this->categoryService = new CategoryService();
-        $this->contact         = new ContactModel();
-        $this->contactContent  = new ContactContentModel();
+        $this->contact = new ContactModel();
+        $this->contactContent = new ContactContentModel();
     }
 
     /**
@@ -34,9 +34,9 @@ class ContactContentService
 
         if (null === $contactData) {
             $this->contact->insert([
-                'number'      => $number,
+                'number' => $number,
                 'category_id' => $category_id,
-                'remarks'     => $remarks,
+                'remarks' => $remarks,
             ]);
 
             $contactData = $this->contact->find($this->contact->getInsertID());
@@ -69,9 +69,9 @@ class ContactContentService
         if (null === $contactContent) {
             $contactContentId = $this->contactContent->insert([
                 'contact_id' => $contactId,
-                'content'    => $content,
-                'date'       => $date,
-                'remarks'    => $remarks,
+                'content' => $content,
+                'date' => $date,
+                'remarks' => $remarks,
             ]);
 
             $contactContent = $this->contactContent->find($contactContentId);
@@ -90,7 +90,7 @@ class ContactContentService
             ->join('categories', 'categories.id = contacts.category_id');
 
         if ($filters['categories'] ?? null) {
-            if (! in_array('all', $filters['categories'], true)) {
+            if (!in_array('all', $filters['categories'], true)) {
                 $result->whereIn('contacts.category_id', $filters['categories']);
             }
         }
@@ -98,7 +98,7 @@ class ContactContentService
         if ($filters['daterange'] ?? null) {
             $dateRange = explode(' - ', $filters['daterange']);
 
-            $dateRange = array_map(static fn ($date) => date('Y-m-d', strtotime($date)), $dateRange);
+            $dateRange = array_map(static fn($date) => date('Y-m-d', strtotime($date)), $dateRange);
 
             $result->where('contact_content.created_at >=', $dateRange[0]);
             $result->where('contact_content.created_at <=', $dateRange[1]);
@@ -121,7 +121,7 @@ class ContactContentService
     {
         $csvData = SpreadSheetFileReader::readCsvFile($file, ['contact']);
 
-        if (! $csvData) {
+        if (!$csvData) {
             return false;
         }
 
@@ -139,16 +139,17 @@ class ContactContentService
     }
 
     /**
+     * @param UploadedFile $file
      * @param mixed $categoryId
-     * @param mixed $categoryName
      * @param mixed $date
      *
-     * @throws Exception
+     * @return bool
      * @throws ReflectionException
+     * @throws Exception
      */
-    public function storeUploadedContactsContent(UploadedFile $file, $categoryId, $categoryName, $date): bool
+    public function storeUploadedContactsContent(UploadedFile $file, $categoryId, $date): bool
     {
-        $data = SpreadSheetFileReader::readFile($file, ['AGGREGATED_NAME', 'DATE', 'SENDER_NO', 'DESTINATION_NO', 'OPERATOR_NAME', 'SMS_CONTENT', 'STATUS']);
+        $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'date', 'from', 'to', 'operator_name', 'sms_content', 'status']);
 
         $totalRows = count($data);
 
@@ -158,13 +159,11 @@ class ContactContentService
         }
 
         $numbLength = strlen($totalRows);
-        $divider    = 10 ** ($numbLength - 1);
-
-        $date = date('Y-m-d', strtotime($date));
+        $divider = 10 ** ($numbLength - 1);
 
         $this->contact->db->transStart();
 
-        $categoryId = $this->categoryService->findOrCreate($categoryId, $categoryName)->id;
+        $categoryId = $this->categoryService->category->find($categoryId)->id;
 
         $processedRows = 0;
 

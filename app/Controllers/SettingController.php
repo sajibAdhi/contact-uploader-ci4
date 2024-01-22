@@ -17,7 +17,7 @@ class SettingController extends BaseController
     public function index(): string
     {
         return view('setting/index', [
-            'settings' => $this->settingsService->getSettings(),
+            'settings' => $this->settingsService->getUserSettings(),
         ]);
     }
 
@@ -26,7 +26,7 @@ class SettingController extends BaseController
      */
     public function store(): RedirectResponse
     {
-        if ($this->settingsService->setSettings($this->request->getPost())) {
+        if ($this->settingsService->setUserSettings($this->request->getPost())) {
             return redirect()->route('settings')->with('success', 'Settings updated successfully');
         } else {
             return redirect()->route('settings')->with('error', 'Settings update failed');

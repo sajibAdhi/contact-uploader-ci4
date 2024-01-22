@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @var RouteCollection $routes
+ */
+
 use App\Controllers\AggregatorController;
 use App\Controllers\CategoryController;
 use App\Controllers\ContactContentController;
@@ -8,18 +12,15 @@ use App\Controllers\ContactUploadController;
 use App\Controllers\SettingController;
 use App\Filters\CategoryStoreFilter;
 use App\Filters\ContactContentUploadFilter;
-use CodeIgniter\Router\RouteCollection;
 
-/**
- * @var RouteCollection $routes
- */
-$routes->get('/', static fn() => redirect()->route('category.index'));
-
-service('auth')->routes($routes);
+$routes->get('/', static fn() => redirect()->to('operator_bills'));
 
 $routes->group('aggregators', static function ($routes) {
     $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'aggregator.index']);
     $routes->post('/', [AggregatorController::class, 'store'], ['as' => 'aggregator.store']);
+    $routes->get('(:num)', [AggregatorController::class, 'edit/$1'], ['as' => 'aggregator.edit']);
+    $routes->put('(:num)', [AggregatorController::class, 'update/$1']);
+    $routes->delete('(:num)', [AggregatorController::class, 'delete/$1'], ['as' => 'aggregator.delete']);
 });
 
 $routes->group('categories', static function ($routes) {
@@ -50,8 +51,3 @@ $routes->group('settings', static function ($routes) {
     $routes->get('/', [SettingController::class, 'index'], ['as' => 'settings']);
     $routes->post('/', [SettingController::class, 'store']);
 });
-
-$routes->get('test',static function () {
-    return view('test');
-});
-
