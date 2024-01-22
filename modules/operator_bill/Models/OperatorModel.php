@@ -20,7 +20,6 @@ class OperatorModel extends Model
     protected $deletedField = 'deleted_at';
 
     protected $validationRules =  [
-        'id'    => 'max_length[19]|is_natural_no_zero',
         'name' =>  ['label' => 'Operator Name', 'rules' => 'required|trim|string|min_length[3]|max_length[255]'],
         'address' => ['label' => 'Operator Address', 'rules' => 'permit_empty|trim|string|min_length[3]|max_length[255]'],
         'phone' => ['label' => 'Operator Phone', 'rules' => 'permit_empty|trim|string|min_length[3]|max_length[255]'],
