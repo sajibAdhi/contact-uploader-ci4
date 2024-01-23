@@ -1,6 +1,6 @@
 <?php namespace OperatorBill\Services;
 
-use OperatorBill\Models\BillFileModel;
+use OperatorBill\Models\OperatorBillFileModel;
 use OperatorBill\Models\OperatorBillModel;
 use OperatorBill\Models\OperatorModel;
 use ReflectionException;
@@ -8,14 +8,14 @@ use ReflectionException;
 class OperatorBillService
 {
     private OperatorBillModel $operatorBillModel;
-    private BillFileModel $billFileModel;
+    private OperatorBillFileModel $billFileModel;
     public OperatorModel $operatorModel;
 
     public function __construct()
     {
         $this->operatorModel = new OperatorModel();
         $this->operatorBillModel = new OperatorBillModel();
-        $this->billFileModel = new BillFileModel();
+        $this->billFileModel = new OperatorBillFileModel();
 
     }
 

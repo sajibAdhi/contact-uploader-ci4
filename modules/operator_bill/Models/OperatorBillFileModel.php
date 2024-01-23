@@ -4,7 +4,7 @@ namespace OperatorBill\Models;
 
 use CodeIgniter\Model;
 
-class BillFileModel extends Model
+class OperatorBillFileModel extends Model
 {
     protected $table            = 'bill_files';
     protected $primaryKey       = 'id';
