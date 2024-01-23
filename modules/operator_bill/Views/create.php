@@ -21,7 +21,9 @@
                         <?php if (!empty($sbnList)): ?>
                             <option value="">Select SBN</option>
                             <?php foreach ($sbnList as $sbn): ?>
-                                <option value="<?= $sbn ?>"><?= strtoupper($sbn) ?></option>
+                                <option value="<?= $sbn ?>" <?= set_select('sbn', $sbn) ?>>
+                                    <?= strtoupper($sbn) ?>
+                                </option>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <option value="">No SBN Found</option>
@@ -40,7 +42,9 @@
                         <?php if (!empty($operatorTypes)): ?>
                             <option value="">Select Operator Type</option>
                             <?php foreach ($operatorTypes as $operatorType): ?>
-                                <option value="<?= $operatorType ?>"><?= strtoupper($operatorType) ?></option>
+                                <option value="<?= $operatorType ?>" <?= set_select('operator_type', $operatorType) ?>>
+                                    <?= strtoupper($operatorType) ?>
+                                </option>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <option value="">No Operator Type Found</option>
@@ -56,11 +60,16 @@
                 </label>
                 <div class="col-sm-9">
                     <select name="operator_id" id="operator_id" class="form-control" required>
-                        <option value="">Select a Operator Type First</option>
+                        <option value="">Select an Operator Type First</option>
                     </select>
                 </div>
             </div>
-
+            <?php $year = 7; ?>
+            <?= (set_select('year', $year)
+                ? set_select('year', $year)
+                : (date('Y') === $year))
+                ? 'selected'
+                : '' ?>><?= $year ?>
             <!-- Year -->
             <div class="form-group">
                 <label for="year" class="control-label col-sm-3">
@@ -71,7 +80,7 @@
                         <option value="">Select Year</option>
                         <!-- option from 2030 to 2020-->
                         <?php for ($year = 2030; $year >= 2020; $year--): ?>
-                            <option value="<?= $year ?>" <?= (date('Y') == $year) ? 'selected' : null ?>><?= $year ?></option>
+                            <option value="<?= $year ?>" <?= (old('year', date('Y')) == $year) ? 'selected' : null ?>><?= $year ?></option>
                         <?php endfor; ?>
                     </select>
 
@@ -198,16 +207,19 @@
 
 
 <?= $this->section('scripts') ?>
-    <!-- show voice or sms or both based on sbn
-            RITT -> FORM {voice,sms}
-            QTECH -> FORM {sms}
-            IGW -> FORM {voice}
-            ICX -> FORM {voice}
-     -->
+    <!-- show voice or sms or both based on sbn -->
+    <!--
+    RITT -> FORM {voice,sms}
+    QTECH -> FORM {sms}
+    IGW -> FORM {voice}
+    ICX -> FORM {voice}
+    -->
     <script>
         $(document).ready(function () {
-            $('#sbn').on('change', function () {
-                const sbn = $(this).val();
+            let sbnField = $('#sbn');
+
+            function setSbnForm() {
+                const sbn = sbnField.val();
                 if (sbn === `<?= \OperatorBill\Constants\SBNConstant::RITT ?>`) {
                     $('#voiceSection').removeClass('hide');
                     $('#smsSection').removeClass('hide');
@@ -221,7 +233,12 @@
                     $('#voiceSection').addClass('hide');
                     $('#smsSection').addClass('hide');
                 }
-            });
+            }
+
+            setSbnForm();
+
+            sbnField.on('change', () => setSbnForm());
+
         });
     </script>
 

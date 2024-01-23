@@ -21,7 +21,6 @@ class OperatorBillModel extends Model
         'voice_amount',
         'voice_amount_with_vat',
         'sms_count',
-        'sms_rate',
         'sms_amount',
         'sms_amount_with_vat',
     ];

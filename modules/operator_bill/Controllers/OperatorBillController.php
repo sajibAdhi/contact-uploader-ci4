@@ -43,14 +43,27 @@ class OperatorBillController extends BaseController
             $this->storeValidation();
 
             // If the validation passes, then get the posted data
-            $postData = $this->request->getPost();
+            $postData = [
+                'sbn' => $this->request->getPost('sbn', FILTER_SANITIZE_STRING),
+                'operator_id' => $this->request->getPost('operator_id', FILTER_SANITIZE_NUMBER_INT),
+                'year' => $this->request->getPost('year', FILTER_SANITIZE_NUMBER_INT),
+                'month' => $this->request->getPost('month', FILTER_SANITIZE_NUMBER_INT),
+                'successful_calls' => $this->request->getPost('successful_calls', FILTER_SANITIZE_NUMBER_INT),
+                'effective_duration' => $this->request->getPost('effective_duration', FILTER_SANITIZE_NUMBER_INT),
+                'voice_amount' => $this->request->getPost('voice_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                'voice_amount_with_vat' => $this->request->getPost('voice_amount_with_vat', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                'sms_count' => $this->request->getPost('sms_count', FILTER_SANITIZE_NUMBER_INT),
+                'sms_amount' => $this->request->getPost('sms_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                'sms_amount_with_vat' => $this->request->getPost('sms_amount_with_vat', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            ];
             $files = $this->request->getFiles();
+
             // Insert the posted data into the database
             if ($this->operatorBillService->store($postData, $files['file_upload'])) {
                 return redirect()->route('operator_bill.index')->with('success', 'Operator Bill Created Successfully');
             }
 
-            return redirect()->back()->withInput()->with('_ci_validation_errors', $this->operatorBillService->errors());
+            return redirect()->back()->withInput()->with('_ci_validation_errors', $this->operatorBillService->operatorBillModel->errors());
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
@@ -68,11 +81,11 @@ class OperatorBillController extends BaseController
 
     public function ajaxGet()
     {
-//        if (!$this->request->isAJAX()) {
-//            return redirect()->back()->with('error', 'Invalid Request');
-//        }
+        if (!$this->request->isAJAX()) {
+            return redirect()->back()->with('error', 'Invalid Request');
+        }
 
-        $operator_type = $this->request->getGet('operator_type');
+        $operator_type = $this->request->getGet('operator_type') ?? null;
 
         $operators = $this->operatorBillService->operatorModel->where('type', $operator_type)->findAll();
 
@@ -83,9 +96,9 @@ class OperatorBillController extends BaseController
             return $this->response
                 ->setStatusCode(204)
                 ->setJSON([
-                'status' => 'error',
-                'message' => 'No operators found for this operator type',
-            ]);
+                    'status' => 'error',
+                    'message' => 'No operators found for this operator type',
+                ]);
         }
 
         return $this->response->setJSON([

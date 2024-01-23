@@ -7,7 +7,7 @@ use ReflectionException;
 
 class OperatorBillService
 {
-    private OperatorBillModel $operatorBillModel;
+    public OperatorBillModel $operatorBillModel;
     private OperatorBillFileModel $billFileModel;
     public OperatorModel $operatorModel;
 

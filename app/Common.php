@@ -17,7 +17,7 @@
 use App\Services\SettingService;
 use CodeIgniter\Config\Services;
 
-if (!function_exists('get_set_select')) {
+if (!function_exists('set_select')) {
     /**
      * Set Select
      *
@@ -36,10 +36,6 @@ if (!function_exists('get_set_select')) {
 
         if ($input === null) {
             $input = $request->getGet($field);
-        }
-
-        if ($input === null) {
-            return ($default === true) ? ' selected="selected"' : '';
         }
 
         if (is_array($input)) {
