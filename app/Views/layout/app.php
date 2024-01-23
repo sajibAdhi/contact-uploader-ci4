@@ -63,16 +63,16 @@ desired effect
         <!-- Logo -->
         <a href="<?= base_url() ?>" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b><?= \App\Constants\ApplicationConstant::SHORT_NAME ?></b></span>
+            <span class="logo-mini">
+                 <img src="<?= base_url(\App\Constants\ApplicationConstant::ICON) ?>"
+                      alt="<?= \App\Constants\ApplicationConstant::SHORT_NAME ?>">
+            </span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg">
-                <b>
                     <img src="<?= base_url(\App\Constants\ApplicationConstant::LOGO) ?>"
                          alt="<?= \App\Constants\ApplicationConstant::NAME ?>">
-                    </b>
             </span>
         </a>
-
         <!-- Header Navbar -->
         <?= $this->include('components/header-navbar') ?>
     </header>

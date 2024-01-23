@@ -9,5 +9,6 @@ class ApplicationConstant
     const PER_PAGE   = 20;
     const VERSION    = '1.0.0';
     const LOGO       = 'logo.png';
-    const FAVICON    = 'favicon.png';
+    const FAVICON    = 'favicon.ico';
+    const ICON       = 'icon.png';
 }

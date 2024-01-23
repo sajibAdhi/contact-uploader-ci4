@@ -64,12 +64,7 @@
                     </select>
                 </div>
             </div>
-            <?php $year = 7; ?>
-            <?= (set_select('year', $year)
-                ? set_select('year', $year)
-                : (date('Y') === $year))
-                ? 'selected'
-                : '' ?>><?= $year ?>
+
             <!-- Year -->
             <div class="form-group">
                 <label for="year" class="control-label col-sm-3">
