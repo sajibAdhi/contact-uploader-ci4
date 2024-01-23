@@ -22,5 +22,7 @@ $routes->group('operator_bills', static function ($routes) {
         $routes->get('(:num)/edit', [OperatorController::class, 'edit'], ['as' => 'operator_bill.operator.edit']);
         $routes->post('(:num)/edit', [OperatorController::class, 'update']);
         $routes->get('(:num)/delete', [OperatorController::class, 'delete'], ['as' => 'operator_bill.operator.delete']);
+
+        $routes->get('get_operators', [OperatorBillController::class, 'ajaxGet'], ['as' => 'operator_bill.operator.get_operators']);
     });
 });

@@ -36,9 +36,6 @@ class OperatorBillController extends BaseController
         ]);
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function store(): RedirectResponse
     {
         try {
@@ -68,6 +65,27 @@ class OperatorBillController extends BaseController
             'operators' => $this->operatorBillService->operatorModel->findAll(),
         ]);
     }
+
+    public function ajaxGet()
+    {
+        if (!$this->request->isAJAX()) {
+//            return redirect()->back()->with('error', 'Invalid Request');
+        }
+        $operator_type = $this->request->getGet('operator_type');
+
+        $operators = $this->operatorBillService->operatorModel->where('type', $operator_type)->findAll();
+
+        if (empty($operators)) {
+            return $this->response->setStatusCode(204, 'No Content')
+                ->setJSON(['status' => false, 'message' => 'No Operators Found']);
+        }
+
+        return $this->response->setJSON($operators);
+    }
+
+    /**
+     * -----------------------------------------------------------------------------------------------------------------
+     */
 
     private function storeValidation()
     {

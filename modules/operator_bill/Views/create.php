@@ -73,7 +73,14 @@
                     Year: <span class="text-danger">*</span>
                 </label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="year" id="year" pattern="[0-9]{4}" required>
+                    <select class="form-control" name="year" id="year" required>
+                        <option value="">Select Year</option>
+                        <!-- option from 2030 to 2020-->
+                        <?php for ($year = 2030; $year >= 2020; $year--): ?>
+                            <option value="<?= $year ?>" <?= (date('Y') == $year) ? 'selected' : null ?>><?= $year ?></option>
+                        <?php endfor; ?>
+                    </select>
+
                 </div>
             </div>
 
@@ -83,73 +90,79 @@
                     Month: <span class="text-danger">*</span>
                 </label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="month" id="month" min="1" max="12" required>
+                    <select class="form-control" name="month" id="month">
+                        <option value="">Select Month</option>
+                        <!-- option from 01 to 12-->
+                        <?php for ($month = 1; $month <= 12; $month++): ?>
+                            <option value="<?= $month ?>" <?= (date('m') == $month) ? 'selected' : null ?>><?= $month ?></option>
+                        <?php endfor; ?>
+                    </select>
                 </div>
             </div>
 
-            <!-- Successful Calls -->
-            <div class="form-group">
-                <label for="successful_calls" class="control-label col-sm-3">Successful Calls:</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control" name="successful_calls" id="successful_calls">
+            <!-- Voice Section using {successful_calls, effective_duration, voice_amount, voice_amount_with_vat} -->
+            <section class="hide" id="voiceSection">
+                <!-- successful_calls -->
+                <div class="form-group">
+                    <label for="successful_calls" class="control-label col-sm-3">Successful Calls:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" name="successful_calls" id="successful_calls">
+                    </div>
                 </div>
-            </div>
 
-            <!-- Effective Duration -->
-            <div class="form-group">
-                <label for="effective_duration" class="control-label col-sm-3">Effective Duration (minutes):</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control" name="effective_duration" id="effective_duration">
+                <!-- Effective Duration -->
+                <div class="form-group">
+                    <label for="effective_duration" class="control-label col-sm-3">Effective Duration (minutes):</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" name="effective_duration" id="effective_duration">
+                    </div>
                 </div>
-            </div>
 
-            <!-- Voice Amount -->
-            <div class="form-group">
-                <label for="voice_amount" class="control-label col-sm-3">Voice Amount:</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control" name="voice_amount" id="voice_amount">
+                <!-- Voice Amount -->
+                <div class="form-group">
+                    <label for="voice_amount" class="control-label col-sm-3">Voice Amount:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" name="voice_amount" id="voice_amount">
+                    </div>
                 </div>
-            </div>
 
-            <!-- Voice Amount with VAT -->
-            <div class="form-group">
-                <label for="voice_amount_with_vat" class="control-label col-sm-3">Voice Amount with VAT:</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control" name="voice_amount_with_vat" id="voice_amount_with_vat">
+                <!-- Voice Amount with VAT -->
+                <div class="form-group">
+                    <label for="voice_amount_with_vat" class="control-label col-sm-3">Voice Amount with VAT:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" name="voice_amount_with_vat"
+                               id="voice_amount_with_vat">
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- SMS Count -->
-            <div class="form-group">
-                <label for="sms_count" class="control-label col-sm-3">SMS Count:</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_count" id="sms_count">
+            <!-- SMS Section using {sms_count, sms_amount, sms_amount_with_vat} -->
+            <section class="hide" id="smsSection">
+                <!-- sms_count -->
+                <div class="form-group">
+                    <label for="sms_count" class="control-label col-sm-3">SMS Count:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" name="sms_count" id="sms_count">
+                    </div>
                 </div>
-            </div>
 
-            <!-- SMS Rate -->
-            <div class="form-group">
-                <label for="sms_rate" class="control-label col-sm-3">SMS Rate:</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_rate" id="sms_rate">
+                <!-- sms_amount -->
+                <div class="form-group">
+                    <label for="sms_amount" class="control-label col-sm-3">SMS Amount:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" name="sms_amount" id="sms_amount">
+                    </div>
                 </div>
-            </div>
 
-            <!-- SMS Amount -->
-            <div class="form-group">
-                <label for="sms_amount" class="control-label col-sm-3">SMS Amount:</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_amount" id="sms_amount">
+                <!-- sms_amount_with_vat -->
+                <div class="form-group">
+                    <label for="sms_amount_with_vat" class="control-label col-sm-3">SMS Amount with VAT:</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" name="sms_amount_with_vat" id="sms_amount_with_vat">
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- SMS Amount with VAT -->
-            <div class="form-group">
-                <label for="sms_amount_with_vat" class="control-label col-sm-3">SMS Amount with VAT:</label>
-                <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_amount_with_vat" id="sms_amount_with_vat">
-                </div>
-            </div>
 
             <!-- File Upload -->
             <div class="form-group">
@@ -191,6 +204,58 @@
 
 
 <?= $this->section('scripts') ?>
+    <!-- show voice or sms or both based on sbn
+            RITT -> FORM {voice,sms}
+            QTECH -> FORM {sms}
+            IGW -> FORM {voice}
+            ICX -> FORM {voice}
+     -->
+    <script>
+        $(document).ready(function () {
+            $('#sbn').on('change', function () {
+                const sbn = $(this).val();
+                if (sbn === `<?= \OperatorBill\Constants\SBNConstant::RITT ?>`) {
+                    $('#voiceSection').removeClass('hide');
+                    $('#smsSection').removeClass('hide');
+                } else if (sbn === `<?= \OperatorBill\Constants\SBNConstant::QTECH ?>`) {
+                    $('#voiceSection').addClass('hide');
+                    $('#smsSection').removeClass('hide');
+                } else if (sbn === `<?= \OperatorBill\Constants\SBNConstant::RITIGW ?>` || sbn === `<?= \OperatorBill\Constants\SBNConstant::SOFTEX ?>`) {
+                    $('#voiceSection').removeClass('hide');
+                    $('#smsSection').addClass('hide');
+                } else {
+                    $('#voiceSection').addClass('hide');
+                    $('#smsSection').addClass('hide');
+                }
+            });
+        });
+    </script>
+
+    <!-- on operator_type change get operators -->
+    <script>
+        $(document).ready(function () {
+            $('#operator_type').on('change', function () {
+                const operatorType = $(this).val();
+                if (operatorType !== '') {
+                    $.ajax({
+                        url: `<?= route_to('operator_bill.operator.get_operators') ?>`,
+                        type: 'GET',
+                        data: {
+                            operator_type: operatorType
+                        },
+                        success: function (response) {
+                            let operators = JSON.parse(response);
+                            console.log(operators);
+                            $('#operator_id').html(response);
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+
+    <!-- file_upload preview -->
     <script>
         document.getElementById('file_upload').addEventListener('change', function (e) {
             // Get the selected files

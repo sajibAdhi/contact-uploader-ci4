@@ -37,9 +37,9 @@
 
 ```
 RITT -> FORM {voice,sms}
-QTECH -> FORM {voice,sms}
-IGW -> FORM {voice}
-ICX -> FORM {voice}
+QTECH -> FORM {sms}
+RITIGW -> FORM {voice}
+SOFTEX -> FORM {voice}
 ```
   
 - [ ] Operator Bill Report Serch (feature-request)
