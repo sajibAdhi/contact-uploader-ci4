@@ -4,8 +4,10 @@ namespace App\Constants;
 
 class ApplicationConstant
 {
-    public const NAME       = 'Ranks ITT';
-    public const SHORT_NAME = 'RITT';
-    public const PER_PAGE   = 20;
-    public const VERSION    = '1.0.0';
+    const NAME       = 'Ranks ITT';
+    const SHORT_NAME = 'RITT';
+    const PER_PAGE   = 20;
+    const VERSION    = '1.0.0';
+    const LOGO       = 'logo.png';
+    const FAVICON    = 'favicon.png';
 }

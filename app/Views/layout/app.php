@@ -4,12 +4,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>
-        <?= $title ?? \App\Constants\ApplicationConstant::SHORT_NAME ?>
-        |
-        <?= \App\Constants\ApplicationConstant::NAME ?>
+        <?= $title ?? \App\Constants\ApplicationConstant::SHORT_NAME ?>|<?= \App\Constants\ApplicationConstant::NAME ?>
     </title>
+
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Application Icon -->
+    <link rel="icon" href="<?= base_url(\App\Constants\ApplicationConstant::FAVICON) ?>">
+
     <link rel="stylesheet" href="<?= base_url('bower_components/bootstrap/dist/css/bootstrap.min.css') ?>">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= base_url('bower_components/font-awesome/css/font-awesome.min.css') ?>">
@@ -62,7 +65,12 @@ desired effect
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b><?= \App\Constants\ApplicationConstant::SHORT_NAME ?></b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b><?= \App\Constants\ApplicationConstant::NAME ?></b></span>
+            <span class="logo-lg">
+                <b>
+                    <img src="<?= base_url(\App\Constants\ApplicationConstant::LOGO) ?>"
+                         alt="<?= \App\Constants\ApplicationConstant::NAME ?>">
+                    </b>
+            </span>
         </a>
 
         <!-- Header Navbar -->
