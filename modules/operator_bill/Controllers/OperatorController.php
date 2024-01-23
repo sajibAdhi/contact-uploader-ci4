@@ -101,6 +101,7 @@ class OperatorController extends BaseController
             'address' => $this->request->getPost('operator_address'),
             'phone' => $this->request->getPost('operator_phone'),
             'email' => $this->request->getPost('operator_email'),
+            'type' => $this->request->getPost('operator_type'),
         ];
     }
 }

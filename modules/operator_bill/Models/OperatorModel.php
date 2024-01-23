@@ -12,7 +12,7 @@ class OperatorModel extends Model
     protected $returnType = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['name', 'address', 'phone', 'email'];
+    protected $allowedFields = ['name', 'address', 'phone', 'email','type'];
 
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
