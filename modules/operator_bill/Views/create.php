@@ -1,5 +1,6 @@
 <?= $this->extend('layout/app') ?>
 
+
 <?= $this->section('content') ?>
     <!-- Category Create Section -->
     <div class="box box-primary">
@@ -55,14 +56,7 @@
                 </label>
                 <div class="col-sm-9">
                     <select name="operator_id" id="operator_id" class="form-control" required>
-                        <?php if (!empty($operators)): ?>
-                            <option value="">Select Operator</option>
-                            <?php foreach ($operators as $operator): ?>
-                                <option value="<?= $operator->id ?>"><?= $operator->name ?></option>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <option value="">No Operator Found</option>
-                        <?php endif; ?>
+                        <option value="">Select a Operator Type First</option>
                     </select>
                 </div>
             </div>
@@ -236,6 +230,7 @@
         $(document).ready(function () {
             $('#operator_type').on('change', function () {
                 const operatorType = $(this).val();
+                console.log(operatorType);
                 if (operatorType !== '') {
                     $.ajax({
                         url: `<?= route_to('operator_bill.operator.get_operators') ?>`,
@@ -244,9 +239,25 @@
                             operator_type: operatorType
                         },
                         success: function (response) {
-                            let operators = JSON.parse(response);
-                            console.log(operators);
-                            $('#operator_id').html(response);
+                            if (response) {
+                                let operators = response.data;
+                                let operatorOptions = '<option value="">Select Operator</option>';
+
+                                operators.forEach(operator => {
+                                    operatorOptions += `<option value="${operator.id}">${operator.name}</option>`;
+                                });
+
+                                $('#operator_id').html(operatorOptions);
+                            } else {
+
+                                $('#operator_id').html('<option value="">No Operator Found</option>');
+                            }
+                        },
+                        error: function (error) {
+                            console.error(error);
+                            // show Toastr error to end user
+                            toastr.error(error.responseJSON.message, 'Error');
+
                         }
                     });
                 }

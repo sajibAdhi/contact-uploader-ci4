@@ -68,19 +68,31 @@ class OperatorBillController extends BaseController
 
     public function ajaxGet()
     {
-        if (!$this->request->isAJAX()) {
+//        if (!$this->request->isAJAX()) {
 //            return redirect()->back()->with('error', 'Invalid Request');
-        }
+//        }
+
         $operator_type = $this->request->getGet('operator_type');
 
         $operators = $this->operatorBillService->operatorModel->where('type', $operator_type)->findAll();
 
+        // Check if the operators are empty
         if (empty($operators)) {
-            return $this->response->setStatusCode(204, 'No Content')
-                ->setJSON(['status' => false, 'message' => 'No Operators Found']);
+            // Return a json response so this get ajax error
+
+            return $this->response
+                ->setStatusCode(204)
+                ->setJSON([
+                'status' => 'error',
+                'message' => 'No operators found for this operator type',
+            ]);
         }
 
-        return $this->response->setJSON($operators);
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Operators found',
+            'data' => $operators,
+        ]);
     }
 
     /**
