@@ -4,7 +4,7 @@ namespace OperatorBill\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreteBillFilesTable extends Migration
+class CreteOperatorBillFilesTable extends Migration
 {
     public function up()
     {
@@ -33,11 +33,11 @@ class CreteBillFilesTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('bill_files');
+        $this->forge->createTable('operator_bill_files');
     }
 
     public function down()
     {
-        $this->forge->dropTable('bill_files');
+        $this->forge->dropTable('operator_bill_files');
     }
 }

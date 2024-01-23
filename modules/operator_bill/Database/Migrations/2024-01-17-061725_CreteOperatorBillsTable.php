@@ -3,6 +3,7 @@
 namespace OperatorBill\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use OperatorBill\Constants\SBNConstant;
 
 class CreteOperatorBillsTable extends Migration
 {
@@ -14,6 +15,11 @@ class CreteOperatorBillsTable extends Migration
                 'constraint' => 20,
                 'unsigned' => true,
                 'auto_increment' => true,
+            ],
+            'sbn' => [
+                'type' => 'ENUM',
+                'constraint' => SBNConstant::all(),
+                'null' => false,
             ],
             'year' => [
                 'type' => 'YEAR',

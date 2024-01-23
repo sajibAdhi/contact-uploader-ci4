@@ -3,6 +3,7 @@
 namespace OperatorBill\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use OperatorBill\Constants\OperatorTypeConstant;
 
 class CreteOperatorTable extends Migration
 {
@@ -29,6 +30,11 @@ class CreteOperatorTable extends Migration
             'email' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100',
+            ],
+            'type' => [
+                'type' => 'ENUM',
+                'constraint' => OperatorTypeConstant::all(),
+                'null' => false,
             ],
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp on update current_timestamp',
