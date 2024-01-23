@@ -3,6 +3,7 @@
 namespace OperatorBill\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\HTTP\RedirectResponse;
 use OperatorBill\Models\OperatorModel;
 use OperatorBill\Constants\OperatorTypeConstant;
 use ReflectionException;
@@ -34,9 +35,6 @@ class OperatorController extends BaseController
         ]);
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function store()
     {
         try {
@@ -65,9 +63,6 @@ class OperatorController extends BaseController
         ]);
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function update(int $id)
     {
         try {
@@ -84,7 +79,7 @@ class OperatorController extends BaseController
         }
     }
 
-    public function delete(int $id)
+    public function delete(int $id): RedirectResponse
     {
         try{
             if ($this->operatorModel->delete($id)) {
@@ -99,7 +94,7 @@ class OperatorController extends BaseController
 
     /** ----------------------------------------------------------------------------------------------- */
 
-    private function postData()
+    private function postData(): array
     {
         return [
             'name' => $this->request->getPost('operator_name'),

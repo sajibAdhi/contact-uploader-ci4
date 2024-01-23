@@ -10,6 +10,44 @@
 
         <div class="box-body">
 
+            <!-- SBN -->
+            <div class="form-group">
+                <label for="sbn" class="control-label col-sm-3">
+                    SBN: <span class="text-danger">*</span>
+                </label>
+                <div class="col-sm-9">
+                    <select name="sbn" id="sbn" class="form-control" required>
+                        <?php if (!empty($sbnList)): ?>
+                            <option value="">Select SBN</option>
+                            <?php foreach ($sbnList as $sbn): ?>
+                                <option value="<?= $sbn ?>"><?= strtoupper($sbn) ?></option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No SBN Found</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Operator Type -->
+            <div class="form-group">
+                <label for="operator_type" class="control-label col-sm-3">
+                    Operator Type: <span class="text-danger">*</span>
+                </label>
+                <div class="col-sm-9">
+                    <select name="operator_type" id="operator_type" class="form-control" required>
+                        <?php if (!empty($operatorTypes)): ?>
+                            <option value="">Select Operator Type</option>
+                            <?php foreach ($operatorTypes as $operatorType): ?>
+                                <option value="<?= $operatorType ?>"><?= strtoupper($operatorType) ?></option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No Operator Type Found</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+            </div>
+
             <!-- Operator -->
             <div class="form-group">
                 <label for="operator_id" class="control-label col-sm-3">
@@ -85,7 +123,7 @@
             <div class="form-group">
                 <label for="sms_count" class="control-label col-sm-3">SMS Count:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_count" id="sms_count" >
+                    <input type="number" class="form-control" name="sms_count" id="sms_count">
                 </div>
             </div>
 
@@ -93,7 +131,7 @@
             <div class="form-group">
                 <label for="sms_rate" class="control-label col-sm-3">SMS Rate:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_rate" id="sms_rate" >
+                    <input type="number" class="form-control" name="sms_rate" id="sms_rate">
                 </div>
             </div>
 
@@ -101,7 +139,7 @@
             <div class="form-group">
                 <label for="sms_amount" class="control-label col-sm-3">SMS Amount:</label>
                 <div class="col-sm-9">
-                    <input type="number" class="form-control" name="sms_amount" id="sms_amount" >
+                    <input type="number" class="form-control" name="sms_amount" id="sms_amount">
                 </div>
             </div>
 
@@ -126,6 +164,7 @@
                     width: 100%;
                     height: auto;
                 }
+
                 .preview-grid {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
@@ -153,7 +192,7 @@
 
 <?= $this->section('scripts') ?>
     <script>
-        document.getElementById('file_upload').addEventListener('change', function(e) {
+        document.getElementById('file_upload').addEventListener('change', function (e) {
             // Get the selected files
             var files = e.target.files;
 
