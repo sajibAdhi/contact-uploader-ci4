@@ -1,5 +1,9 @@
 <?php
 
+namespace OperatorBill\Constants;
+
+use ReflectionClass;
+
 /**
  * ConstantInterface.php
  */
