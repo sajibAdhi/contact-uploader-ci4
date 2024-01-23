@@ -22,14 +22,17 @@ class CreteOperatorTable extends Migration
             ],
             'address' => [
                 'type' => 'TEXT',
+                'null' => true,
             ],
             'phone' => [
                 'type' => 'VARCHAR',
-                'constraint' => '15',
+                'constraint' => '255',
+                'null' => true,
             ],
             'email' => [
                 'type' => 'VARCHAR',
-                'constraint' => '100',
+                'constraint' => '255',
+                'null' => true,
             ],
             'type' => [
                 'type' => 'ENUM',
