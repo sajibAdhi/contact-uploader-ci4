@@ -15,6 +15,25 @@
             </div>
         <?php endif; ?>
 
+        <!-- Operator Type -->
+        <div class="form-group">
+            <label for="operator_type" class="control-label col-sm-3">
+                Operator Type: <span class="text-danger">*</span>
+            </label>
+            <div class="col-sm-9">
+                <select name="operator_type" id="operator_type" class="form-control" required>
+                    <?php if (!empty($operatorTypes)): ?>
+                        <option value="">Select Operator</option>
+                        <?php foreach ($operatorTypes as  $operatorType): ?>
+                            <option value="<?= $operatorType?>"><?= strtoupper($operatorType)  ?></option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="">No Operator Type Found</option>
+                    <?php endif; ?>
+                </select>
+            </div>
+        </div>
+        
         <!-- Operator Name -->
         <div class="form-group">
             <label for="operator_name" class="control-label col-sm-3">
@@ -24,7 +43,7 @@
                 <input type="text" class="form-control" name="operator_name" id="operator_name" value="<?= set_value('operator_name', $operator->name ?? null) ?>" required>
             </div>
         </div>
-
+            
         <!-- Operator Address -->
         <div class="form-group">
             <label for="operator_address" class="control-label col-sm-3">Operator Address:</label>

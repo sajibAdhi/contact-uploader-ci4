@@ -4,6 +4,7 @@ namespace OperatorBill\Controllers;
 
 use App\Controllers\BaseController;
 use OperatorBill\Models\OperatorModel;
+use OperatorBill\Constants\OpetatorTypeConstant;
 use ReflectionException;
 
 class OperatorController extends BaseController
@@ -29,6 +30,7 @@ class OperatorController extends BaseController
     {
         return operator_bill_view('operator\form', [
             'title' => 'Add Operator',
+            'operatorTypes' => OpetatorTypeConstant::all(),
         ]);
     }
 
