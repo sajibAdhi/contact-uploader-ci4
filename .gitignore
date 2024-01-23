@@ -97,6 +97,13 @@ node_modules/
 public/assets/
 
 #-------------------------
+# AdmminLTE 3.2.0 Template
+#-------------------------
+!./public/AdminLTE-3.2.0/build/**/*
+!./public/AdminLTE-3.2.0/dist/**/*
+!./public/AdminLTE-3.2.0/plugins/**/*
+
+#-------------------------
 # IDE / Development Files
 #-------------------------
 
@@ -136,12 +143,4 @@ nb-configuration.xml
 /phpunit*.xml
 /.phpunit.*.cache
 /.php-cs-fixer.cache
-
-
-#-------------------------
-
-# AdmminLTE 3
-!./public/AdminLTE-3.2.0/build/**/*
-!./public/AdminLTE-3.2.0/dist/**/*
-!./public/AdminLTE-3.2.0/plugins/**/*
 
