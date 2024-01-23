@@ -53,10 +53,6 @@ class CreteOperatorBillsTable extends Migration
                 'type' => 'BIGINT',
                 'constraint' => 20,
             ],
-            'sms_rate' => [
-                'type' => 'DECIMAL',
-                'constraint' => '10,2',
-            ],
             'sms_amount' => [
                 'type' => 'DECIMAL',
                 'constraint' => '10,2',
