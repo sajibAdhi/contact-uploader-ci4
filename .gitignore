@@ -137,3 +137,11 @@ nb-configuration.xml
 /.phpunit.*.cache
 /.php-cs-fixer.cache
 
+
+#-------------------------
+
+# AdmminLTE 3
+!./public/AdminLTE-3.2.0/build/**/*
+!./public/AdminLTE-3.2.0/dist/**/*
+!./public/AdminLTE-3.2.0/plugins/**/*
+
