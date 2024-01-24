@@ -51,6 +51,3 @@ $routes->group('settings', static function ($routes) {
     $routes->get('/', [SettingController::class, 'index'], ['as' => 'settings']);
     $routes->post('/', [SettingController::class, 'store']);
 });
-
-/** text/adminlte3 */
-$routes->get('test/adminlte3', static fn() => view('test/adminlte3'), ['as' => 'adminlte3.index']);

@@ -26,6 +26,14 @@ class OperatorBillController extends BaseController
         ]);
     }
 
+    public function test(): string
+    {
+        return operator_bill_view('test', [
+            'title' => 'Operator Bills',
+            'operatorBills' => $this->operatorBillService->findAll(),
+        ]);
+    }
+
     public function create(): string
     {
         return operator_bill_view('create', [

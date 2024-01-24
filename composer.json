@@ -16,7 +16,6 @@
     "ext-intl": "*",
     "ext-json": "*",
     "ext-zip": "*",
-    "almasaeed2010/adminlte": "~3.2",
     "codeigniter4/framework": "^4.0",
     "codeigniter4/translations": "^4.4",
     "liaison/revision": "^1.1",

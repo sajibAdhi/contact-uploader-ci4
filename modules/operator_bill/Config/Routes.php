@@ -25,4 +25,6 @@ $routes->group('operator_bills', static function ($routes) {
 
         $routes->get('get_operators', [OperatorBillController::class, 'ajaxGet'], ['as' => 'operator_bill.operator.get_operators']);
     });
+
+    $routes->get('test', [OperatorBillController::class, 'test']);
 });
