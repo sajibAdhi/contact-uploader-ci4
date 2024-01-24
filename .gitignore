@@ -99,9 +99,9 @@ public/assets/
 #-------------------------
 # AdmminLTE 3.2.0 Template
 #-------------------------
-!./public/adminlte3/build/
-!./public/adminlte3/dist/
-!./public/adminlte3/plugins/
+!./public/adminlte/build/
+!./public/adminlte/dist/
+!./public/adminlte/plugins/
 
 #-------------------------
 # IDE / Development Files
