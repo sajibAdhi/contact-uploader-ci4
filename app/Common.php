@@ -95,3 +95,41 @@ if (!function_exists('settingService')) {
         return new SettingService();
     }
 }
+
+
+if (!function_exists('active_link')) {
+
+    /**
+     * Active link
+     * If $uri is equal to current_uri return $class
+     */
+    function active_link(...$uris): string
+    {
+        $current_uri = current_url(true)->getPath();
+
+        if (in_array($current_uri, $uris, true)) {
+            return 'active';
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('menu_open')) {
+
+    /**
+     * Active menu
+     * @param mixed ...$uris
+     * @return string
+     */
+    function menu_open(...$uris): string
+    {
+        $current_uri = current_url(true)->getPath();
+
+        if (in_array($current_uri, $uris, true)) {
+            return 'menu-open';
+        }
+
+        return 'menu-close';
+    }
+}

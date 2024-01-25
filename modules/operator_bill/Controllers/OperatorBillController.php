@@ -28,7 +28,7 @@ class OperatorBillController extends BaseController
 
     public function test(): string
     {
-        return operator_bill_view('test', [
+        return operator_bill_view('index_test', [
             'title' => 'Operator Bills',
             'operatorBills' => $this->operatorBillService->findAll(),
         ]);

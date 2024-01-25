@@ -17,6 +17,7 @@ $routes->group('operator_bills', static function ($routes) {
 
     $routes->group('operators', static function ($routes) {
         $routes->get('/', [OperatorController::class, 'index'], ['as' => 'operator_bill.operator.index']);
+        $routes->get('test', [OperatorController::class, 'test']);
         $routes->get('create', [OperatorController::class, 'create'], ['as' => 'operator_bill.operator.upload']);
         $routes->post('create', [OperatorController::class, 'store']);
         $routes->get('(:num)/edit', [OperatorController::class, 'edit'], ['as' => 'operator_bill.operator.edit']);

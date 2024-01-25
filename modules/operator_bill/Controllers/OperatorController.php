@@ -27,6 +27,16 @@ class OperatorController extends BaseController
         ]);
     }
 
+    public function test(): string
+    {
+        $operators = $this->operatorModel->findAll();
+
+        return operator_bill_view('operator\index_test', [
+            'title' => 'Operator List',
+            'operators' => $operators,
+        ]);
+    }
+
     public function create(): string
     {
         return operator_bill_view('operator\form', [

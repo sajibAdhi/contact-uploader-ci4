@@ -94,10 +94,8 @@ desired effect
             <?php // echo validation_list_errors()?>
 
             <!--------------------------
-              | Your Page Content Here |
+              | Application Page Content Here |
               -------------------------->
-            <div id="app"></div>
-
             <?= $this->renderSection('content') ?>
 
         </section>
