@@ -16,12 +16,12 @@
         -->
 
 
-        <?= view_cell(\App\Cells\NavItemCell::class, ['navName' => 'Dashboard', 'path' => route_to('operator_bill.index') . '/test'])?>
+        <!--        --><?php //= view_cell(\App\Cells\NavItemCell::class, ['navName' => 'Dashboard', 'path' => route_to('operator_bill.index') . '/test'])?>
 
         <!-- operator_bill dashboard -->
         <li class="nav-item">
-            <a href="<?= route_to('operator_bill.index') . '/test' ?>"
-               class="nav-link <?= active_link(route_to('operator_bill.index') . '/test') ?>">
+            <a href="<?= route_to('operator_bill.index') ?>"
+               class="nav-link <?= active_link(route_to('operator_bill.index')) ?>">
                 <i class="nav-icon fas fa-th"></i>
                 <p>Dashboard</p>
             </a>
@@ -34,10 +34,10 @@
             </a>
         </li>
 
-        <li class="nav-item <?= menu_open(route_to('operator_bill.operator.index') . '/test', route_to('operator_bill.operator.create'),) ?>">
+        <li class="nav-item <?= menu_open(route_to('operator_bill.operator.index'), route_to('operator_bill.operator.create')) ?>">
             <a href="#"
                class="nav-link <?= active_link(
-                   route_to('operator_bill.operator.index') . '/test',
+                   route_to('operator_bill.operator.index'),
                    route_to('operator_bill.operator.create'),
                ) ?>"
             >
@@ -49,8 +49,8 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="<?= route_to('operator_bill.operator.index') . '/test' ?>"
-                       class="nav-link <?= active_link(route_to('operator_bill.operator.index') . '/test') ?>">
+                    <a href="<?= route_to('operator_bill.operator.index') ?>"
+                       class="nav-link <?= active_link(route_to('operator_bill.operator.index')) ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>List</p>
                     </a>
