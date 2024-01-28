@@ -24,6 +24,11 @@
         <?= form_open_multipart(route_to('operator_bill.create'), ['class' => 'form-horizontal']) ?>
 
         <div class="card-body">
+            <?php if (validation_errors()) : ?>
+                <div class="alert alert-danger">
+                    <?= validation_list_errors() ?>
+                </div>
+            <?php endif; ?>
 
             <div class="row">
                 <div class="col-sm-6">
@@ -186,9 +191,15 @@
                     }
 
                     @keyframes fadeInOut {
-                        0% { opacity: 1; }
-                        50% { opacity: 0; }
-                        100% { opacity: 1; }
+                        0% {
+                            opacity: 1;
+                        }
+                        50% {
+                            opacity: 0;
+                        }
+                        100% {
+                            opacity: 1;
+                        }
                     }
                 </style>
                 <div id="file_preview">

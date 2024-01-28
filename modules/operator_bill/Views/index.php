@@ -1,4 +1,4 @@
-<?= $this->extend('layout/adminlte3') ?>
+<?= $this->extend('layout/app') ?>
 
 
 
