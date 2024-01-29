@@ -7,8 +7,9 @@ use App\Constants\AbstractConstant;
 class OperatorTypeConstant extends AbstractConstant
 {
     const MOBILE = 'mobile';
-    const ISO = 'iso';
+    const IOS = 'ios';
     const IGW = 'igw';
     const ICX = 'icx';
+    const LANDLINE = 'landline';
 }
 

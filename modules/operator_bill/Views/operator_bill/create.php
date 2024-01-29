@@ -81,7 +81,9 @@
                             <?php if (!empty($operatorTypes)): ?>
                                 <option value="">Select Operator Type</option>
                                 <?php foreach ($operatorTypes as $operatorType): ?>
-                                    <option value="<?= $operatorType ?>" <?= set_select('operator_type', $operatorType) ?>>
+                                    <option value="<?= $operatorType ?>"
+                                        <?= set_select('operator_type', $operatorType, ($operatorBill->operator->type ?? null) == $operatorType) ?>
+                                    >
                                         <?= strtoupper($operatorType) ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -133,7 +135,7 @@
                 <div class="col-sm-6 voice-section d-none">
                     <div class="form-group">
                         <label for="effective_duration">Effective Duration (minutes):</label>
-                        <input type="number" class="form-control" name="effective_duration" id="effective_duration"
+                        <input type="number" step="any" class="form-control" name="effective_duration" id="effective_duration"
                                value="<?= set_value('effective_duration', $operatorBill->effective_duration ?? null) ?>">
                     </div>
                 </div>
@@ -142,7 +144,7 @@
                 <div class="col-sm-6 voice-section d-none">
                     <div class="form-group">
                         <label for="voice_amount">Voice Amount:</label>
-                        <input type="number" class="form-control" name="voice_amount" id="voice_amount"
+                        <input type="number" step="any" class="form-control" name="voice_amount" id="voice_amount"
                                value="<?= set_value('voice_amount', $operatorBill->voice_amount ?? null) ?>">
                     </div>
                 </div>
@@ -151,7 +153,7 @@
                 <div class="col-sm-6 voice-section d-none">
                     <div class="form-group">
                         <label for="voice_amount_with_vat">Voice Amount with VAT:</label>
-                        <input type="number" class="form-control" name="voice_amount_with_vat"
+                        <input type="number" step="any" class="form-control" name="voice_amount_with_vat"
                                id="voice_amount_with_vat"
                                value="<?= set_value('voice_amount_with_vat', $operatorBill->voice_amount_with_vat ?? null) ?>">
                     </div>
@@ -265,9 +267,10 @@
     <!-- on operator_type change get operators -->
     <script>
         $(function () {
-            $('#operator_type').on('change', function () {
-                const operatorType = $(this).val();
-                console.log(operatorType);
+            const operatorTypeField = $('#operator_type');
+
+            function getOperators() {
+                const operatorType = operatorTypeField.val();
                 if (operatorType !== '') {
                     $.ajax({
                         url: `<?= route_to('operator_bill.operator.get_operators') ?>`,
@@ -298,8 +301,11 @@
                         }
                     });
                 }
+            }
 
-            });
+            getOperators();
+
+            operatorTypeField.on('change', () => getOperators());
         });
     </script>
 

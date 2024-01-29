@@ -3,7 +3,7 @@
 namespace Modules\OperatorBill\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
-use OperatorBill\Constants\SbuConstant;
+use Modules\OperatorBill\Constants\SbuConstant;
 
 class CreteOperatorBillsTable extends Migration
 {
@@ -16,7 +16,7 @@ class CreteOperatorBillsTable extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'sbn' => [
+            'sbu' => [
                 'type' => 'ENUM',
                 'constraint' => SbuConstant::all(),
                 'null' => false,
@@ -36,30 +36,39 @@ class CreteOperatorBillsTable extends Migration
             'successful_calls' => [
                 'type' => 'BIGINT',
                 'constraint' => 20,
+                'null' => true,
+                'default' => null,
             ],
             'effective_duration' => [
-                'type' => 'BIGINT',
-                'constraint' => 20,
+                'type' => 'double',
+                'null' => true,
+                'default' => null,
             ],
             'voice_amount' => [
-                'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'type' => 'double',
+                'null' => true,
+                'default' => null,
             ],
             'voice_amount_with_vat' => [
-                'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'type' => 'double',
+                'null' => true,
+                'default' => null,
             ],
             'sms_count' => [
                 'type' => 'BIGINT',
                 'constraint' => 20,
+                'null' => true,
+                'default' => null,
             ],
             'sms_amount' => [
-                'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'type' => 'double',
+                'null' => true,
+                'default' => null,
             ],
             'sms_amount_with_vat' => [
-                'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'type' => 'double',
+                'null' => true,
+                'default' => null,
             ],
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp on update current_timestamp',

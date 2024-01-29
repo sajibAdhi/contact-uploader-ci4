@@ -63,8 +63,8 @@ class OperatorBillController extends BaseController
 
             // If the validation passes, then get the posted data
             $postData = $this->postData();
-            $files = $this->request->getFiles()['file_upload'] ?? null;
 
+            $files = $this->request->getFiles()['file_upload'] ?? null;
             // Insert the posted data into the database
             if ($this->operatorBillService->store($postData, $files)) {
                 return redirect()->route('operator_bill.index')->with('success', 'Operator Bill Created Successfully');
@@ -151,13 +151,13 @@ class OperatorBillController extends BaseController
             'operator_id' => 'required|integer',
             'year' => 'required|numeric',
             'month' => 'required|numeric',
-            'successful_calls' => 'required|numeric',
-            'effective_duration' => 'required|numeric',
-            'voice_amount' => 'required|numeric',
-            'voice_amount_with_vat' => 'required|numeric',
-            'sms_count' => 'required|numeric',
-            'sms_amount' => 'required|numeric',
-            'sms_amount_with_vat' => 'required|numeric',
+            'successful_calls' => 'permit_empty|trim|numeric',
+            'effective_duration' => 'permit_empty|trim|numeric',
+            'voice_amount' => 'permit_empty|trim|numeric',
+            'voice_amount_with_vat' => 'permit_empty|trim|numeric',
+            'sms_count' => 'permit_empty|trim|numeric',
+            'sms_amount' => 'permit_empty|trim|numeric',
+            'sms_amount_with_vat' => 'permit_empty|trim|numeric',
         ];
 
         // Validate the posted data
@@ -175,7 +175,7 @@ class OperatorBillController extends BaseController
             'year' => $this->request->getPost('year', FILTER_SANITIZE_NUMBER_INT),
             'month' => $this->request->getPost('month', FILTER_SANITIZE_NUMBER_INT),
             'successful_calls' => $this->request->getPost('successful_calls', FILTER_SANITIZE_NUMBER_INT),
-            'effective_duration' => $this->request->getPost('effective_duration', FILTER_SANITIZE_NUMBER_INT),
+            'effective_duration' => $this->request->getPost('effective_duration', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
         ];
 
         if ($postData->sbu == SbuConstant::RITT || $postData->sbu == SbuConstant::QTECH) {
@@ -189,6 +189,12 @@ class OperatorBillController extends BaseController
             $postData->voice_amount_with_vat = $this->request->getPost('voice_amount_with_vat', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         }
 
+        // if postdate property is empty, then set it to null
+        foreach ($postData as $key => $value) {
+            if (empty($value)) {
+                $postData->$key = null;
+            }
+        }
 
         return $postData;
     }

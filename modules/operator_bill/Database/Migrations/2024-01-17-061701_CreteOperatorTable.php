@@ -3,7 +3,7 @@
 namespace Modules\OperatorBill\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
-use OperatorBill\Constants\OperatorTypeConstant;
+use Modules\OperatorBill\Constants\OperatorTypeConstant;
 
 class CreteOperatorTable extends Migration
 {
