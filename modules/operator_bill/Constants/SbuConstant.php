@@ -1,8 +1,10 @@
 <?php
 
-namespace OperatorBill\Constants;
+namespace Modules\OperatorBill\Constants;
 
-class SbuConstant extends AbstractConstant
+use App\Constants\ApplicationConstant;
+
+class SbuConstant extends ApplicationConstant
 {
     const RITT = 'ritt';
     const RITIGW = 'ritigw';

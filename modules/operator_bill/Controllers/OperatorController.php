@@ -1,12 +1,11 @@
 <?php
 
-namespace OperatorBill\Controllers;
+namespace Modules\OperatorBill\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RedirectResponse;
-use OperatorBill\Models\OperatorModel;
-use OperatorBill\Constants\OperatorTypeConstant;
-use ReflectionException;
+use Modules\OperatorBill\Constants\OperatorTypeConstant;
+use Modules\OperatorBill\Models\OperatorModel;
 
 class OperatorController extends BaseController
 {
@@ -91,13 +90,13 @@ class OperatorController extends BaseController
 
     public function delete(int $id): RedirectResponse
     {
-        try{
+        try {
             if ($this->operatorModel->delete($id)) {
                 return redirect()->route('operator_bill.operator.index')->with('success', 'Operator deleted successfully');
             } else {
                 return redirect()->back()->with('_ci_validation_errors', $this->operatorModel->errors());
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }

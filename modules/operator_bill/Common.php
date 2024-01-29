@@ -26,6 +26,6 @@ if (!function_exists('operator_bill_view')) {
      */
     function operator_bill_view(string $name, array $data = [], array $options = []): string
     {
-        return view("OperatorBill\\Views\\$name", $data, $options);
+        return view("Modules\\OperatorBill\\Views\\$name", $data, $options);
     }
 }

@@ -4,8 +4,9 @@
  * @var RouteCollection $routes
  */
 
-use OperatorBill\Controllers\OperatorController;
-use OperatorBill\Controllers\OperatorBillController;
+
+use Modules\OperatorBill\Controllers\OperatorBillController;
+use Modules\OperatorBill\Controllers\OperatorController;
 
 $routes->group('operator_bills', static function ($routes) {
     $routes->get('/', [OperatorBillController::class, 'index'], ['as' => 'operator_bill.index']);

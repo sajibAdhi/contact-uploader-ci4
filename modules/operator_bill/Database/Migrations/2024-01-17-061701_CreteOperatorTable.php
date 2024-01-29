@@ -1,6 +1,6 @@
 <?php
 
-namespace OperatorBill\Database\Migrations;
+namespace Modules\OperatorBill\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 use OperatorBill\Constants\OperatorTypeConstant;

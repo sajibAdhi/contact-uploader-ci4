@@ -1,6 +1,8 @@
 <?php
 
-namespace OperatorBill\Constants;
+namespace Modules\OperatorBill\Constants;
+
+use App\Constants\AbstractConstant;
 
 class OperatorTypeConstant extends AbstractConstant
 {

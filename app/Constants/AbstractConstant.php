@@ -1,6 +1,6 @@
 <?php
 
-namespace OperatorBill\Constants;
+namespace App\Constants;
 
 use ReflectionClass;
 

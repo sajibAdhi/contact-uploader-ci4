@@ -239,14 +239,14 @@
             // show voice or sms or both based on sbu
             function setSbuForm() {
                 const sbu = sbuField.val();
-                console.log(sbu === `<?php echo \OperatorBill\Constants\SbuConstant::RITT ?>`);
-                if (sbu === `<?php echo \OperatorBill\Constants\SbuConstant::RITT ?>`) {
+                console.log(sbu === `<?php echo \Modules\OperatorBill\Constants\SbuConstant::RITT ?>`);
+                if (sbu === `<?php echo \Modules\OperatorBill\Constants\SbuConstant::RITT ?>`) {
                     $('.voice-section').removeClass('d-none');
                     $('.sms-section').removeClass('d-none');
-                } else if (sbu === `<?php echo \OperatorBill\Constants\SbuConstant::QTECH ?>`) {
+                } else if (sbu === `<?php echo \Modules\OperatorBill\Constants\SbuConstant::QTECH ?>`) {
                     $('.voice-section').addClass('d-none');
                     $('.sms-section').removeClass('d-none');
-                } else if (sbu === `<?php echo \OperatorBill\Constants\SbuConstant::RITIGW ?>` || sbu === `<?php echo \OperatorBill\Constants\SbuConstant::SOFTEX ?>`) {
+                } else if (sbu === `<?php echo \Modules\OperatorBill\Constants\SbuConstant::RITIGW ?>` || sbu === `<?php echo \Modules\OperatorBill\Constants\SbuConstant::SOFTEX ?>`) {
                     $('.voice-section').removeClass('d-none');
                     $('.sms-section').addClass('d-none');
                 } else {

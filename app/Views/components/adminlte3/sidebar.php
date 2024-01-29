@@ -12,7 +12,7 @@
 
         <!-- Sidebar Menu -->
         <?php if (strpos(current_url(), base_url() . 'operator_bills') === 0) : ?>
-            <?= $this->include('OperatorBill\Views\components\adminlte3\sidebar\menu'); ?>
+            <?= $this->include('Modules\\OperatorBill\Views\components\adminlte3\sidebar\menu'); ?>
         <?php else: ?>
             <?= $this->include('components/adminlte3/sidebar/menu') ?>
         <?php endif; ?>
