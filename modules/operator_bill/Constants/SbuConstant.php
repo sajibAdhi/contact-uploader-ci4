@@ -2,9 +2,9 @@
 
 namespace Modules\OperatorBill\Constants;
 
-use App\Constants\ApplicationConstant;
+use App\Constants\AbstractConstant;
 
-class SbuConstant extends ApplicationConstant
+class SbuConstant extends AbstractConstant
 {
     const RITT = 'ritt';
     const RITIGW = 'ritigw';
