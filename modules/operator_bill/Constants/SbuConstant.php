@@ -2,7 +2,7 @@
 
 namespace OperatorBill\Constants;
 
-class SBNConstant extends AbstractConstant
+class SbuConstant extends AbstractConstant
 {
     const RITT = 'ritt';
     const RITIGW = 'ritigw';

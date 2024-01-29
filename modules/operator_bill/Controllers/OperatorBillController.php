@@ -5,9 +5,8 @@ namespace OperatorBill\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RedirectResponse;
 use OperatorBill\Constants\OperatorTypeConstant;
-use OperatorBill\Constants\SBNConstant;
+use OperatorBill\Constants\SbuConstant;
 use OperatorBill\Services\OperatorBillService;
-use ReflectionException;
 
 class OperatorBillController extends BaseController
 {
@@ -20,15 +19,7 @@ class OperatorBillController extends BaseController
 
     public function index(): string
     {
-        return operator_bill_view('index', [
-            'title' => 'Operator Bills',
-            'operatorBills' => $this->operatorBillService->findAll(),
-        ]);
-    }
-
-    public function test(): string
-    {
-        return operator_bill_view('index_test', [
+        return operator_bill_view('operator_bill/index', [
             'title' => 'Operator Bills',
             'operatorBills' => $this->operatorBillService->findAll(),
         ]);
@@ -36,9 +27,9 @@ class OperatorBillController extends BaseController
 
     public function create(): string
     {
-        return operator_bill_view('create', [
+        return operator_bill_view('operator_bill/create', [
             'title' => 'Add Operator Bill',
-            'sbnList' => SBNConstant::all(),
+            'sbuList' => SbuConstant::all(), // This is from 'modules/operator_bill/Constants/SbuConstant.php'
             'operatorTypes' => OperatorTypeConstant::all(),
             'operators' => $this->operatorBillService->operatorModel->findAll(),
         ]);
@@ -51,27 +42,15 @@ class OperatorBillController extends BaseController
             $this->storeValidation();
 
             // If the validation passes, then get the posted data
-            $postData = [
-                'sbn' => $this->request->getPost('sbn', FILTER_SANITIZE_STRING),
-                'operator_id' => $this->request->getPost('operator_id', FILTER_SANITIZE_NUMBER_INT),
-                'year' => $this->request->getPost('year', FILTER_SANITIZE_NUMBER_INT),
-                'month' => $this->request->getPost('month', FILTER_SANITIZE_NUMBER_INT),
-                'successful_calls' => $this->request->getPost('successful_calls', FILTER_SANITIZE_NUMBER_INT),
-                'effective_duration' => $this->request->getPost('effective_duration', FILTER_SANITIZE_NUMBER_INT),
-                'voice_amount' => $this->request->getPost('voice_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-                'voice_amount_with_vat' => $this->request->getPost('voice_amount_with_vat', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-                'sms_count' => $this->request->getPost('sms_count', FILTER_SANITIZE_NUMBER_INT),
-                'sms_amount' => $this->request->getPost('sms_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-                'sms_amount_with_vat' => $this->request->getPost('sms_amount_with_vat', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-            ];
-            $files = $this->request->getFiles();
+            $postData = $this->postData();
+            $files = $this->request->getFiles()['file_upload'] ?? null;
 
             // Insert the posted data into the database
-            if ($this->operatorBillService->store($postData, $files['file_upload'])) {
+            if ($this->operatorBillService->store($postData, $files)) {
                 return redirect()->route('operator_bill.index')->with('success', 'Operator Bill Created Successfully');
             }
 
-            return redirect()->back()->withInput()->with('_ci_validation_errors', $this->operatorBillService->operatorBillModel->errors());
+            return redirect()->back()->withInput()->with('error', 'Failed to create operator bill');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
@@ -79,12 +58,36 @@ class OperatorBillController extends BaseController
 
     public function edit(int $id): string
     {
-        return operator_bill_view('create', [
+        return operator_bill_view('operator_bill/create', [
             'title' => 'Edit Operator Bill',
             'action' => 'edit',
             'operatorBill' => $this->operatorBillService->find($id),
+            'sbuList' => SbuConstant::all(), // This is from 'modules/operator_bill/Constants/SbuConstant.php'
+            'operatorTypes' => OperatorTypeConstant::all(),
             'operators' => $this->operatorBillService->operatorModel->findAll(),
         ]);
+    }
+
+    public function update(int $id)
+    {
+        try {
+            /** Validate The Data */
+            $this->storeValidation();
+
+            // If the validation passes, then get the posted data
+            $postData = $this->postData();
+            $files = $this->request->getFiles()['file_upload'] ?? null;
+
+            // Insert the posted data into the database
+            if ($this->operatorBillService->update($id, $postData, $files)) {
+                return redirect()->route('operator_bill.index')->with('success', 'Operator Bill Updated Successfully');
+            }
+
+            return redirect()->back()->withInput()->with('error', 'Failed to update operator bill');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
+
     }
 
     public function ajaxGet()
@@ -124,7 +127,8 @@ class OperatorBillController extends BaseController
     {
         // Define validation rules
         $rules = [
-            'operator' => 'required|integer',
+            'sbu' => 'required|in_list[' . implode(',', SbuConstant::all()) . ']',
+            'operator_id' => 'required|integer',
             'year' => 'required|numeric',
             'month' => 'required|numeric',
             'successful_calls' => 'required|numeric',
@@ -132,10 +136,8 @@ class OperatorBillController extends BaseController
             'voice_amount' => 'required|numeric',
             'voice_amount_with_vat' => 'required|numeric',
             'sms_count' => 'required|numeric',
-            'sms_rate' => 'required|numeric',
             'sms_amount' => 'required|numeric',
             'sms_amount_with_vat' => 'required|numeric',
-            'file_upload.*' => 'uploaded[file_upload]|max_size[file_upload,1024]|ext_in[file_upload,pdf,jpg,png]'
         ];
 
         // Validate the posted data
@@ -143,5 +145,31 @@ class OperatorBillController extends BaseController
             // Redirect back to the form with the validation errors
             redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
+    }
+
+    private function postData(): object
+    {
+        $postData = (object)[
+            'sbu' => $this->request->getPost('sbu', FILTER_SANITIZE_STRING),
+            'operator_id' => $this->request->getPost('operator_id', FILTER_SANITIZE_NUMBER_INT),
+            'year' => $this->request->getPost('year', FILTER_SANITIZE_NUMBER_INT),
+            'month' => $this->request->getPost('month', FILTER_SANITIZE_NUMBER_INT),
+            'successful_calls' => $this->request->getPost('successful_calls', FILTER_SANITIZE_NUMBER_INT),
+            'effective_duration' => $this->request->getPost('effective_duration', FILTER_SANITIZE_NUMBER_INT),
+        ];
+
+        if ($postData->sbu == SbuConstant::RITT || $postData->sbu == SbuConstant::QTECH) {
+            $postData->sms_count = $this->request->getPost('sms_count', FILTER_SANITIZE_NUMBER_INT);
+            $postData->sms_amount = $this->request->getPost('sms_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $postData->sms_amount_with_vat = $this->request->getPost('sms_amount_with_vat', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        }
+
+        if ($postData->sbu == SbuConstant::RITT || $postData->sbu == SbuConstant::SOFTEX || $postData->sbu == SbuConstant::RITIGW) {
+            $postData->voice_amount = $this->request->getPost('voice_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $postData->voice_amount_with_vat = $this->request->getPost('voice_amount_with_vat', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        }
+
+
+        return $postData;
     }
 }
