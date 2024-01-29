@@ -38,6 +38,10 @@ if (!function_exists('set_select')) {
             $input = $request->getGet($field);
         }
 
+        if ($input === null) {
+            return ($default === true) ? ' selected="selected"' : '';
+        }
+
         if (is_array($input)) {
             // Note: in_array('', array(0)) returns TRUE, do not use it
             foreach ($input as &$v) {

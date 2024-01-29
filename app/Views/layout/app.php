@@ -45,6 +45,9 @@
         <div class="content">
             <div class="container-fluid">
 
+                <!-- Flash Message -->
+                <?= view_cell('FlashMessageCell', 300) ?>
+                
                 <!-------------------------------
                 | Application Page Content Here |
                 -------------------------------->

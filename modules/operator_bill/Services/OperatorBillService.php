@@ -8,15 +8,41 @@ use ReflectionException;
 class OperatorBillService
 {
     public OperatorBillModel $operatorBillModel;
-    private OperatorBillFileModel $billFileModel;
+    private OperatorBillFileModel $operatorBillFileModel;
     public OperatorModel $operatorModel;
 
     public function __construct()
     {
         $this->operatorModel = new OperatorModel();
         $this->operatorBillModel = new OperatorBillModel();
-        $this->billFileModel = new OperatorBillFileModel();
+        $this->operatorBillFileModel = new OperatorBillFileModel();
 
+    }
+
+    public function find(int $id)
+    {
+        $operatorBill = $this->operatorBillModel->find($id);
+        $operatorBill->operator = $this->operatorModel->find($operatorBill->operator_id);
+        $operatorBill->files = $this->operatorBillFileModel->where('operator_bill_id', $operatorBill->id)->findAll();
+
+        return $operatorBill;
+    }
+
+
+    /**\
+     * findAll with files
+     * @return array
+     */
+    public function findAll(): array
+    {
+        $operatorBills = $this->operatorBillModel->orderBy('year', 'DESC')->orderBy('month', 'DESC')->findAll();
+
+        array_walk($operatorBills, function (&$operatorBill) {
+            $operatorBill->operator = $this->operatorModel->find($operatorBill->operator_id);
+            $operatorBill->files = $this->operatorBillFileModel->where('operator_bill_id', $operatorBill->id)->findAll();
+        });
+
+        return $operatorBills;
     }
 
     /**
@@ -49,8 +75,9 @@ class OperatorBillService
             $filesData[] = $fileData;
         }
 
+
         if (!empty($filesData)) {
-            $this->billFileModel->insertBatch($filesData);
+            $this->operatorBillFileModel->insertBatch($filesData);
         }
         // Insert the file data into the database
 
@@ -58,28 +85,43 @@ class OperatorBillService
         return $this->operatorBillModel->db->transStatus();
     }
 
-    /**\
-     * findAll with files
-     * @return array
+
+    /**
+     * @throws ReflectionException
      */
-    public function findAll(): array
+    public function update($id, object $postData, $files): bool
     {
-        $operatorBills = $this->operatorBillModel->orderBy('year', 'DESC')->orderBy('month', 'DESC')->findAll();
+        $this->operatorBillModel->db->transStart();
 
-        array_walk($operatorBills, function (&$operatorBill) {
-            $operatorBill->operator = $this->operatorModel->find($operatorBill->operator_id);
-            $operatorBill->files = $this->billFileModel->where('operator_bill_id', $operatorBill->id)->findAll();
-        });
+        // Update the operator bill
+        $this->operatorBillModel->update($id, $postData);
 
-        return $operatorBills;
-    }
+        $filesData = [];
+        // Loop through the files
+        foreach ($files as $file) {
+            if (!$file->isValid()) {
+                continue;
+            }
+            $fileData['operator_bill_id'] = $id;
+            $fileData['file_name'] = $file->getName();
 
-    public function find(int $id)
-    {
-        $operatorBill = $this->operatorBillModel->find($id);
-        $operatorBill->operator = $this->operatorModel->find($operatorBill->operator_id);
-        $operatorBill->files = $this->billFileModel->where('operator_bill_id', $operatorBill->id)->findAll();
+            // Move the file to a specific directory
+            $file_name = $file->getRandomName();
+            $filePath = 'uploads' . DIRECTORY_SEPARATOR . 'operator' . DIRECTORY_SEPARATOR;
+            $file->move($filePath, $file_name);
 
-        return $operatorBill;
+            $fileData['file_path'] = "$filePath/$file_name";
+
+            // Prepare the data to update the record with the file path
+            $filesData[] = $fileData;
+        }
+
+        // Insert the file data into the database
+        if (!empty($filesData)) {
+            $this->operatorBillFileModel->insertBatch($filesData);
+        }
+
+        $this->operatorBillModel->db->transComplete();
+        return $this->operatorBillModel->db->transStatus();
     }
 }

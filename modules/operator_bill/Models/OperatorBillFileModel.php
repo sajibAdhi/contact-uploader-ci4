@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class OperatorBillFileModel extends Model
 {
-    protected $table            = 'bill_files';
+    protected $table            = 'operator_bill_files';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
