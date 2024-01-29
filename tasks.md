@@ -10,7 +10,7 @@
 - [ ] Operator (feature-update)
     - Operator Type
 
-- [ ] Operator Bill (feature-update)
+- [X] Operator Bill (feature-update)
     - SBU (options)
     - Operator_Type (options)
     - Operator (depends on operator_type) (options)
@@ -25,7 +25,7 @@ RITIGW -> FORM {voice}
 SOFTEX -> FORM {voice}
 ```
 
-- [ ] Operator Bill Report Serch (feature-request)
+- [X] Operator Bill Search (feature-request)
     - SBN (options)
     - Operator (options)
     - year

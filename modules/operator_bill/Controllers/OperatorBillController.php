@@ -19,9 +19,29 @@ class OperatorBillController extends BaseController
 
     public function index(): string
     {
+        // data filter using sbu, year, month, operator
+        $sbu = $this->request->getGet('sbu') ?? null;
+        $year = $this->request->getGet('year') ?? null;
+        $month = $this->request->getGet('month') ?? null;
+        $operator = $this->request->getGet('operator') ?? null;
+
+        // Get the operator bills
+        $operatorBills = $this->operatorBillService
+            ->filter([
+                'sbu' => $sbu,
+                'year' => $year,
+                'month' => $month,
+                'operator' => $operator,
+            ])
+            ->findAll();
+
         return operator_bill_view('operator_bill/index', [
             'title' => 'Operator Bills',
-            'operatorBills' => $this->operatorBillService->findAll(),
+            'sbuList' => SbuConstant::all(),
+            'years' => $this->operatorBillService->getDistinctYears(),
+            'months' => $this->operatorBillService->getDistinctMonths(),
+            'operators' => $this->operatorBillService->operatorModel->findAll(),
+            'operatorBills' => $operatorBills,
         ]);
     }
 
