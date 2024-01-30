@@ -59,7 +59,9 @@ class OperatorBillController extends BaseController
     {
         try {
             /** Validate The Data */
-            $this->storeValidation();
+            if (!$this->storeValidation()) {
+                return redirect()->back()->withInput();
+            }
 
             // If the validation passes, then get the posted data
             $postData = $this->postData();
@@ -92,7 +94,9 @@ class OperatorBillController extends BaseController
     {
         try {
             /** Validate The Data */
-            $this->storeValidation();
+            if (!$this->storeValidation()) {
+                return redirect()->back()->withInput();
+            }
 
             // If the validation passes, then get the posted data
             $postData = $this->postData();
@@ -143,7 +147,7 @@ class OperatorBillController extends BaseController
      * -----------------------------------------------------------------------------------------------------------------
      */
 
-    private function storeValidation()
+    private function storeValidation(): bool
     {
         // Define validation rules
         $rules = [
@@ -161,10 +165,7 @@ class OperatorBillController extends BaseController
         ];
 
         // Validate the posted data
-        if (!$this->validate($rules)) {
-            // Redirect back to the form with the validation errors
-            redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
+        return $this->validate($rules);
     }
 
     private function postData(): object

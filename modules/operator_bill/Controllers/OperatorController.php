@@ -26,16 +26,6 @@ class OperatorController extends BaseController
         ]);
     }
 
-    public function test(): string
-    {
-        $operators = $this->operatorModel->findAll();
-
-        return operator_bill_view('operator\index_test', [
-            'title' => 'Operator List',
-            'operators' => $operators,
-        ]);
-    }
-
     public function create(): string
     {
         return operator_bill_view('operator\form', [
@@ -47,6 +37,11 @@ class OperatorController extends BaseController
     public function store()
     {
         try {
+            // Validate the input
+            if (!$this->storeValidation()) {
+                return redirect()->back()->withInput();
+            }
+
             // Get the validated data
             $data = $this->postData();
 
@@ -75,6 +70,11 @@ class OperatorController extends BaseController
     public function update(int $id)
     {
         try {
+            // Validate the input
+            if (!$this->storeValidation()) {
+                return redirect()->back()->withInput();
+            }
+
             // Get the validated data
             $data = $this->postData();
 
@@ -102,6 +102,38 @@ class OperatorController extends BaseController
     }
 
     /** ----------------------------------------------------------------------------------------------- */
+
+    private function storeValidation(): bool
+    {
+        $rules = [
+            'operator_type' => [
+                'label' => 'Operator Type',
+                'rules' => [
+                    'required',
+                    'trim',
+                    'in_list[' . implode(',', OperatorTypeConstant::all()) . ']',
+                ]
+            ],
+            'operator_name' => [
+                'label' => 'Operator Name',
+                'rules' => 'required|trim|string|max_length[255]',
+            ],
+            'operator_address' => [
+                'label' => 'Operator Address',
+                'rules' => 'permit_empty|trim|string|max_length[255]',
+            ],
+            'operator_phone' => [
+                'label' => 'Operator Phone',
+                'rules' => 'permit_empty|trim|string|max_length[255]',
+            ],
+            'operator_email' => [
+                'label' => 'Operator Email',
+                'rules' => 'permit_empty|trim|valid_email|max_length[255]',
+            ],
+        ];
+
+        return $this->validate($rules);
+    }
 
     private function postData(): array
     {
