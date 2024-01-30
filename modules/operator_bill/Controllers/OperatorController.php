@@ -6,9 +6,12 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RedirectResponse;
 use Modules\OperatorBill\Constants\OperatorTypeConstant;
 use Modules\OperatorBill\Models\OperatorModel;
+use Modules\OperatorBill\Traits\Viewable;
 
 class OperatorController extends BaseController
 {
+    use Viewable;
+
     private OperatorModel $operatorModel;
 
     public function __construct()
@@ -20,7 +23,7 @@ class OperatorController extends BaseController
     {
         $operators = $this->operatorModel->findAll();
 
-        return operator_bill_view('operator\index', [
+        return $this->view('operator\index', [
             'title' => 'Operator List',
             'operators' => $operators,
         ]);
@@ -28,7 +31,7 @@ class OperatorController extends BaseController
 
     public function create(): string
     {
-        return operator_bill_view('operator\form', [
+        return $this->view('operator\form', [
             'title' => 'Add Operator',
             'operatorTypes' => OperatorTypeConstant::all(),
         ]);
@@ -60,7 +63,7 @@ class OperatorController extends BaseController
     {
         $operator = $this->operatorModel->find($id);
 
-        return operator_bill_view('operator\form', [
+        return $this->view('operator\form', [
             'title' => 'Edit Operator',
             'action' => 'edit',
             'operator' => $operator,

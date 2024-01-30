@@ -7,9 +7,13 @@ use CodeIgniter\HTTP\RedirectResponse;
 use Modules\OperatorBill\Constants\OperatorTypeConstant;
 use Modules\OperatorBill\Constants\SbuConstant;
 use Modules\OperatorBill\Services\OperatorBillService;
+use Modules\OperatorBill\Traits\Viewable;
+
 
 class OperatorBillController extends BaseController
 {
+    use Viewable;
+
     private OperatorBillService $operatorBillService;
 
     public function __construct()
@@ -35,7 +39,7 @@ class OperatorBillController extends BaseController
             ])
             ->findAll();
 
-        return operator_bill_view('operator_bill/index', [
+        return $this->view('operator_bill/index', [
             'title' => 'Operator Bills',
             'sbuList' => SbuConstant::all(),
             'years' => $this->operatorBillService->getDistinctYears(),
@@ -47,7 +51,7 @@ class OperatorBillController extends BaseController
 
     public function create(): string
     {
-        return operator_bill_view('operator_bill/create', [
+        return $this->view('operator_bill/create', [
             'title' => 'Add Operator Bill',
             'sbuList' => SbuConstant::all(), // This is from 'modules/operator_bill/Constants/SbuConstant.php'
             'operatorTypes' => OperatorTypeConstant::all(),
@@ -80,7 +84,7 @@ class OperatorBillController extends BaseController
 
     public function edit(int $id): string
     {
-        return operator_bill_view('operator_bill/create', [
+        return $this->view('operator_bill/create', [
             'title' => 'Edit Operator Bill',
             'action' => 'edit',
             'operatorBill' => $this->operatorBillService->find($id),
