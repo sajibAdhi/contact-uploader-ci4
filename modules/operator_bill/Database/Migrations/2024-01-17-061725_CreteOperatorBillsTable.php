@@ -75,9 +75,8 @@ class CreteOperatorBillsTable extends Migration
             'deleted_at datetime default null',
         ]);
 
-        $this->forge->addKey('id', true);
+        $this->forge->addPrimaryKey('id');
         $this->forge->createTable('operator_bills');
-
     }
 
     public function down()

@@ -13,18 +13,17 @@ declare(strict_types=1);
 
 namespace Config;
 
-use CodeIgniter\Shield\Authentication\Actions\ActionInterface;
-use CodeIgniter\Shield\Authentication\Actions\EmailActivator;
-use CodeIgniter\Shield\Authentication\AuthenticatorInterface;
-use CodeIgniter\Shield\Authentication\Authenticators\AccessTokens;
-use CodeIgniter\Shield\Authentication\Authenticators\HmacSha256;
-use CodeIgniter\Shield\Authentication\Authenticators\Session;
-use CodeIgniter\Shield\Authentication\Passwords\CompositionValidator;
-use CodeIgniter\Shield\Authentication\Passwords\DictionaryValidator;
-use CodeIgniter\Shield\Authentication\Passwords\NothingPersonalValidator;
-use CodeIgniter\Shield\Authentication\Passwords\ValidatorInterface;
-use CodeIgniter\Shield\Config\Auth as ShieldAuth;
-use CodeIgniter\Shield\Models\UserModel;
+use Modules\Shield\Authentication\Actions\ActionInterface;
+use Modules\Shield\Authentication\AuthenticatorInterface;
+use Modules\Shield\Authentication\Authenticators\AccessTokens;
+use Modules\Shield\Authentication\Authenticators\HmacSha256;
+use Modules\Shield\Authentication\Authenticators\Session;
+use Modules\Shield\Authentication\Passwords\CompositionValidator;
+use Modules\Shield\Authentication\Passwords\DictionaryValidator;
+use Modules\Shield\Authentication\Passwords\NothingPersonalValidator;
+use Modules\Shield\Authentication\Passwords\ValidatorInterface;
+use Modules\Shield\Config\Auth as ShieldAuth;
+use Modules\Shield\Models\UserModel;
 
 class Auth extends ShieldAuth
 {

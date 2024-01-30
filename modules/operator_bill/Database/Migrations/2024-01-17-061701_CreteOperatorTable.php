@@ -43,9 +43,9 @@ class CreteOperatorTable extends Migration
             'updated_at datetime default current_timestamp on update current_timestamp',
             'deleted_at datetime default null',
         ]);
-        $this->forge->addKey('id', true);
-        $this->forge->createTable('operators');
 
+        $this->forge->addPrimaryKey('id');
+        $this->forge->createTable('operators');
     }
 
     public function down()

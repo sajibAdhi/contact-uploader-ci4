@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Config;
 
-use CodeIgniter\Shield\Config\AuthGroups as ShieldAuthGroups;
+use Modules\Shield\Config\AuthGroups as ShieldAuthGroups;
 
 class AuthGroups extends ShieldAuthGroups
 {
@@ -42,23 +42,23 @@ class AuthGroups extends ShieldAuthGroups
      */
     public array $groups = [
         'superadmin' => [
-            'title'       => 'Super Admin',
+            'title' => 'Super Admin',
             'description' => 'Complete control of the site.',
         ],
         'admin' => [
-            'title'       => 'Admin',
+            'title' => 'Admin',
             'description' => 'Day to day administrators of the site.',
         ],
         'developer' => [
-            'title'       => 'Developer',
+            'title' => 'Developer',
             'description' => 'Site programmers.',
         ],
         'user' => [
-            'title'       => 'User',
+            'title' => 'User',
             'description' => 'General users of the site. Often customers.',
         ],
         'beta' => [
-            'title'       => 'Beta User',
+            'title' => 'Beta User',
             'description' => 'Has access to beta-level features.',
         ],
     ];
@@ -72,13 +72,13 @@ class AuthGroups extends ShieldAuthGroups
      * If a permission is not listed here it cannot be used.
      */
     public array $permissions = [
-        'admin.access'        => 'Can access the sites admin area',
-        'admin.settings'      => 'Can access the main site settings',
+        'admin.access' => 'Can access the sites admin area',
+        'admin.settings' => 'Can access the main site settings',
         'users.manage-admins' => 'Can manage other admins',
-        'users.create'        => 'Can create new non-admin users',
-        'users.edit'          => 'Can edit existing non-admin users',
-        'users.delete'        => 'Can delete existing non-admin users',
-        'beta.access'         => 'Can access beta-level features',
+        'users.create' => 'Can create new non-admin users',
+        'users.edit' => 'Can edit existing non-admin users',
+        'users.delete' => 'Can delete existing non-admin users',
+        'beta.access' => 'Can access beta-level features',
     ];
 
     /**

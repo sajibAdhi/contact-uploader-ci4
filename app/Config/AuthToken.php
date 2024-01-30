@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Config;
 
-use CodeIgniter\Shield\Config\AuthToken as ShieldAuthToken;
+use Modules\Shield\Config\AuthToken as ShieldAuthToken;
 
 /**
  * Configuration for Token Auth and HMAC Auth
