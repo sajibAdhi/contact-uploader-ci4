@@ -11,5 +11,7 @@ class OperatorTypeConstant extends AbstractConstant
     const IGW = 'igw';
     const ICX = 'icx';
     const LANDLINE = 'landline';
+    const ANS = 'ans';
+    const VENDOR = 'vendor';
 }
 

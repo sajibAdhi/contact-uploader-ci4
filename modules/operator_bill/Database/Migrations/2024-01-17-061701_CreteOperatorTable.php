@@ -35,8 +35,8 @@ class CreteOperatorTable extends Migration
                 'null' => true,
             ],
             'type' => [
-                'type' => 'ENUM',
-                'constraint' => OperatorTypeConstant::all(),
+                'type' => 'VARCHAR',
+                'constraint' => 100,
                 'null' => false,
             ],
             'created_at datetime default current_timestamp',

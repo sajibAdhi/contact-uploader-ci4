@@ -12,10 +12,16 @@ class OperatorSeeder extends Seeder
         $operators = [
             ['name' => 'Grameenphone', 'address' => 'Dhaka', 'phone' => '01700000000', 'email' => null, 'type' => OperatorTypeConstant::MOBILE],
             ['name' => 'Banglalink', 'address' => 'Dhaka', 'phone' => '01900000000', 'email' => null, 'type' => OperatorTypeConstant::MOBILE],
-            ['name' => 'Airtel', 'address' => 'Dhaka', 'phone' => '01600000000', 'email' => null, 'type' => OperatorTypeConstant::MOBILE],
+            ['name' => 'Robi', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::MOBILE],
             ['name' => 'Teletalk', 'address' => 'Dhaka', 'phone' => '01500000000', 'email' => null, 'type' => OperatorTypeConstant::MOBILE],
             ['name' => 'NovoTel', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::IOS],
-            ['name' => 'Softex.com', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::ICX],
+            ['name' => 'Softex Communication', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::ICX],
+            ['name' => 'BTCL', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::ANS],
+            ['name' => 'Mir Telecom', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::IOS],
+            ['name' => 'Bangla Trac', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::IOS],
+            ['name' => 'M & H Telecom', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::ICX],
+            ['name' => 'BTCL', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::ICX],
+            ['name' => 'Infobip', 'address' => 'Dhaka', 'phone' => null, 'email' => null, 'type' => OperatorTypeConstant::VENDOR],
         ];
 
         $this->db->table('operators')->insertBatch($operators);
