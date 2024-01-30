@@ -18,7 +18,7 @@
     <!-----------------------------
     | Application Page Style Here |
     ------------------------------>
-    <?= $this->renderSection('styles') ?>
+    <?= $this->renderSection('pageStyles') ?>
 
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url('adminlte/dist/css/adminlte.min.css') ?>">
@@ -47,11 +47,11 @@
 
                 <!-- Flash Message -->
                 <?= view_cell('FlashMessageCell', 300) ?>
-                
+
                 <!-------------------------------
                 | Application Page Content Here |
                 -------------------------------->
-                <?= $this->renderSection('content') ?>
+                <?= $this->renderSection('main') ?>
 
             </div><!-- /.container-fluid -->
         </div>
@@ -78,7 +78,7 @@
 <!-----------------------------
 | Application Page Scripts Here |
 ------------------------------>
-<?= $this->renderSection('scripts') ?>
+<?= $this->renderSection('pageScripts') ?>
 
 <!-- AdminLTE App -->
 <script src="<?= base_url() ?>adminlte/dist/js/adminlte.min.js"></script>

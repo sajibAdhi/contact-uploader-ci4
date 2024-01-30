@@ -3,7 +3,7 @@
 <?php helper('datatable'); ?>
 
 
-<?= $this->section('styles') ?>
+<?= $this->section('pageStyles') ?>
     <!-- DataTables -->
 <?= load_datatable_styles() ?>
 
@@ -11,7 +11,7 @@
 
 
 
-<?= $this->section('content') ?>
+<?= $this->section('main') ?>
 
     <div class="row">
         <div class="col-12">
@@ -153,7 +153,7 @@
 
 
 
-<?= $this->section('scripts') ?>
+<?= $this->section('pageScripts') ?>
 
     <!-- DataTables -->
 <?= load_datatable_scripts() ?>

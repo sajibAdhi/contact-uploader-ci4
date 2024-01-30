@@ -2,17 +2,17 @@
 <?php helper('datatable'); ?>
 
 
-<?= $this->section('styles') ?>
+<?= $this->section('pageStyles') ?>
 <?= load_datatable_styles() ?>
 <?= $this->endSection() ?>
 
-<?php $this->section('scripts') ?>
+<?php $this->section('pageScripts') ?>
 <?= load_datatable_scripts() ?>
 <?= initialize_datatable('operators') ?>
 <?= $this->endSection() ?>
 
 
-<?= $this->section('content') ?>
+<?= $this->section('main') ?>
 
 <!-- Contact Content Table Box -->
 <div class="row">

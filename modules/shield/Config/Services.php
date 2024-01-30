@@ -24,7 +24,7 @@ class Services extends BaseService
     /**
      * The base auth class
      */
-    public static function auth(bool $getShared = true): Auth
+    public static function auth(bool $getShared = true): object
     {
         if ($getShared) {
             return self::getSharedInstance('auth');

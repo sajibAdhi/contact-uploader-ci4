@@ -36,9 +36,9 @@ class Auth extends BaseConfig
      */
 
     // Constants for Record Login Attempts. Do not change.
-    public const RECORD_LOGIN_ATTEMPT_NONE    = 0; // Do not record at all
+    public const RECORD_LOGIN_ATTEMPT_NONE = 0; // Do not record at all
     public const RECORD_LOGIN_ATTEMPT_FAILURE = 1; // Record only failures
-    public const RECORD_LOGIN_ATTEMPT_ALL     = 2; // Record all login attempts
+    public const RECORD_LOGIN_ATTEMPT_ALL = 2; // Record all login attempts
 
     /**
      * --------------------------------------------------------------------
@@ -46,17 +46,17 @@ class Auth extends BaseConfig
      * --------------------------------------------------------------------
      */
     public array $views = [
-        'login'                       => '\Modules\Shield\Views\login',
-        'register'                    => '\Modules\Shield\Views\register',
-        'layout'                      => '\Modules\Shield\Views\layout',
-        'action_email_2fa'            => '\Modules\Shield\Views\email_2fa_show',
-        'action_email_2fa_verify'     => '\Modules\Shield\Views\email_2fa_verify',
-        'action_email_2fa_email'      => '\Modules\Shield\Views\Email\email_2fa_email',
-        'action_email_activate_show'  => '\Modules\Shield\Views\email_activate_show',
+        'login' => '\Modules\Shield\Views\login',
+        'register' => '\Modules\Shield\Views\register',
+        'layout' => '\Modules\Shield\Views\layout',
+        'action_email_2fa' => '\Modules\Shield\Views\email_2fa_show',
+        'action_email_2fa_verify' => '\Modules\Shield\Views\email_2fa_verify',
+        'action_email_2fa_email' => '\Modules\Shield\Views\Email\email_2fa_email',
+        'action_email_activate_show' => '\Modules\Shield\Views\email_activate_show',
         'action_email_activate_email' => '\Modules\Shield\Views\Email\email_activate_email',
-        'magic-link-login'            => '\Modules\Shield\Views\magic_link_form',
-        'magic-link-message'          => '\Modules\Shield\Views\magic_link_message',
-        'magic-link-email'            => '\Modules\Shield\Views\Email\magic_link_email',
+        'magic-link-login' => '\Modules\Shield\Views\magic_link_form',
+        'magic-link-message' => '\Modules\Shield\Views\magic_link_message',
+        'magic-link-email' => '\Modules\Shield\Views\Email\magic_link_email',
     ];
 
     /**
@@ -74,12 +74,12 @@ class Auth extends BaseConfig
      * to apply any logic you may need.
      */
     public array $redirects = [
-        'register'          => '/',
-        'login'             => '/',
-        'logout'            => 'login',
-        'force_reset'       => '/',
+        'register' => '/',
+        'login' => '/',
+        'logout' => 'login',
+        'force_reset' => '/',
         'permission_denied' => '/',
-        'group_denied'      => '/',
+        'group_denied' => '/',
     ];
 
     /**
@@ -99,7 +99,7 @@ class Auth extends BaseConfig
      */
     public array $actions = [
         'register' => null,
-        'login'    => null,
+        'login' => null,
     ];
 
     /**
@@ -114,9 +114,9 @@ class Auth extends BaseConfig
      * @var array<string, class-string<AuthenticatorInterface>>
      */
     public array $authenticators = [
-        'tokens'  => AccessTokens::class,
+        'tokens' => AccessTokens::class,
         'session' => Session::class,
-        'hmac'    => HmacSha256::class,
+        'hmac' => HmacSha256::class,
         // 'jwt'     => JWT::class,
     ];
 
@@ -153,7 +153,7 @@ class Auth extends BaseConfig
      * --------------------------------------------------------------------
      * Determines whether users can register for the site.
      */
-    public bool $allowRegistration = true;
+    public bool $allowRegistration = false;
 
     /**
      * --------------------------------------------------------------------
@@ -177,7 +177,7 @@ class Auth extends BaseConfig
      * could be modified as the only method of login once an account
      * has been set up.
      */
-    public bool $allowMagicLinkLogins = true;
+    public bool $allowMagicLinkLogins = false;
 
     /**
      * --------------------------------------------------------------------
@@ -203,10 +203,10 @@ class Auth extends BaseConfig
      * @var array<string, bool|int|string>
      */
     public array $sessionConfig = [
-        'field'              => 'user',
-        'allowRemembering'   => true,
+        'field' => 'user',
+        'allowRemembering' => true,
         'rememberCookieName' => 'remember',
-        'rememberLength'     => 30 * DAY,
+        'rememberLength' => 30 * DAY,
     ];
 
     /**
@@ -357,7 +357,7 @@ class Auth extends BaseConfig
     public int $hashMemoryCost = 65536; // PASSWORD_ARGON2_DEFAULT_MEMORY_COST;
 
     public int $hashTimeCost = 4;   // PASSWORD_ARGON2_DEFAULT_TIME_COST;
-    public int $hashThreads  = 1;   // PASSWORD_ARGON2_DEFAULT_THREADS;
+    public int $hashThreads = 1;   // PASSWORD_ARGON2_DEFAULT_THREADS;
 
     /**
      * --------------------------------------------------------------------
@@ -408,12 +408,12 @@ class Auth extends BaseConfig
      * @var array<string, string>
      */
     public array $tables = [
-        'users'             => 'users',
-        'identities'        => 'auth_identities',
-        'logins'            => 'auth_logins',
-        'token_logins'      => 'auth_token_logins',
-        'remember_tokens'   => 'auth_remember_tokens',
-        'groups_users'      => 'auth_groups_users',
+        'users' => 'users',
+        'identities' => 'auth_identities',
+        'logins' => 'auth_logins',
+        'token_logins' => 'auth_token_logins',
+        'remember_tokens' => 'auth_remember_tokens',
+        'groups_users' => 'auth_groups_users',
         'permissions_users' => 'auth_permissions_users',
     ];
 
@@ -438,7 +438,7 @@ class Auth extends BaseConfig
     public function loginRedirect(): string
     {
         $session = session();
-        $url     = $session->getTempdata('beforeLoginUrl') ?? setting('Auth.redirects')['login'];
+        $url = $session->getTempdata('beforeLoginUrl') ?? setting('Auth.redirects')['login'];
 
         return $this->getUrl($url);
     }

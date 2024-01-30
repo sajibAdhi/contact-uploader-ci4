@@ -21,4 +21,15 @@ $routes->group('', ['namespace' => 'Modules\Shield\Controllers'], function (Rout
     $routes->get('magic-link', 'MagicLinkController::loginView', ['as' => 'magic-link']);
     $routes->post('magic-link', 'MagicLinkController::loginAction');
     $routes->get('verify-magic-link', 'MagicLinkController::verify', ['as' => 'verify-magic-link']);
+
+    // admin can manage users
+    $routes->group('shield', function (RouteCollection $routes) {
+        $routes->get('users', 'Admin\UserController::index', ['as' => 'shield.admin.users']);
+        $routes->get('users/create', 'Admin\UserController::create', ['as' => 'users-create']);
+        $routes->post('users/create', 'Admin\UserController::store');
+        $routes->get('users/edit/(:any)', 'Admin\UserController::edit/$1', ['as' => 'users-edit']);
+        $routes->post('users/edit/(:any)', 'Admin\UserController::update/$1');
+        $routes->get('users/delete/(:any)', 'Admin\UserController::delete/$1', ['as' => 'users-delete']);
+        $routes->post('users/delete/(:any)', 'Admin\UserController::destroy/$1');
+    });
 });

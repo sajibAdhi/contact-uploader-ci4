@@ -1,7 +1,7 @@
 <?= $this->extend('layout/app') ?>
 
 
-<?= $this->section('content') ?>
+<?= $this->section('main') ?>
     <!-- Operator Create Section -->
     <div class="card  card-default">
         <div class="card-header">

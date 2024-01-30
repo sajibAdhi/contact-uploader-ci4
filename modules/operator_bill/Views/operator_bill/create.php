@@ -1,13 +1,13 @@
 <?= $this->extend('layout/app') ?>
 
 
-<?= $this->section('styles') ?>
+<?= $this->section('pageStyles') ?>
     <!-- Select2 -->
     <link rel="stylesheet" href="<?= base_url('adminlte/plugins/select2/css/select2.min.css') ?>">
 
 <?= $this->endSection() ?>
 
-<?= $this->section('content') ?>
+<?= $this->section('main') ?>
     <div class="card card-default">
 
         <div class="card-header">
@@ -215,7 +215,7 @@
 <?= $this->endSection() ?>
 
 
-<?= $this->section('scripts') ?>
+<?= $this->section('pageScripts') ?>
     <!-- Select2 -->
     <script src="<?= base_url('adminlte/plugins/select2/js/select2.full.min.js') ?>"></script>
 
