@@ -3,7 +3,7 @@
 namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
-use Modules\OperatorBill\Database\Seeds\OperatorSeeder;
+use app\modules\operator_bill\Database\Seeds\OperatorSeeder;
 
 class AllSeeder extends Seeder
 {

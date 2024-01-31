@@ -82,6 +82,7 @@ class AuthGroups extends BonfireAuthGroups
         'logs.manage'         => 'Can manage the logs',
         'me.edit'             => 'Can edit user\'s own settings',
         'me.security'         => 'Can change user\'s own password',
+
     ];
 
     /**
