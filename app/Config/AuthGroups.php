@@ -1,21 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
-/**
- * This file is part of CodeIgniter Shield.
- *
- * (c) CodeIgniter Foundation <admin@codeigniter.com>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 namespace Config;
 
-use Modules\Shield\Config\AuthGroups as ShieldAuthGroups;
+use Bonfire\Auth\Config\AuthGroups as BonfireAuthGroups;
+use CodeIgniter\Shield\Config\AuthGroups as ShieldAuthGroups;
 
-class AuthGroups extends ShieldAuthGroups
+class AuthGroups extends BonfireAuthGroups
 {
     /**
      * --------------------------------------------------------------------
@@ -42,23 +32,23 @@ class AuthGroups extends ShieldAuthGroups
      */
     public array $groups = [
         'superadmin' => [
-            'title' => 'Super Admin',
+            'title'       => 'Super Admin',
             'description' => 'Complete control of the site.',
         ],
         'admin' => [
-            'title' => 'Admin',
+            'title'       => 'Admin',
             'description' => 'Day to day administrators of the site.',
         ],
         'developer' => [
-            'title' => 'Developer',
+            'title'       => 'Developer',
             'description' => 'Site programmers.',
         ],
         'user' => [
-            'title' => 'User',
+            'title'       => 'User',
             'description' => 'General users of the site. Often customers.',
         ],
         'beta' => [
-            'title' => 'Beta User',
+            'title'       => 'Beta User',
             'description' => 'Has access to beta-level features.',
         ],
     ];
@@ -72,13 +62,26 @@ class AuthGroups extends ShieldAuthGroups
      * If a permission is not listed here it cannot be used.
      */
     public array $permissions = [
-        'admin.access' => 'Can access the sites admin area',
-        'admin.settings' => 'Can access the main site settings',
+        'admin.access'        => 'Can access the sites admin area',
+        'admin.settings'      => 'Can access the main site settings',
+        'groups.settings'     => 'Can access the groups settings',
+        'groups.edit'         => 'Can edit existing user groups',
+        'users.list'          => 'Can view a list of users in the system',
         'users.manage-admins' => 'Can manage other admins',
-        'users.create' => 'Can create new non-admin users',
-        'users.edit' => 'Can edit existing non-admin users',
-        'users.delete' => 'Can delete existing non-admin users',
-        'beta.access' => 'Can access beta-level features',
+        'users.view'          => 'Can view user details',
+        'users.create'        => 'Can create new non-admin users',
+        'users.edit'          => 'Can edit existing non-admin users',
+        'users.delete'        => 'Can delete existing non-admin users',
+        'users.settings'      => 'Can manage User settings in admin area',
+        'beta.access'         => 'Can access beta-level features',
+        'site.viewOffline'    => 'Can view the site even when in "offline" mode',
+        'widgets.settings'    => 'Can view the settings for site Widgets',
+        'consent.settings'    => 'Can view the settings for the Consent module',
+        'recycler.view'       => 'Can view the Recycler area',
+        'logs.view'           => 'Can view the logs',
+        'logs.manage'         => 'Can manage the logs',
+        'me.edit'             => 'Can edit user\'s own settings',
+        'me.security'         => 'Can change user\'s own password',
     ];
 
     /**
@@ -92,22 +95,46 @@ class AuthGroups extends ShieldAuthGroups
     public array $matrix = [
         'superadmin' => [
             'admin.*',
+            'groups.*',
             'users.*',
             'beta.*',
+            'widgets.*',
+            'consent.*',
+            'recycler.*',
+            'site.*',
+            'logs.*',
+            'me.*',
         ],
         'admin' => [
             'admin.access',
+            'users.list',
             'users.create',
             'users.edit',
             'users.delete',
+            'users.settings',
+            'groups.settings',
             'beta.access',
+            'widgets.*',
+            'consent.*',
+            'logs.view',
+            'me.*',
         ],
         'developer' => [
             'admin.access',
             'admin.settings',
+            'users.list',
             'users.create',
             'users.edit',
-            'beta.access',
+            'users.settings',
+            'groups.settings',
+            'beta.*',
+            'site.viewOffline',
+            'widgets.*',
+            'consent.*',
+            'recycler.*',
+            'logs.*',
+            'me.edit',
+            'me.security',
         ],
         'user' => [],
         'beta' => [
