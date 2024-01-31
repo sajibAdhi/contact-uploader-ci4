@@ -22,7 +22,6 @@ trait Viewable
      */
     protected function view(string $view, array $data = [], array $options = []): string
     {
-        $view = 'Modules\\Shield\\Views\\' . $view;
         return view($view, $data, $options);
     }
 }

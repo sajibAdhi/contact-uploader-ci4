@@ -8,7 +8,13 @@
     <!-- /.login-logo -->
     <div class="card card-outline card-primary">
         <div class="card-header text-center">
-            <a href="<?= base_url() ?>/adminlte/index2.html" class="h1"><b>Admin</b>LTE</a>
+            <a href="<?= base_url() ?>" class="h1">
+                <b>
+                    <img src="<?= base_url(\App\Constants\ApplicationConstant::ICON) ?>"
+                         alt="<?= \App\Constants\ApplicationConstant::NAME ?>">
+                </b>
+                <?= \App\Constants\ApplicationConstant::SHORT_NAME ?>
+            </a>
         </div>
         <div class="card-body">
             <p class="login-box-msg">Login to start your session</p>
