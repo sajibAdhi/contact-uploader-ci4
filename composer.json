@@ -20,6 +20,7 @@
     "codeigniter4/settings": "^2.2",
     "codeigniter4/translations": "^4.4",
     "liaison/revision": "^1.1",
+    "lonnieezell/bonfire": "dev-develop",
     "phpoffice/phpspreadsheet": "^1.29"
   },
   "require-dev": {
