@@ -60,7 +60,7 @@
     <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
-    <!--    --><?php ////= $this->include('components/adminlte3/control-sidebar')?>
+<!--    --><?php //= $this->include('components/adminlte3/control-sidebar') ?>
     <!-- /.control-sidebar -->
 
     <!-- Main Footer -->
