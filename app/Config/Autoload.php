@@ -46,9 +46,9 @@ class Autoload extends AutoloadConfig
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config' => APPPATH . 'Config',
-        'Modules\OperatorBill' => ROOTPATH . 'modules/operator_bill',
-        'Modules\Product' => ROOTPATH . 'modules/product',
-        'Modules\Shield' => ROOTPATH . 'modules/shield',
+        'App\Modules\OperatorBill' => APPPATH . 'Modules/OperatorBill',
+        'App\Modules\Product' => APPPATH . 'Modules/Product',
+        'App\Modules\Shield' => APPPATH . 'Modules/Shield',
     ];
 
     /**
@@ -98,5 +98,5 @@ class Autoload extends AutoloadConfig
      *
      * @var list<string>
      */
-    public $helpers = ['auth', 'setting'];
+    public array $helpers = ['auth', 'setting'];
 }

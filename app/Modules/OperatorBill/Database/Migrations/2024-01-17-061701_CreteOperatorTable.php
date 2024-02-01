@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Modules\OperatorBill\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+use App\Modules\OperatorBill\Constants\OperatorTypeConstant;
+
+class CreteOperatorTable extends Migration
+{
+    public function up()
+    {
+        $this->forge->addField([
+            'id' => [
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => true,
+                'auto_increment' => true,
+            ],
+            'name' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+            ],
+            'address' => [
+                'type' => 'TEXT',
+                'null' => true,
+            ],
+            'phone' => [
+                'type' => 'VARCHAR',
+                'constraint' => '255',
+                'null' => true,
+            ],
+            'email' => [
+                'type' => 'VARCHAR',
+                'constraint' => '255',
+                'null' => true,
+            ],
+            'type' => [
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => false,
+            ],
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp',
+            'deleted_at datetime default null',
+        ]);
+
+        $this->forge->addPrimaryKey('id');
+        $this->forge->createTable('operators');
+    }
+
+    public function down()
+    {
+        $this->forge->dropTable('operators');
+    }
+}

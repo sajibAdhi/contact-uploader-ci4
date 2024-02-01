@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter Shield.
  *
@@ -13,7 +11,7 @@ declare(strict_types=1);
 
 namespace Config;
 
-use Modules\Shield\Config\AuthGroups as ShieldAuthGroups;
+use App\Modules\Shield\Config\AuthGroups as ShieldAuthGroups;
 
 class AuthGroups extends ShieldAuthGroups
 {
