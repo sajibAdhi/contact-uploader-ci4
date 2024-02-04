@@ -3,18 +3,20 @@
 namespace App\Modules\Product\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
+use App\Modules\Product\Traits\Viewable;
 
 class ProductController extends BaseController
 {
+    use Viewable;
+
     public function index()
     {
-        dd('ProductController@index');
+        die('Comming Soon');
     }
 
-    public function create()
+    public function create(): string
     {
-        // Your existing code for displaying the product creation form
+        return $this->view('product\create');
     }
 
     public function store()

@@ -1,8 +1,8 @@
 <li class="nav-item">
-    <a href="<?= $path ?? null ?>"
+    <a href="<?= $link ?? null ?>"
        class="nav-link <?= active_link($path ?? null) ?>">
         <i class="nav-icon fas fa-plus-square"></i>
-        <p><?= $path ?? null ?> ;;;;;</p>
+        <p><?= $menu ?? null ?> ;;;;;</p>
     </a>
 </li>
 
