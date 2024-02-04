@@ -2,11 +2,6 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
         data-accordion="false">
 
-        <?= view_cell(\App\Cells\MenuCell::class, [
-            'menu' => 'Dashboard',
-            'link' => '#',
-        ]) ?>
-
         <!-- product dashboard -->
         <li class="nav-item">
             <a href="<?= route_to('product') ?>"

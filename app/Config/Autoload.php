@@ -46,9 +46,11 @@ class Autoload extends AutoloadConfig
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config' => APPPATH . 'Config',
+        'App\Modules\Shield' => APPPATH . 'Modules/Shield',
         'App\Modules\OperatorBill' => APPPATH . 'Modules/OperatorBill',
         'App\Modules\Product' => APPPATH . 'Modules/Product',
-        'App\Modules\Shield' => APPPATH . 'Modules/Shield',
+
+        'Michalsn\Uuid' => APPPATH . 'ThirdParty/codeigniter4-uuid/src' // For UUID
     ];
 
     /**

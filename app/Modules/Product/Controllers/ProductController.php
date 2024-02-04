@@ -3,11 +3,21 @@
 namespace App\Modules\Product\Controllers;
 
 use App\Controllers\BaseController;
+use App\Modules\Product\Models\ProductModel;
 use App\Modules\Product\Traits\Viewable;
+use CodeIgniter\HTTP\RedirectResponse;
+use ReflectionException;
 
 class ProductController extends BaseController
 {
     use Viewable;
+
+    private ProductModel $productModel;
+
+    public function __construct()
+    {
+        $this->productModel = new ProductModel();
+    }
 
     public function index()
     {
@@ -19,18 +29,30 @@ class ProductController extends BaseController
         return $this->view('product\create');
     }
 
-    public function store()
+    public function store(): RedirectResponse
     {
-        // Your existing code for storing the product
+        try {
+            if (!$this->productValidation()) {
+                return redirect()->back()->withInput();
+            }
 
-        // Generate a unique barcode for the new product
-        $generator = new BarcodeGeneratorHTML();
-        $barcode = $generator->getBarcode($product->id, $generator::TYPE_CODE_128);
+            if (!$this->productModel->save($this->request->getPost())) {
+                return redirect()->back()->withInput()->with('error', 'Product creation failed');
+            }
 
-        // Store the barcode in the product model
-        $product->barcode = $barcode;
-        $product->save();
+            return redirect()->to(route_to('products'))->with('success', 'Product created successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
+    }
 
-        // Your existing code for redirecting after storing the product
+    private function productValidation(): bool
+    {
+        $this->validate([
+            'name' => 'required|min_length[3]',
+            'description' => 'required|min_length[3]',
+        ]);
+
+        return $this->validator->run();
     }
 }
