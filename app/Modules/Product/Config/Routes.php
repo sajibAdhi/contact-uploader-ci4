@@ -10,12 +10,12 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->group('products', static function ($routes) {
-    $routes->get('/', [ProductController::class, 'index'], ['as' => 'products']);
-    $routes->get('create', [ProductController::class, 'create'], ['as' => 'products.create']);
+    $routes->get('/', [ProductController::class, 'index'], ['as' => 'product']);
+    $routes->get('create', [ProductController::class, 'create'], ['as' => 'product.create']);
     $routes->post('create', [ProductController::class, 'store']);
-    $routes->get('(:num)/edit', [ProductController::class, 'edit'], ['as' => 'products.edit']);
+    $routes->get('(:num)/edit', [ProductController::class, 'edit'], ['as' => 'product.edit']);
     $routes->post('(:num)/edit', [ProductController::class, 'update']);
-    $routes->get('(:num)/delete', [ProductController::class, 'delete'], ['as' => 'products.delete']);
+    $routes->get('(:num)/delete', [ProductController::class, 'delete'], ['as' => 'product.delete']);
 
 
 });
