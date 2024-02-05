@@ -4,7 +4,7 @@ namespace App\Modules\Product\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateProductsTable extends Migration
+class CreateProductQrcodesTable extends Migration
 {
     public function up()
     {
@@ -13,19 +13,20 @@ class CreateProductsTable extends Migration
                 'type' => 'BIGINT',
                 'constraint' => 20,
             ],
-            'name' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'code' => [
-                'type' => 'VARCHAR',
-                'constraint' => 16,
-                'unique' => true,
-            ],
-            'description' => [
-                'type' => 'TEXT',
+            'product_id' => [
+                'type' => 'BIGINT',
+                'constraint' => 20,
                 'null' => true,
                 'default' => null,
+            ],
+            'batch_no' => [
+                'type' => 'VARCHAR',
+                'constraint' => 300,
+                'null' => true,
+            ],
+            'qrcode' => [
+                'type' => 'TEXT',
+                'null' => true,
             ],
             'created_at DATETIME DEFAULT CURRENT_TIMESTAMP',
             'updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
@@ -35,11 +36,11 @@ class CreateProductsTable extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('products');
+        $this->forge->createTable('product_qrcodes');
     }
 
     public function down()
     {
-        $this->forge->dropTable('products');
+        //
     }
 }
