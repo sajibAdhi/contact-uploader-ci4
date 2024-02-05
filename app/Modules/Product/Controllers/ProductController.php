@@ -4,6 +4,7 @@ namespace App\Modules\Product\Controllers;
 
 use App\Controllers\BaseController;
 use App\Modules\Product\Models\ProductModel;
+use App\Modules\Product\Services\ProductService;
 use App\Modules\Product\Traits\Viewable;
 use CodeIgniter\HTTP\RedirectResponse;
 use ReflectionException;
@@ -12,16 +13,18 @@ class ProductController extends BaseController
 {
     use Viewable;
 
-    private ProductModel $productModel;
+    private ProductService $productService;
 
     public function __construct()
     {
-        $this->productModel = new ProductModel();
+        $this->productService = new ProductService();
     }
 
-    public function index()
+    public function index(): string
     {
-        die('Comming Soon');
+        $products = $this->productService->findAll();
+
+        return $this->view('product\index', compact('products'));
     }
 
     public function create(): string
@@ -36,11 +39,13 @@ class ProductController extends BaseController
                 return redirect()->back()->withInput();
             }
 
-            if (!$this->productModel->save($this->request->getPost())) {
+            $data = (object)$this->request->getPost();
+
+            if (!$this->productService->store($data)) {
                 return redirect()->back()->withInput()->with('error', 'Product creation failed');
             }
 
-            return redirect()->to(route_to('products'))->with('success', 'Product created successfully');
+            return redirect()->to(route_to('product'))->with('success', 'Product created successfully');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }

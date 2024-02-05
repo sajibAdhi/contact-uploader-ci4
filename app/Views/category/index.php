@@ -74,7 +74,7 @@
                         <td><?= $index + 1 ?></td>
                         <td><?= $category->name ?></td>
                         <td>
-                            <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('category.edit', $category->id)]) ?>
+                            <?= view_cell('ActionButtonCell::edit', ['href' => route_to('category.edit', $category->id)]) ?>
                             <!--                            --><?php // = view_cell('FormDeleteButtonCell', ['action' => route_to('category.delete', $category->id)])?>
 
                         </td>

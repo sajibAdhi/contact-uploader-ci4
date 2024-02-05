@@ -13,9 +13,9 @@ $routes->group('products', static function ($routes) {
     $routes->get('/', [ProductController::class, 'index'], ['as' => 'product']);
     $routes->get('create', [ProductController::class, 'create'], ['as' => 'product.create']);
     $routes->post('create', [ProductController::class, 'store']);
-    $routes->get('(:num)/edit', [ProductController::class, 'edit'], ['as' => 'product.edit']);
-    $routes->post('(:num)/edit', [ProductController::class, 'update']);
-    $routes->get('(:num)/delete', [ProductController::class, 'delete'], ['as' => 'product.delete']);
+    $routes->get('(:any)/edit', [ProductController::class, 'edit/$1'], ['as' => 'product.edit']);
+    $routes->put('(:any)/edit', [ProductController::class, 'update/$1']);
+    $routes->delete('(:any)/delete', [ProductController::class, 'delete/$1'], ['as' => 'product.delete']);
 
 
 });

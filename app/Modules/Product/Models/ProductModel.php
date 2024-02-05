@@ -9,12 +9,14 @@ class ProductModel extends UuidModel
 {
     protected $table = 'products';
     protected $primaryKey = 'id';
+    protected $uuidUseBytes = false;
     protected $useAutoIncrement = true;
-    protected $returnType = Product::class;
+    protected $returnType = 'object';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
     protected $allowedFields = [
         'name',
+        'qrcode',
         'description',
     ];
 

@@ -17,6 +17,10 @@ class CreateProductsTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'qrcode' => [
+                'type' => 'TEXT',
+                'null' => true,
+            ],
             'description' => [
                 'type' => 'TEXT',
                 'null' => true,
