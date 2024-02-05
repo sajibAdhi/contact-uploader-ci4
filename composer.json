@@ -21,7 +21,6 @@
     "codeigniter4/settings": "^2.2",
     "codeigniter4/translations": "^4.4",
     "liaison/revision": "^1.1",
-    "michalsn/codeigniter4-uuid": "^1.0",
     "phpoffice/phpspreadsheet": "^1.29",
     "picqer/php-barcode-generator": "^2.4"
   },

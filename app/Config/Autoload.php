@@ -49,8 +49,6 @@ class Autoload extends AutoloadConfig
         'App\Modules\Shield' => APPPATH . 'Modules/Shield',
         'App\Modules\OperatorBill' => APPPATH . 'Modules/OperatorBill',
         'App\Modules\Product' => APPPATH . 'Modules/Product',
-
-        'Michalsn\Uuid' => APPPATH . 'ThirdParty/codeigniter4-uuid/src' // For UUID
     ];
 
     /**
