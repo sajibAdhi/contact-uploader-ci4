@@ -18,12 +18,11 @@
                     </div>
                 <?php else: ?>
                     <?php foreach ($products as $product): ?>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $product->name ?></h5>
-                                    <p class="card-text"><?= $product->description ?></p>
-                                    <img width="50" src="<?= $product->qrcode ?>" alt="Barcode Image">
+                                    <img src="<?= $product->qrcode ?>" alt="Barcode Image">
                                     <?= view_cell('\App\Cells\ActionButtonCell::edit', ['href' => route_to('product.edit', $product->id)]) ?>
 
                                 </div>

@@ -22,7 +22,8 @@
     "codeigniter4/translations": "^4.4",
     "liaison/revision": "^1.1",
     "phpoffice/phpspreadsheet": "^1.29",
-    "picqer/php-barcode-generator": "^2.4"
+    "picqer/php-barcode-generator": "^2.4",
+    "": ""
   },
   "require-dev": {
     "fakerphp/faker": "^1.9",
@@ -44,7 +45,7 @@
   "config": {
     "optimize-autoloader": true,
     "platform": {
-      "php": "7.4.3"
+      "php": "8.0"
     },
     "preferred-install": "dist",
     "sort-packages": true

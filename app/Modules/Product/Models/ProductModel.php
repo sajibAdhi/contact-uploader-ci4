@@ -3,20 +3,21 @@
 namespace App\Modules\Product\Models;
 
 use App\Modules\Product\Entities\Product;
+use CodeIgniter\Model;
 use Michalsn\Uuid\UuidModel;
 
-class ProductModel extends UuidModel
+class ProductModel extends Model
 {
     protected $table = 'products';
     protected $primaryKey = 'id';
-    protected $uuidUseBytes = false;
     protected $useAutoIncrement = true;
     protected $returnType = 'object';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
     protected $allowedFields = [
+        'id',
         'name',
-        'qrcode',
+        'code',
         'description',
     ];
 
