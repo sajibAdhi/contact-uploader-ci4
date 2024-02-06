@@ -22,8 +22,7 @@
     "codeigniter4/translations": "^4.4",
     "liaison/revision": "^1.1",
     "phpoffice/phpspreadsheet": "^1.29",
-    "picqer/php-barcode-generator": "^2.4",
-    "": ""
+    "picqer/php-barcode-generator": "^2.4"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9",

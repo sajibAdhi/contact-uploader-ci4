@@ -41,6 +41,6 @@ class CreateProductQrcodesTable extends Migration
 
     public function down()
     {
-        //
+        $this->forge->dropTable('product_qrcodes');
     }
 }
