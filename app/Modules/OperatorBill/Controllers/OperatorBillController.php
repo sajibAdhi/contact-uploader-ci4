@@ -63,7 +63,7 @@ class OperatorBillController extends BaseController
     {
         try {
             /** Validate The Data */
-            if (!$this->storeValidation()) {
+            if (!$this->operatorBillValidation()) {
                 return redirect()->back()->withInput();
             }
 
@@ -98,7 +98,7 @@ class OperatorBillController extends BaseController
     {
         try {
             /** Validate The Data */
-            if (!$this->storeValidation()) {
+            if (!$this->operatorBillValidation()) {
                 return redirect()->back()->withInput();
             }
 
@@ -151,7 +151,7 @@ class OperatorBillController extends BaseController
      * -----------------------------------------------------------------------------------------------------------------
      */
 
-    private function storeValidation(): bool
+    private function operatorBillValidation(): bool
     {
         // Define validation rules
         $rules = [

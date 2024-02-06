@@ -7,7 +7,7 @@ use App\Modules\OperatorBill\Constants\SbuConstant;
 
 class CreteOperatorBillsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
         $this->forge->addField([
             'id' => [
