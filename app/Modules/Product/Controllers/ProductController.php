@@ -51,6 +51,26 @@ class ProductController extends BaseController
         }
     }
 
+    public function uploadUi(): string
+    {
+        return $this->view('product\upload');
+    }
+
+    public function upload(): RedirectResponse
+    {
+        try {
+            $file = $this->request->getFiles();
+
+            if (!$this->productService->upload($file['product_file'])) {
+                return redirect()->back()->withInput()->with('error', 'Product upload failed');
+            }
+
+            return redirect()->to(route_to('product'))->with('success', 'Product uploaded successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
+    }
+
     private function productValidation(): bool
     {
         $this->validate([

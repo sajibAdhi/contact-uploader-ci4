@@ -11,30 +11,31 @@ class SpreadSheetFileReader
 {
     /**
      * @return array|false
+     * @throws Exception
      */
     public static function readCsvFile(UploadedFile $file, array $headers)
     {
         $csvData = [];
 
         // Check is the file is valid and text/csv type
-        if (! $file->isValid() || $file->getClientMimeType() !== 'text/csv') {
-            return false;
+        if (!$file->isValid() || $file->getClientMimeType() !== 'text/csv') {
+            throw new Exception('Invalid file');
         }
 
         if (($handle = fopen($file->getTempName(), 'rb')) === false) {
-            return false;
+            throw new Exception('Error opening file');
         }
 
         $fileHeaders = fgetcsv($handle, 1000, ',');
 
         // Check if all elements in $headers are present in $fileHeader
         $diff = array_diff($headers, $fileHeaders);
-        if (! empty($diff)) {
-            return false;
+        if (!empty($diff)) {
+            throw new Exception('The headers do not match');
         }
 
         while (($data = fgetcsv($handle, 1000, ',')) !== false) {
-            $row       = array_combine($fileHeaders, $data);
+            $row = array_combine($fileHeaders, $data);
             $csvData[] = $row;
         }
 
@@ -51,7 +52,7 @@ class SpreadSheetFileReader
     public static function readExcelFile(UploadedFile $file, array $headers)
     {
         // Check is the file is excel type
-        if (! in_array($file->getClientMimeType(), ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], true)) {
+        if (!in_array($file->getClientMimeType(), ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], true)) {
             return false;
         }
 
@@ -75,7 +76,7 @@ class SpreadSheetFileReader
         }
 
         // Get the highest row that contains data
-        $highestRow    = $worksheet->getHighestDataRow();
+        $highestRow = $worksheet->getHighestDataRow();
         $highestColumn = $worksheet->getHighestDataColumn();
 
         // Get all rows from the worksheet
@@ -94,7 +95,7 @@ class SpreadSheetFileReader
     public static function readFile(UploadedFile $file, array $expectedHeaders): array
     {
         // Check is the file is valid
-        if (! $file->isValid()) {
+        if (!$file->isValid()) {
             throw new \Exception('The file is not valid');
         }
 

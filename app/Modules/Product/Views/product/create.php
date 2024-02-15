@@ -7,18 +7,25 @@
         <?= form_open(route_to('product.store'), ['class' => 'form-horizontal']) ?>
 
         <div class="card-body">
+            <!-- category name -->
+            <div class="form-group row <?= validation_show_error('category') ? 'has-error' : '' ?>">
+                <label for="category" class="col-sm-3">Category :</label>
+                <div class="col-sm-9">
+                    <input type="text" name="category" id="category" class="form-control"
+                           value="<?= old('category') ?>">
+                    <span class="help-block has-error"><?= validation_show_error('category') ?></span>
+                </div>
+            </div>
+
             <!-- name -->
             <div class="form-group row <?= validation_show_error('name') ? 'has-error' : '' ?>">
-                <label for="name" class="col-sm-3">Name</label>
+                <label for="name" class="col-sm-3">
+                    Name <span class="text-danger">*</span> :
+                </label>
                 <div class="col-sm-9">
-
                     <input type="text" name="name" id="name" class="form-control"
                            value="<?= old('name') ?>">
-                    <?php if (validation_show_error('name')): ?>
-                        <span class="help-block has-error">
-                            <?= validation_show_error('name') ?>
-                        </span>
-                    <?php endif; ?>
+                    <span class="help-block has-error"><?= validation_show_error('name') ?></span>
                 </div>
             </div>
             <!-- description -->
@@ -27,11 +34,7 @@
                 <div class="col-sm-9">
                     <input type="text" name="description" id="description" class="form-control"
                            value="<?= old('description') ?>">
-                    <?php if (validation_show_error('description')): ?>
-                        <span class="help-block has-error">
-                            <?= validation_show_error('description') ?>
-                        </span>
-                    <?php endif; ?>
+                    <span class="help-block has-error"><?= validation_show_error('description') ?></span>
                 </div>
             </div>
         </div>

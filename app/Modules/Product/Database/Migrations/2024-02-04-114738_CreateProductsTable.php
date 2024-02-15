@@ -6,23 +6,32 @@ use CodeIgniter\Database\Migration;
 
 class CreateProductsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
         $this->forge->addField([
             'id' => [
                 'type' => 'BIGINT',
                 'constraint' => 20,
+                'auto_increment' => true,
+            ],
+            'category' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+                'default' => null,
             ],
             'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
-            ],
-            'code' => [
-                'type' => 'VARCHAR',
-                'constraint' => 16,
                 'unique' => true,
+                'null' => false,
             ],
             'description' => [
+                'type' => 'TEXT',
+                'null' => true,
+                'default' => null,
+            ],
+            'qrcode' => [
                 'type' => 'TEXT',
                 'null' => true,
                 'default' => null,
@@ -38,7 +47,7 @@ class CreateProductsTable extends Migration
         $this->forge->createTable('products');
     }
 
-    public function down()
+    public function down(): void
     {
         $this->forge->dropTable('products');
     }

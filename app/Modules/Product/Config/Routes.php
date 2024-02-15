@@ -16,4 +16,9 @@ $routes->group('products', static function ($routes) {
     $routes->get('(:any)/edit', [ProductController::class, 'edit/$1'], ['as' => 'product.edit']);
     $routes->put('(:any)/edit', [ProductController::class, 'update/$1']);
     $routes->delete('(:any)/delete', [ProductController::class, 'delete/$1'], ['as' => 'product.delete']);
+
+    $routes->get('upload', [ProductController::class, 'uploadUi'], ['as' => 'product.upload']);
+    $routes->post('upload', [ProductController::class, 'upload']);
+
+    $routes->get('(:any)/validate', [ProductController::class, 'validate/$1'], ['as' => 'product.validate']);
 });
