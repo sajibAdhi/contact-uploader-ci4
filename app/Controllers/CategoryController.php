@@ -35,10 +35,10 @@ class CategoryController extends BaseController
                     ->with('success', 'Category created successfully');
             }
 
-            return redirect()->route('category.index')
+            return redirect()->route('sms_service.category')
                 ->withInput()->with('error', 'Category creation failed');
         } catch (ReflectionException $exception) {
-            return redirect()->route('category.index')
+            return redirect()->route('sms_service.category')
                 ->withInput()->with('error', $exception->getMessage());
         }
     }
@@ -59,14 +59,14 @@ class CategoryController extends BaseController
 
         try {
             if ($this->categoryService->category->update($id, $data)) {
-                return redirect()->route('category.index')
+                return redirect()->route('sms_service.category')
                     ->with('success', 'Category updated successfully');
             }
 
-            return redirect()->route('category.index')
+            return redirect()->route('sms_service.category')
                 ->withInput()->with('error', 'Category update failed');
         } catch (ReflectionException $exception) {
-            return redirect()->route('category.index')
+            return redirect()->route('sms_service.category')
                 ->withInput()->with('error', $exception->getMessage());
         }
     }

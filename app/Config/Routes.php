@@ -15,24 +15,28 @@ use App\Controllers\SettingController;
 use App\Filters\CategoryStoreFilter;
 use App\Filters\ContactContentUploadFilter;
 
-$routes->group('', ['filter' => ['session']], static function ($routes) {
+$routes->get('/', static fn() => redirect()->to('operator_bills'), ['filter' => ['session']]);
 
-    $routes->get('/', static fn() => redirect()->to('operator_bills'));
+$routes->group('sms_service', ['filter' => ['session']], static function ($routes) {
+
+    $routes->get('/', static function () {
+        return redirect()->to('contacts');
+    });
 
     $routes->group('aggregators', static function ($routes) {
-        $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'aggregator.index']);
-        $routes->post('/', [AggregatorController::class, 'store'], ['as' => 'aggregator.store']);
-        $routes->get('(:num)', [AggregatorController::class, 'edit/$1'], ['as' => 'aggregator.edit']);
+        $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'sms_service.aggregator']);
+        $routes->post('/', [AggregatorController::class, 'store'], ['as' => 'sms_service.aggregator.store']);
+        $routes->get('(:num)', [AggregatorController::class, 'edit/$1'], ['as' => 'sms_service.aggregator.edit']);
         $routes->put('(:num)', [AggregatorController::class, 'update/$1']);
-        $routes->delete('(:num)', [AggregatorController::class, 'delete/$1'], ['as' => 'aggregator.delete']);
+        $routes->delete('(:num)', [AggregatorController::class, 'delete/$1'], ['as' => 'sms_service.aggregator.delete']);
     });
 
     $routes->group('categories', static function ($routes) {
-        $routes->get('/', [CategoryController::class, 'index'], ['as' => 'category.index']);
-        $routes->post('/', [CategoryController::class, 'store'], ['as' => 'category.store', 'filter' => CategoryStoreFilter::class]);
-        $routes->get('(:num)', [CategoryController::class, 'edit/$1'], ['as' => 'category.edit']);
+        $routes->get('/', [CategoryController::class, 'index'], ['as' => 'sms_service.category']);
+        $routes->post('/', [CategoryController::class, 'store'], ['as' => 'sms_service.category.store', 'filter' => CategoryStoreFilter::class]);
+        $routes->get('(:num)', [CategoryController::class, 'edit/$1'], ['as' => 'sms_service.category.edit']);
         $routes->put('(:num)', [CategoryController::class, 'update/$1'], ['filter' => CategoryStoreFilter::class]);
-        $routes->delete('(:num)', [CategoryController::class, 'delete/$1'], ['as' => 'category.delete']);
+        $routes->delete('(:num)', [CategoryController::class, 'delete/$1'], ['as' => 'sms_service.category.delete']);
     });
 
     $routes->group('contacts', static function ($routes) {
@@ -49,6 +53,15 @@ $routes->group('', ['filter' => ['session']], static function ($routes) {
         $routes->post('upload', [ContactContentController::class, 'store'], ['filter' => ContactContentUploadFilter::class]);
 
         $routes->get('progress', [ContactContentController::class, 'progress'], ['as' => 'contact.content.progress']);
+    });
+
+    $routes->group('import_csv', static function ($routes) {
+        $routes->get('/', [ContactContentController::class, 'index'], ['as' => 'sms_service.import_csv']);
+
+        $routes->get('upload', [ContactContentController::class, 'create'], ['as' => 'sms_service.import_csv.upload']);
+        $routes->post('upload', [ContactContentController::class, 'store'], ['filter' => ContactContentUploadFilter::class]);
+
+        $routes->get('progress', [ContactContentController::class, 'progress'], ['as' => 'sms_service.import_csv.progress']);
     });
 
     $routes->group('settings', static function ($routes) {

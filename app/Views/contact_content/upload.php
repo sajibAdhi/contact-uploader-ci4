@@ -1,4 +1,4 @@
-<?= $this->extend('layout/app') ?>
+<?= $this->extend('layout/adminlte2') ?>
 
 <?= $this->section('styles') ?>
     <!-- Select2 -->
@@ -42,7 +42,7 @@
                 'label' => 'Date',
                 'id' => 'date',
                 'name' => 'date',
-                'defaultValue' => date(settingService()->getUserSetting('php_date_format')),
+                'defaultValue' => date('Y-m-d'),
                 'readonly' => true,
             ]) ?>
 
@@ -53,9 +53,8 @@
                     <input type="file" class="form-control" name="contacts_file" id="contacts"
                            accept=".csv" required>
                     <span class="help-block"><?= validation_show_error('contacts_file') ?></span>
-                    <p class="help-block">Please upload a CSV or Excel file. The File must contain header
-                        <b>MOBILE_NO</b>
-                        and <b>SMS_CONTENT</b>.</p>
+                    <p class="help-block">Please upload a CSV or Excel file. The File must contain headers
+                       <b> 'aggregator_name', 'date', 'from', 'to', 'operator_name', 'sms_content', 'status' </b> .</p>
                     <div class="progress">
                         <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
                              role="progressbar" style="width: 0%" aria-valuenow="0"

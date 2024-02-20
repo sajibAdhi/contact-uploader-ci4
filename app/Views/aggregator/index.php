@@ -1,11 +1,11 @@
 <?= $this->extend('layout/app') ?>
 
-<?= $this->section('content') ?>
+<?= $this->section('main') ?>
 
 <!-- Category Create Section -->
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title"><?= ($action ?? null) === 'edit' ? 'Edit' : 'Create' ?> Aggregator</h3>
+<div class="card card-primary">
+    <div class="card-header with-border">
+        <h3 class="card-title"><?= ($action ?? null) === 'edit' ? 'Edit' : 'Create' ?> Aggregator</h3>
     </div>
     <form class="form-horizontal"
           action="<?= ($action ?? null) === 'edit'
@@ -17,14 +17,14 @@
             <?= form_hidden('_method', 'PUT') ?>
         <?php endif; ?>
 
-        <div class="box-body">
+        <div class="card-body">
             <!-- aggregator -->
-            <div class="form-group <?= validation_show_error('aggregator') ? 'has-warning' : '' ?>">
+            <div class="form-group row <?= validation_show_error('aggregator') ? 'has-warning' : '' ?>">
                 <label for="aggregator" class="control-label col-sm-3">
                     Aggregator: <span class="text-danger">*</span>
                 </label>
                 <div class=" col-sm-9">
-                    <input type="text" class="form-control col-sm-9" name="aggregator" id="aggregator"
+                    <input type="text" class="form-control" name="aggregator" id="aggregator"
                            value="<?= set_value('aggregator', $aggregator->name ?? null) ?>" placeholder="Aggregator Name"
                            required>
                     <span class="help-block"><?= validation_show_error('aggregator') ?></span>
@@ -39,11 +39,11 @@
 </div>
 
 <!-- Categories List Section -->
-<div class="box box-info">
-    <div class="box-header with-border">
-        <h3 class="box-title">Categories</h3>
+<div class="card card-info">
+    <div class="card-header with-border">
+        <h3 class="card-title">Categories</h3>
     </div>
-    <div class="box-body">
+    <div class="card-body">
         <table class="table table-sm table-bordered table-striped table-hover">
             <thead>
             <tr>

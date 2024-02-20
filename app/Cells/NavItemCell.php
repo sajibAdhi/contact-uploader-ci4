@@ -6,7 +6,7 @@ use CodeIgniter\View\Cells\Cell;
 
 class NavItemCell extends Cell
 {
-    public $name;
+    public $title;
     public $link;
     public $icon;
 }
