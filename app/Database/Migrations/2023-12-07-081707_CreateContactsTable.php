@@ -40,7 +40,8 @@ class CreateContactsTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('category_id', 'categories', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addUniqueKey('number');
+        $this->forge->addKey('category_id');
         $this->forge->createTable('contacts');
     }
 

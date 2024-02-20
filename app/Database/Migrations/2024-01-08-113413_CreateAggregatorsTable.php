@@ -19,6 +19,8 @@ class CreateAggregatorsTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
                 'null' => false,
+                'unique' => true,
+                'index' => true,
             ],
             'description' => [
                 'type' => 'TEXT',
