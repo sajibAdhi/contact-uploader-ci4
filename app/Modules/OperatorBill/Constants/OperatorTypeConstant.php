@@ -2,10 +2,12 @@
 
 namespace App\Modules\OperatorBill\Constants;
 
-use App\Constants\AbstractConstant;
+use App\Traits\CountableConstants;
 
-class OperatorTypeConstant extends AbstractConstant
+class OperatorTypeConstant
 {
+    use CountableConstants;
+
     const MOBILE = 'mobile';
     const IOS = 'ios';
     const IGW = 'igw';

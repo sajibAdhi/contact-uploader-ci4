@@ -2,14 +2,15 @@
 
 namespace App\Modules\OperatorBill\Constants;
 
-use App\Constants\AbstractConstant;
+use App\Traits\CountableConstants;
 
-class SbuConstant extends AbstractConstant
+class SbuConstant
 {
+    use CountableConstants;
+
     const RITT = 'ritt';
     const RITIGW = 'ritigw';
     const SOFTEX = 'softex';
     const QTECH = 'qtech';
-
 }
 

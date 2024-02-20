@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Constants;
+namespace App\Traits;
 
 use ReflectionClass;
 
-/**
- * ConstantInterface.php
- */
-class AbstractConstant
+trait CountableConstants
 {
-    /**
-     * @return array
-     */
     public static function all(): array
     {
         return (new ReflectionClass(static::class))->getConstants();
     }
 
+    public static function count(): int
+    {
+        return count(static::all());
+    }
 }
