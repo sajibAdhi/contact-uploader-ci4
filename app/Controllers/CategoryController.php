@@ -20,18 +20,23 @@ class CategoryController extends BaseController
         $categories = $this->categoryService->category->findAll();
 
         return view('category/index', [
-            'title'      => 'Categories',
+            'title' => 'Categories',
             'categories' => $categories,
         ]);
     }
 
     public function store(): RedirectResponse
     {
-        $data = ['name' => $this->request->getPost('category')];
-
         try {
+            if (!$this->validateCategoryRequest()) {
+                return redirect()->route('sms_service.category')
+                    ->withInput()->with('error', 'Invalid Form Data');
+            }
+
+            $data = ['name' => $this->request->getPost('category')];
+
             if ($this->categoryService->category->insert($data)) {
-                return redirect()->route('category.index')
+                return redirect()->route('sms_service.category')
                     ->with('success', 'Category created successfully');
             }
 
@@ -46,18 +51,23 @@ class CategoryController extends BaseController
     public function edit($id): string
     {
         return view('category/index', [
-            'title'      => 'Edit Category',
-            'action'     => 'edit',
+            'title' => 'Edit Category',
+            'action' => 'edit',
             'categories' => $this->categoryService->category->findAll(),
-            'category'   => $this->categoryService->category->find($id),
+            'category' => $this->categoryService->category->find($id),
         ]);
     }
 
     public function update($id): RedirectResponse
     {
-        $data = ['name' => $this->request->getPost('category')];
-
         try {
+            if (!$this->validateCategoryRequest($id)) {
+                return redirect()->route('sms_service.category')
+                    ->withInput()->with('error', 'Invalid Form Data');
+            }
+
+            $data = ['name' => $this->request->getPost('category')];
+
             if ($this->categoryService->category->update($id, $data)) {
                 return redirect()->route('sms_service.category')
                     ->with('success', 'Category updated successfully');
@@ -80,5 +90,22 @@ class CategoryController extends BaseController
 
         return redirect()->route('category.index')
             ->with('error', 'Category deletion failed');
+    }
+
+    private function validateCategoryRequest(int $categoryId = null): bool
+    {
+        return $this->validate([
+            'category' => [
+                'label' => 'Category',
+                'rules' => [
+                    'required',
+                    'trim',
+                    'string',
+                    'min_length[3]',
+                    'max_length[255]',
+                    'is_unique[categories.name,id,' . $categoryId . ']', // Ignore the current category id
+                ],
+            ],
+        ]);
     }
 }

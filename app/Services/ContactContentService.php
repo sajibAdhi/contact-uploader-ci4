@@ -151,6 +151,7 @@ class ContactContentService
     {
         $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'date', 'from', 'to', 'operator_name', 'sms_content', 'status']);
 
+        dd($data);
         $totalRows = count($data);
 
         // If the file is empty, return false
@@ -162,6 +163,9 @@ class ContactContentService
         $divider = 10 ** ($numbLength - 1);
 
         $this->contact->db->transStart();
+
+        // get all the categories from $data
+
 
         $categoryId = $this->categoryService->category->find($categoryId)->id;
 

@@ -34,9 +34,9 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
 
     $routes->group('categories', static function ($routes) {
         $routes->get('/', [CategoryController::class, 'index'], ['as' => 'sms_service.category']);
-        $routes->post('/', [CategoryController::class, 'store'], ['as' => 'sms_service.category.store', 'filter' => CategoryStoreFilter::class]);
+        $routes->post('/', [CategoryController::class, 'store'], ['as' => 'sms_service.category.store']);
         $routes->get('(:num)', [CategoryController::class, 'edit/$1'], ['as' => 'sms_service.category.edit']);
-        $routes->put('(:num)', [CategoryController::class, 'update/$1'], ['filter' => CategoryStoreFilter::class]);
+        $routes->put('(:num)', [CategoryController::class, 'update/$1']);
         $routes->delete('(:num)', [CategoryController::class, 'delete/$1'], ['as' => 'sms_service.category.delete']);
     });
 
