@@ -10,12 +10,16 @@ class ContactContentModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'contact_id',
-        'content',
+        'aggregator_id',
         'date',
+        'form_contact_id',
+        'to_contact_id',
+        'operator_name',
+        'content',
+        'status',
         'remarks',
     ];
 
