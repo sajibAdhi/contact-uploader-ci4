@@ -18,21 +18,21 @@ class CreateContactsTable extends Migration
             'number' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
+                'null'       => false,
             ],
             'category_id' => [
                 'type'       => 'BIGINT',
                 'constraint' => 20,
-                'unsigned'   => true,
+                'null'       => true,
+                'default'    => null,
             ],
             'remarks' => [
                 'type' => 'TEXT',
                 'null' => true,
+                'default' => null,
             ],
-            'created_at datetime default current_timestamp',
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
+            'created_at timestamp default current_timestamp',
+            'updated_at timestamp default null on update current_timestamp',
             'deleted_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
