@@ -27,7 +27,7 @@
                     <input type="text" class="form-control" name="aggregator" id="aggregator"
                            value="<?= set_value('aggregator', $aggregator->name ?? null) ?>" placeholder="Aggregator Name"
                            required>
-                    <span class="help-block"><?= validation_show_error('aggregator') ?></span>
+                    <span class="text-danger"><?= validation_show_error('aggregator') ?></span>
                 </div>
             </div>
         </div>

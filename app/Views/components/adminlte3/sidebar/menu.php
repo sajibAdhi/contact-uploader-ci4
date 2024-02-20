@@ -38,20 +38,42 @@
 
 
         <?= view_cell(\App\Cells\NavItemCell::class, [
-            'link' => route_to('category'),
+            'link' => route_to('sms_service.category'),
             'icon' => 'fas fa-th',
             'title' => 'Categories',
         ]) ?>
         <?= view_cell(\App\Cells\NavItemCell::class, [
-            'link' => route_to('aggregator'),
+            'link' => route_to('sms_service.aggregator'),
             'icon' => 'fas fa-th',
             'title' => 'Aggregators',
         ]) ?>
 
-        <?= view_cell(\App\Cells\NavItemCell::class, [
-            'link' => route_to('sms_service.import_csv'),
-            'icon' => 'fas fa-th',
-            'title' => 'Aggregators',
-        ]) ?>
+        <li class="nav-item <?= menu_open(
+            route_to('sms_service.import_csv'),
+            route_to('sms_service.import_csv.upload')
+        ) ?>">
+            <a href="#" class="nav-link <?= active_link(
+                route_to('sms_service.import_csv'),
+                route_to('sms_service.import_csv.upload')
+            ) ?>">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    Sms Service
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <?= view_cell(\App\Cells\NavItemCell::class, [
+                    'link' => route_to('sms_service.import_csv'),
+                    'icon' => 'fas fa-th',
+                    'title' => 'Imported Data',
+                ]) ?>
+                <?= view_cell(\App\Cells\NavItemCell::class, [
+                    'link' => route_to('sms_service.import_csv.upload'),
+                    'icon' => 'fas fa-th',
+                    'title' => 'Import CSV File',
+                ]) ?>
+            </ul>
+        </li>
     </ul>
 </nav>

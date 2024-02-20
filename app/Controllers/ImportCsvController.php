@@ -25,8 +25,8 @@ class ImportCsvController extends BaseController
             'limit'      => $this->request->getGet('limit'),
         ];
 
-        return view('contact_content/index', [
-            'title'      => 'Contact Content',
+        return view('import_csv/index', [
+            'title'      => 'Imported Data',
             'categories' => $this->contactService->whereContactsExist()->categories(),
             'contacts'   => $this->contactService->contactsContent($filters),
             'pager'      => $this->contactService->contactContent->pager,

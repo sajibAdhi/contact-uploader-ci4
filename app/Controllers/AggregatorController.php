@@ -25,18 +25,23 @@ class AggregatorController extends BaseController
 
     public function store(): RedirectResponse
     {
+        if (!$this->validateAggregatorRequest()) {
+            return redirect()->route('sms_service.aggregator')
+                ->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $data = $this->getPost();
 
         try {
             if ($this->aggregatorService->aggregator->insert($data)) {
-                return redirect()->route('aggregator.index')
+                return redirect()->route('sms_service.aggregator')
                     ->with('success', 'aggregator created successfully');
             }
 
-            return redirect()->route('aggregator.index')
+            return redirect()->route('sms_service.aggregator')
                 ->withInput()->with('error', 'aggregator creation failed');
         } catch (ReflectionException $exception) {
-            return redirect()->route('aggregator.index')
+            return redirect()->route('sms_service.aggregator')
                 ->withInput()->with('error', $exception->getMessage());
         }
     }
@@ -74,5 +79,12 @@ class AggregatorController extends BaseController
         return (object)[
             'name' => $this->request->getPost('aggregator')
         ];
+    }
+
+    private function validateAggregatorRequest(): bool
+    {
+        return $this->validate([
+            'aggregator' => 'required|min_length[3]|max_length[255]|is_unique[aggregators.name]',
+        ]);
     }
 }

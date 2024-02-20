@@ -1,6 +1,11 @@
 <?php
 
 if (!function_exists('load_datatable_styles')) {
+    /**
+     * Load DataTable styles
+     *
+     * @return string
+     */
     function load_datatable_styles(): string
     {
         $styles = [
@@ -19,7 +24,12 @@ if (!function_exists('load_datatable_styles')) {
 }
 
 if (!function_exists('load_datatable_scripts')) {
-    function load_datatable_scripts()
+    /**
+     * Load DataTable scripts
+     *
+     * @return string
+     */
+    function load_datatable_scripts(): string
     {
         $scripts = [
             'adminlte/plugins/datatables/jquery.dataTables.min.js',
@@ -44,15 +54,15 @@ if (!function_exists('load_datatable_scripts')) {
     }
 }
 
-
 if (!function_exists('initialize_datatable')) {
-
     /**
-     * @param $tableId
+     * Initialize DataTable
+     *
+     * @param string $tableId
      * @param array $options
      * @return string
      */
-    function initialize_datatable($tableId, array $options = [])
+    function initialize_datatable(string $tableId, array $options = []): string
     {
         // Default options
         $defaultOptions = [

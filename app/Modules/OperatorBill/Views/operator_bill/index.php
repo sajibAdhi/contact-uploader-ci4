@@ -1,6 +1,6 @@
 <?= $this->extend('layout/app') ?>
 
-<?php helper('datatable'); ?>
+<?php helper('adminlte3'); ?>
 
 
 <?= $this->section('pageStyles') ?>

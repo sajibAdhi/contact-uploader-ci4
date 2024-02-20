@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\ImportCsvController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -56,12 +57,12 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
     });
 
     $routes->group('import_csv', static function ($routes) {
-        $routes->get('/', [ContactContentController::class, 'index'], ['as' => 'sms_service.import_csv']);
+        $routes->get('/', [ImportCsvController::class, 'index'], ['as' => 'sms_service.import_csv']);
 
-        $routes->get('upload', [ContactContentController::class, 'create'], ['as' => 'sms_service.import_csv.upload']);
-        $routes->post('upload', [ContactContentController::class, 'store'], ['filter' => ContactContentUploadFilter::class]);
+        $routes->get('upload', [ImportCsvController::class, 'create'], ['as' => 'sms_service.import_csv.upload']);
+        $routes->post('upload', [ImportCsvController::class, 'store'], ['filter' => ContactContentUploadFilter::class]);
 
-        $routes->get('progress', [ContactContentController::class, 'progress'], ['as' => 'sms_service.import_csv.progress']);
+        $routes->get('progress', [ImportCsvController::class, 'progress'], ['as' => 'sms_service.import_csv.progress']);
     });
 
     $routes->group('settings', static function ($routes) {
