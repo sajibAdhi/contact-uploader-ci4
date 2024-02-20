@@ -1,6 +1,8 @@
 <?php namespace App\Modules\OperatorBill\Services;
 
+use App\Modules\OperatorBill\Constants\DBConstant;
 use App\Modules\OperatorBill\Models\OperatorBillFileModel;
+use App\Modules\OperatorBill\Models\OperatorBillHistoryModel;
 use App\Modules\OperatorBill\Models\OperatorBillModel;
 use App\Modules\OperatorBill\Models\OperatorModel;
 use ReflectionException;
@@ -10,16 +12,17 @@ class OperatorBillService
     public OperatorBillModel $operatorBillModel;
     private OperatorBillFileModel $operatorBillFileModel;
     public OperatorModel $operatorModel;
+    private OperatorBillHistoryModel $operatorBillHistoryModel;
 
     public function __construct()
     {
         $this->operatorModel = new OperatorModel();
         $this->operatorBillModel = new OperatorBillModel();
         $this->operatorBillFileModel = new OperatorBillFileModel();
-
+        $this->operatorBillHistoryModel = new OperatorBillHistoryModel();
     }
 
-    public function find(int $id)
+    public function find(int $id): array|object|null
     {
         $operatorBill = $this->operatorBillModel->find($id);
         $operatorBill->operator = $this->operatorModel->find($operatorBill->operator_id);
@@ -51,7 +54,7 @@ class OperatorBillService
     /**
      * @throws ReflectionException
      */
-    public function store($data, $files): bool
+    public function store(object $data, $files): bool
     {
         $this->operatorBillModel->db->transStart();
 
@@ -82,12 +85,18 @@ class OperatorBillService
         if (!empty($filesData)) {
             $this->operatorBillFileModel->insertBatch($filesData);
         }
-        // Insert the file data into the database
+
+        $data->operator_bill_id = $operatorBillId;
+        $data->action = DBConstant::ACTION_ENUM[0];
+        $data->added_by = auth()->id();
+        $data->added_at = date('Y-m-d H:i:s');
+
+        // now here store the data in the operator_bills_history table
+        $this->operatorBillHistoryModel->insert($data);
 
         $this->operatorBillModel->db->transComplete();
         return $this->operatorBillModel->db->transStatus();
     }
-
 
     /**
      * @throws ReflectionException
@@ -123,6 +132,14 @@ class OperatorBillService
         if (!empty($filesData)) {
             $this->operatorBillFileModel->insertBatch($filesData);
         }
+
+        $postData->operator_bill_id = $id;
+        $postData->action = DBConstant::ACTION_ENUM[1];
+        $postData->added_by = auth()->id();
+        $postData->added_at = date('Y-m-d H:i:s');
+
+        // now here store the data in the operator_bills_history table
+        $this->operatorBillHistoryModel->insert($postData);
 
         $this->operatorBillModel->db->transComplete();
         return $this->operatorBillModel->db->transStatus();

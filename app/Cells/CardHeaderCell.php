@@ -6,5 +6,5 @@ use CodeIgniter\View\Cells\Cell;
 
 class CardHeaderCell extends Cell
 {
-    public string $title;
+    public $title;
 }

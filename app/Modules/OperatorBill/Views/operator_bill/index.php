@@ -119,7 +119,7 @@
                                         <?php endforeach; ?>
                                     </td>
                                     <td>
-                                        <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('operator_bill.edit', $bill->id)]) ?>
+                                        <?= view_cell('ActionButtonCell::edit', ['href' => route_to('operator_bill.edit', $bill->id)]) ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

@@ -16,7 +16,7 @@
 
             <p>
                 <?= auth()->user()->username ?? '{{username}}' ?> - {{ Designation}}
-                <small>Member since <?= date('M, Y', strtotime(auth()->user()->created_at)) ?></small>
+                <small>Member since <?= date('M, Y', strtotime(auth()->user()->created_at?? null)) ?></small>
             </p>
         </li>
 

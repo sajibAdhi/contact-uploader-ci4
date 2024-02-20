@@ -48,7 +48,7 @@
                                 <td><?= esc($operator->phone) ?></td>
                                 <td><?= esc($operator->email) ?></td>
                                 <td>
-                                    <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('operator_bill.operator.edit', $operator->id)]) ?>
+                                    <?= view_cell('ActionButtonCell::edit', ['href' => route_to('operator_bill.operator.edit', $operator->id)]) ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

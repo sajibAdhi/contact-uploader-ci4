@@ -60,7 +60,7 @@
                         <td><?= $aggregator->id ?></td>
                         <td><?= $aggregator->name ?></td>
                         <td>
-                            <?= view_cell('AnchorButtonCell::edit', ['href' => route_to('aggregator.edit', $aggregator->id)]) ?>
+                            <?= view_cell('ActionButtonCell::edit', ['href' => route_to('aggregator.edit', $aggregator->id)]) ?>
                             <!--                            --><?php // = view_cell('FormDeleteButtonCell', ['action' => route_to('aggregator.delete', $aggregator->id)])?>
 
                         </td>

@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      target: development # Use the development stage
+    ports:
+      - 8080:80
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DB_HOST=${database_default_hostname}
+      - DB_NAME=${database_default_database}
+      - DB_USER=${database_default_username}
+      - DB_PASSWORD=${database_default_password}
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /var/www/bills
+  mysql:
+    image: mysql
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${database_default_password}
+      MYSQL_DATABASE: ${database_default_database}
+      MYSQL_USER: ${database_default_username}
+      MYSQL_PASSWORD: ${database_default_password}
+    expose:
+      - 3306
+    healthcheck:
+      test:  ["CMD", "/usr/local/bin/healthcheck.sh", "--su-mysql", "--connect",  "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+#  phpmyadmin:
+#    image: phpmyadmin
+#    ports:
+#      - 3306:80
+#    depends_on:
+#      - mysql
+#    environment:
+#      - PMA_HOST=mysql
+volumes:
+  db-data:
