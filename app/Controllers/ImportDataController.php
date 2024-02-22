@@ -53,7 +53,6 @@ class ImportDataController extends BaseController
 
         try {
             if (!$this->validateRequest()) {
-                dd( $this->request->getPost('category'));
                 if ($this->request->isAJAX()) {
                     return response()->setStatusCode(422)->setJSON(['errors' => $this->validator->getErrors()]);
                 }
@@ -66,7 +65,7 @@ class ImportDataController extends BaseController
             $category_name = $this->request->getPost('category_name');
             $date = $this->request->getPost('date');
 
-            $isUploaded = $this->importDataService->storeUploadedContactsContent($file, $category_id, $category_name, $date);
+            $isUploaded = $this->importDataService->storeUploadedData($file, $category_id, $category_name, $date);
 
             if ($this->request->isAJAX()) {
                 if ($isUploaded) {

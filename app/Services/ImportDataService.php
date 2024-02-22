@@ -115,7 +115,7 @@ class ImportDataService
      * @param mixed $category_id
      * @param mixed $categoryName
      *
-     * @throws ReflectionException
+     * @throws ReflectionException|\PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function storeUploadedContacts(UploadedFile $file, $category_id, $categoryName): bool
     {
@@ -147,7 +147,7 @@ class ImportDataService
      * @throws ReflectionException
      * @throws Exception
      */
-    public function storeUploadedContactsContent(UploadedFile $file, $categoryId, $date, int $aggregatorId = null): bool
+    public function storeUploadedData(UploadedFile $file, $categoryId, $date, int $aggregatorId = null): bool
     {
         $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'date', 'from', 'to', 'operator_name', 'sms_content', 'status']);
 
