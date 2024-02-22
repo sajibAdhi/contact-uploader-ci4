@@ -3,18 +3,18 @@
 namespace App\Controllers;
 
 use App\Models\CategoryModel;
-use App\Services\ContactContentService;
+use App\Services\ImportDataService;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use Exception;
 
-class ImportCsvController extends BaseController
+class ImportDataController extends BaseController
 {
-    private ContactContentService $contactService;
+    private ImportDataService $importDataService;
 
     public function __construct()
     {
-        $this->contactService = new ContactContentService();
+        $this->importDataService = new ImportDataService();
     }
 
     public function index(): string
@@ -25,17 +25,17 @@ class ImportCsvController extends BaseController
             'limit' => $this->request->getGet('limit'),
         ];
 
-        return view('import_csv/index', [
+        return view('import_data/index', [
             'title' => 'Imported Data',
-            'categories' => $this->contactService->whereContactsExist()->categories(),
-            'contacts' => $this->contactService->contactsContent($filters),
-            'pager' => $this->contactService->contactContent->pager,
+            'categories' => $this->importDataService->whereContactsExist()->categories(),
+            'contacts' => $this->importDataService->contactsContent($filters),
+            'pager' => $this->importDataService->contactContent->pager,
         ]);
     }
 
     public function create(): string
     {
-        return view('import_csv/upload', [
+        return view('import_data/upload', [
             'title' => 'Import CSV File',
             'categories' => (new CategoryModel())->findAll(),
         ]);
@@ -66,7 +66,7 @@ class ImportCsvController extends BaseController
             $category_name = $this->request->getPost('category_name');
             $date = $this->request->getPost('date');
 
-            $isUploaded = $this->contactService->storeUploadedContactsContent($file, $category_id, $category_name, $date);
+            $isUploaded = $this->importDataService->storeUploadedContactsContent($file, $category_id, $category_name, $date);
 
             if ($this->request->isAJAX()) {
                 if ($isUploaded) {
@@ -92,7 +92,7 @@ class ImportCsvController extends BaseController
 
     public function progress(): ResponseInterface
     {
-        $progress = $this->contactService->getUploadProgress();
+        $progress = $this->importDataService->getUploadProgress();
 
         return $this->response->setJSON(['progress' => $progress]);
     }

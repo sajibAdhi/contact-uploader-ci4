@@ -1,6 +1,6 @@
 <?php
 
-use App\Controllers\ImportCsvController;
+use App\Controllers\ImportDataController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -38,13 +38,13 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
         $routes->delete('(:num)', [CategoryController::class, 'delete/$1'], ['as' => 'sms_service.category.delete']);
     });
 
-    $routes->group('import_csv', static function ($routes) {
-        $routes->get('/', [ImportCsvController::class, 'index'], ['as' => 'sms_service.import_csv']);
+    $routes->group('import_data', static function ($routes) {
+        $routes->get('/', [ImportDataController::class, 'index'], ['as' => 'sms_service.import_data']);
 
-        $routes->get('upload', [ImportCsvController::class, 'create'], ['as' => 'sms_service.import_csv.upload']);
-        $routes->post('upload', [ImportCsvController::class, 'store']);
+        $routes->get('upload', [ImportDataController::class, 'create'], ['as' => 'sms_service.import_data.upload']);
+        $routes->post('upload', [ImportDataController::class, 'store']);
 
-        $routes->get('progress', [ImportCsvController::class, 'progress'], ['as' => 'sms_service.import_csv.progress']);
+        $routes->get('progress', [ImportDataController::class, 'progress'], ['as' => 'sms_service.import_data.progress']);
     });
 
     $routes->group('settings', static function ($routes) {
