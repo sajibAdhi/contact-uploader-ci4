@@ -47,9 +47,10 @@ class ImportDataController extends BaseController
     public function store()
     {
         ini_set('memory_limit', '3000M'); // Sets the memory limit to 250MB
-        set_time_limit(300); // Sets the maximum execution time to 300 seconds (5 minutes)
-        ini_set('mysql.connect_timeout', '300');
-        ini_set('default_socket_timeout', '300');
+        set_time_limit(10 * 60);
+        ini_set('mysql.connect_timeout', 5 * 60);
+        ini_set('default_socket_timeout', 5 * 60);
+
         $newCsrfToken = csrf_token();
         $newCsrfHash = csrf_hash();
 

@@ -89,6 +89,8 @@
                 $.ajax({
                     url: '<?= route_to('sms_service.import_data.progress')?>',
                     success: function (data) {
+
+                        console.log(data);
                         // Update your progress bar here
                         let progress = data.progress;
                         $('#progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
@@ -131,7 +133,6 @@
                         const csrfHash = data.csrf_hash;
 
                         $(`input[name="${csrfToken}"]`).val(csrfHash);
-                        console.log($(`input[name="${csrfToken}"]`).val(), csrfToken, csrfHash);
 
                         if (data.status === 'success') {
                             Swal.fire({

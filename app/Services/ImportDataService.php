@@ -5,89 +5,36 @@ namespace App\Services;
 use App\Constants\ApplicationConstant;
 use App\Libraries\SpreadSheetFileReader;
 use App\Models\ContactContentModel;
-use App\Models\ContactModel;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use Exception;
 use ReflectionException;
 
 class ImportDataService
 {
-    public ContactModel $contact;
     public CategoryService $categoryService;
     public ContactContentModel $contactContent;
+    private AggregatorService $aggregatorService;
+    private ContactService $contactService;
 
     public function __construct()
     {
+        $this->aggregatorService = new AggregatorService();
         $this->categoryService = new CategoryService();
-        $this->contact = new ContactModel();
+        $this->contactService = new ContactService();
         $this->contactContent = new ContactContentModel();
-    }
-
-    /**
-     * @return array|object|null
-     *
-     * @throws ReflectionException
-     */
-    public function findOrInsert(string $number, int $category_id, ?string $remarks)
-    {
-        $contactData = $this->contact->where('number', $number)->first();
-
-        if (null === $contactData) {
-            $this->contact->insert([
-                'number' => $number,
-                'category_id' => $category_id,
-                'remarks' => $remarks,
-            ]);
-
-            $contactData = $this->contact->find($this->contact->getInsertID());
-        }
-
-        return $contactData;
     }
 
     public function contacts(): array
     {
-        return $this->contact
+        return $this->contactService->contact
             ->select('contacts.*, categories.name as category_name')
             ->join('categories', 'categories.id = contacts.category_id')
             ->findAll();
     }
 
-    /**
-     * @param mixed $date
-     *
-     * @throws ReflectionException
-     */
-    private function findOrInsertContactContent(int $contactId, string $content, $date, ?string $remarks): void
-    {
-        $contactContent = $this->contactContent
-            ->select('contact_content.*')
-            ->where('contact_id', $contactId)
-            ->where('content', $content)
-            ->first();
-
-        if (null === $contactContent) {
-            $contactContentId = $this->contactContent->insert([
-                'contact_id' => $contactId,
-                'content' => $content,
-                'date' => $date,
-                'remarks' => $remarks,
-            ]);
-
-            $contactContent = $this->contactContent->find($contactContentId);
-        }
-
-    }
-
     public function contactsContent(array $filters = []): array
     {
-        $result = $this->contactContent
-//            ->builder()
-            ->select('contact_content.*')
-            ->select(' contacts.number')
-            ->select(' categories.name as category_name')
-            ->join('contacts', 'contacts.id = contact_content.contact_id')
-            ->join('categories', 'categories.id = contacts.category_id');
+        $result = $this->contactContent;
 
         if ($filters['categories'] ?? null) {
             if (!in_array('all', $filters['categories'], true)) {
@@ -108,34 +55,15 @@ class ImportDataService
             return $result->paginate($filters['limit']);
         }
 
-        return $result->paginate(ApplicationConstant::PER_PAGE);
-    }
+        $result = $result->paginate(ApplicationConstant::PER_PAGE);
 
-    /**
-     * @param mixed $category_id
-     * @param mixed $categoryName
-     *
-     * @throws ReflectionException|\PhpOffice\PhpSpreadsheet\Reader\Exception
-     */
-    public function storeUploadedContacts(UploadedFile $file, $category_id, $categoryName): bool
-    {
-        $csvData = SpreadSheetFileReader::readCsvFile($file, ['contact']);
+        array_walk($result, function ($contactContent) {
+            $contactContent->aggregator = $this->aggregatorService->find($contactContent->aggregator_id);
+            $contactContent->form = $this->contactService->find($contactContent->from_contact_id);
+            $contactContent->to = $this->contactService->contact->find($contactContent->to_contact_id);
+        });
 
-        if (!$csvData) {
-            return false;
-        }
-
-        $this->contact->db->transStart();
-
-        $category = $this->categoryService->findOrCreate($category_id, $categoryName);
-
-        foreach ($csvData as $datum) {
-            $this->findOrInsert($datum['contact'], $category->id, $datum['remarks'] ?? null);
-        }
-
-        $this->contact->db->transComplete();
-
-        return $this->contact->db->transStatus();
+        return $result;
     }
 
     /**
@@ -147,9 +75,9 @@ class ImportDataService
      * @throws ReflectionException
      * @throws Exception
      */
-    public function storeUploadedData(UploadedFile $file, $categoryId, $date, int $aggregatorId = null): bool
+    public function storeUploadedData(UploadedFile $file, int $categoryId = null, int $aggregatorId = null, string $date = null): bool
     {
-        $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'date', 'from', 'to', 'operator_name', 'sms_content', 'status']);
+        $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'from', 'to', 'operator_name', 'content', 'status']);
 
         $totalRows = count($data);
 
@@ -161,40 +89,38 @@ class ImportDataService
         $numbLength = strlen($totalRows);
         $divider = 10 ** ($numbLength - 1);
 
-        $this->contact->db->transStart();
+        $this->contactContent->db->transStart();
 
-        // unique categories
-        $aggregators = array_unique(array_column($data, 'aggregator_name'));
+        // unique formNumbers
+        $fromNumbers = array_unique(array_map(static fn($datum) => trim($datum['from']), $data));
+        $fromNumbers = $this->contactService->findAllOrInsertBatchContactNumbers($fromNumbers, $categoryId);
 
-        $aggregators = $this->categoryService->findOrCreateAggregators($aggregators);
-        // replace the aggregator name with the aggregator id
-        foreach ($data as $key => $datum) {
+        // unique toNumbers
+        $toNumbers = array_unique(array_map(static fn($datum) => trim($datum['to']), $data));
+        $toNumbers = $this->contactService->findAllOrInsertBatchContactNumbers($toNumbers, $categoryId);
 
-            $index = array_search($datum['aggregator_name'], array_column($aggregators, 'name'), true);
-
-            if (isset($datum['aggregator_name'])) {
-                $data[$key]['aggregator_id'] = $aggregators[$index]->id;
-                unset($data[$key]['aggregator_name']);
-            } else {
-                $data[$key]['aggregator_id'] = null;
-            }
-        }
-
-
-        dd($aggregators, $data);
-
-
-        $categoryId = $this->categoryService->category->find($categoryId)->id;
+        // unique aggregators trim names
+        $aggregator_names_in_data = array_unique(array_map(static fn($datum) => trim($datum['aggregator_name']), $data));
+        $aggregators = $this->aggregatorService->findAllOrInsertBatchByAggregatorName($aggregator_names_in_data);
 
         $processedRows = 0;
+        foreach ($data as $key => $datum) {
 
-        foreach ($data as $datum) {
-            $number = $datum['MOBILE_NO'];
-            if ($number !== null) {
-                $contactId = $this->findOrInsert($number, $categoryId, $datum['remarks'] ?? null)->id;
+            // replace the from with the form_contact_id
+            $index = array_search($datum['from'], array_column($fromNumbers, 'number'), true);
+            $data[$key]['from_contact_id'] = $fromNumbers[$index]->id;
 
-                $this->findOrInsertContactContent($contactId, $datum['SMS_CONTENT'], $date, $datum['remarks'] ?? null);
-            }
+            // replace the to with the to_contact_id
+            $index = array_search($datum['to'], array_column($toNumbers, 'number'), true);
+            $data[$key]['to_contact_id'] = $toNumbers[$index]->id;
+
+            // date
+            $data[$key]['date'] = date('Y-m-d', strtotime($date));
+
+
+            // replace the aggregator_name with the aggregator_id
+            $index = array_search($datum['aggregator_name'], array_column($aggregators, 'name'), true);
+            $data[$key]['aggregator_id'] = $aggregators[$index]->id;
 
             $processedRows++;
 
@@ -212,12 +138,13 @@ class ImportDataService
                 session()->close();
             }
         }
+        $this->contactContent->insertBatch($data);
 
         session()->setFlashdata('upload_progress', 100);
 
-        $this->contact->db->transComplete();
+        $this->contactContent->db->transComplete();
 
-        return $this->contact->db->transStatus();
+        return $this->contactContent->db->transStatus();
     }
 
     public function getUploadProgress()

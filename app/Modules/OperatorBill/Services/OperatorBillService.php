@@ -22,7 +22,11 @@ class OperatorBillService
         $this->operatorBillHistoryModel = new OperatorBillHistoryModel();
     }
 
-    public function find(int $id): array|object|null
+    /**
+     * @param int $id
+     * @return array|object|null
+     */
+    public function find(int $id)
     {
         $operatorBill = $this->operatorBillModel->find($id);
         $operatorBill->operator = $this->operatorModel->find($operatorBill->operator_id);
