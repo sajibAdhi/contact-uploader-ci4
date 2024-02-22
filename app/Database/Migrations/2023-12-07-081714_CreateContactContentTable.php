@@ -24,7 +24,7 @@ class CreateContactContentTable extends Migration
                 'type' => 'DATE',
                 'null' => true,
             ],
-            'form_contact_id' => [
+            'from_contact_id' => [
                 'type'       => 'BIGINT',
                 'constraint' => 20,
                 'null'   => false,

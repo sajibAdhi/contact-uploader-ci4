@@ -9,12 +9,7 @@ use CodeIgniter\Router\RouteCollection;
 
 use App\Controllers\AggregatorController;
 use App\Controllers\CategoryController;
-use App\Controllers\ContactContentController;
-use App\Controllers\ContactController;
-use App\Controllers\ContactUploadController;
 use App\Controllers\SettingController;
-use App\Filters\CategoryStoreFilter;
-use App\Filters\ContactContentUploadFilter;
 
 $routes->get('/', static fn() => redirect()->to('operator_bills'), ['filter' => ['session']]);
 
@@ -40,10 +35,8 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
 
     $routes->group('import_data', static function ($routes) {
         $routes->get('/', [ImportDataController::class, 'index'], ['as' => 'sms_service.import_data']);
-
         $routes->get('upload', [ImportDataController::class, 'create'], ['as' => 'sms_service.import_data.upload']);
         $routes->post('upload', [ImportDataController::class, 'store']);
-
         $routes->get('progress', [ImportDataController::class, 'progress'], ['as' => 'sms_service.import_data.progress']);
     });
 
