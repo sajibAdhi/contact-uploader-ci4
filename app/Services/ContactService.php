@@ -19,8 +19,8 @@ class ContactService
     public function __construct()
     {
         $this->categoryService = new CategoryService();
-        $this->contact         = new ContactModel();
-        $this->contactContent  = new ContactContentModel();
+        $this->contact = new ContactModel();
+        $this->contactContent = new ContactContentModel();
     }
 
     /**
@@ -34,9 +34,9 @@ class ContactService
 
         if (null === $contactData) {
             $this->contact->insert([
-                'number'      => $number,
+                'number' => $number,
                 'category_id' => $category_id,
-                'remarks'     => $remarks,
+                'remarks' => $remarks,
             ]);
 
             $contactData = $this->contact->find($this->contact->getInsertID());
@@ -69,9 +69,9 @@ class ContactService
         if (null === $contactContent) {
             $contactContentId = $this->contactContent->insert([
                 'contact_id' => $contactId,
-                'content'    => $content,
-                'date'       => $date,
-                'remarks'    => $remarks,
+                'content' => $content,
+                'date' => $date,
+                'remarks' => $remarks,
             ]);
 
             $contactContent = $this->contactContent->find($contactContentId);
@@ -90,7 +90,7 @@ class ContactService
             ->join('categories', 'categories.id = contacts.category_id');
 
         if ($filters['categories'] ?? null) {
-            if (! in_array('all', $filters['categories'], true)) {
+            if (!in_array('all', $filters['categories'], true)) {
                 $result->whereIn('contacts.category_id', $filters['categories']);
             }
         }
@@ -98,7 +98,7 @@ class ContactService
         if ($filters['daterange'] ?? null) {
             $dateRange = explode(' - ', $filters['daterange']);
 
-            $dateRange = array_map(static fn ($date) => date('Y-m-d', strtotime($date)), $dateRange);
+            $dateRange = array_map(static fn($date) => date('Y-m-d', strtotime($date)), $dateRange);
 
             $result->where('contact_content.created_at >=', $dateRange[0]);
             $result->where('contact_content.created_at <=', $dateRange[1]);
@@ -115,13 +115,13 @@ class ContactService
      * @param mixed $category_id
      * @param mixed $categoryName
      *
-     * @throws ReflectionException
+     * @throws ReflectionException|\PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function storeUploadedContacts(UploadedFile $file, $category_id, $categoryName): bool
     {
         $csvData = SpreadSheetFileReader::readCsvFile($file, ['contact']);
 
-        if (! $csvData) {
+        if (!$csvData) {
             return false;
         }
 
@@ -158,7 +158,7 @@ class ContactService
         }
 
         $numbLength = strlen($totalRows);
-        $divider    = 10 ** ($numbLength - 1);
+        $divider = 10 ** ($numbLength - 1);
 
         $date = date('Y-m-d', strtotime($date));
 
@@ -218,5 +218,35 @@ class ContactService
     public function categories(): array
     {
         return $this->categoryService->category->findAll();
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function findAllOrInsertBatchContactNumbers(array $numbers, int $categoryId): array
+    {
+        $existingContacts = $this->existingContacts($numbers);
+        $existingContacts = array_column($existingContacts, 'number');
+
+        $newContactNumbers = array_diff($numbers, $existingContacts);
+
+        if (!empty($newContactNumbers)) {
+            $this->contact->insertBatch(array_map(
+                static fn($number) => ['number' => $number, 'category_id' => $categoryId],
+                $newContactNumbers
+            ));
+        }
+
+        return $this->existingContacts($numbers);
+    }
+
+    private function existingContacts(array $numbers): array
+    {
+        return $this->contact->whereIn('number', $numbers)->findAll();
+    }
+
+    public function find(int $contactId)
+    {
+        return $this->contact->find($contactId);
     }
 }

@@ -1,8 +1,8 @@
-<?= helper('datatable')?>
 <?= $this->extend('layout/app') ?>
 
+<?php helper('adminlte3'); ?>
 <?= $this->section('pageStyles') ?>
-<?= load_datatable_styles()?>
+<?= load_datatable_styles() ?>
 <!-- Select2 -->
 <link rel="stylesheet" href="<?= base_url('bower_components/select2/dist/css/select2.min.css') ?>">
 <!-- daterange picker -->
@@ -16,12 +16,12 @@
 <!-- Filter Form card -->
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Contacts Contents Search</h3>
+        <h3 class="card-title">Data Search</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
         <!-- Filter Form -->
-        <form action="<?= route_to('contact.content.index') ?>" method="GET">
+        <form action="<?= route_to('sms_service.import_data') ?>" method="GET">
             <div class="row">
                 <!-- category -->
                 <div class="form-group col-sm-4">
@@ -32,7 +32,7 @@
                         <option value="all" <?= set_select('categories', 'all', true) ?> >
                             All
                         </option>
-                        <?php if (! empty($categories)): ?>
+                        <?php if (!empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>
                                 <option value="<?= $category->id ?>" <?= set_select('categories', $category->id) ?>><?= $category->name ?></option>
                             <?php endforeach; ?>
@@ -83,39 +83,44 @@
         <table id="datatable1" class="table table-sm table-hover table-bordered">
             <thead>
             <tr>
-                <th>Contact</th>
-                <th>Category</th>
+                <th>Aggregator</th>
+                <th>Operator</th>
+                <th>Form</th>
+                <th>To</th>
                 <th>Date</th>
+                <th>Status</th>
                 <th>Content</th>
-                <th>Remarks</th>
             </tr>
             </thead>
             <tbody>
-            <?php /** @var App\Models\ContactModel[] $contacts */ ?>
-            <?php if (empty($contacts)): ?>
+            <?php /** @var App\Models\ContactContentModel[] $contacts */ ?>
+            <?php if (empty($contactContents)): ?>
                 <tr>
-                    <td colspan="5" class="text-center">No data found</td>
+                    <td colspan="7" class="text-center">No data found</td>
                 </tr>
             <?php else: ?>
-                <?php foreach ($contacts as $contact): ?>
+                <?php foreach ($contactContents as $contactContent): ?>
                     <tr>
-                        <td><?= $contact->number ?></td>
-                        <td><?= $contact->category_name ?></td>
-                        <td><?= $contact->date ?></td>
-                        <td><?= $contact->content ?></td>
-                        <td><?= $contact->remarks ?></td>
+                        <td><?= $contactContent->aggregator->name ?></td>
+                        <td><?= $contactContent->operator_name ?></td>
+                        <td><?= $contactContent->form->number ?></td>
+                        <td><?= $contactContent->to->number ?></td>
+                        <td><?= $contactContent->date ?></td>
+                        <td><?= $contactContent->status ?></td>
+                        <td><?= $contactContent->content ?></td>
                     </tr>
                 <?php endforeach; ?>
-
             <?php endif; ?>
             </tbody>
             <tfoot>
             <tr>
-                <th>Contact</th>
-                <th>Category</th>
+                <th>Aggregator</th>
+                <th>Operator</th>
+                <th>Form</th>
+                <th>To</th>
                 <th>Date</th>
+                <th>Status</th>
                 <th>Content</th>
-                <th>Remarks</th>
             </tr>
             </tfoot>
         </table>
@@ -127,8 +132,8 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('pageScripts') ?>
-<?= load_datatable_scripts()?>
-<?= initialize_datatable('datatable1')?>
+<?= load_datatable_scripts() ?>
+<?= initialize_datatable('datatable1') ?>
 
 <!-- bootstrap datepicker -->
 <!--<script src="--><?php // = base_url()?><!--bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>-->

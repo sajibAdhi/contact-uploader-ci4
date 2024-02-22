@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Libraries\SpreadSheetFileReader;
 use App\Models\CategoryModel;
 use CodeIgniter\HTTP\Files\UploadedFile;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use ReflectionException;
 
 class CategoryService
@@ -17,13 +18,13 @@ class CategoryService
     }
 
     /**
-     * @throws ReflectionException
+     * @throws ReflectionException|Exception
      */
     public function storeUploadedCategories(UploadedFile $file): bool
     {
         $csvData = SpreadSheetFileReader::readCsvFile($file, ['category']);
 
-        if (! $csvData) {
+        if (!$csvData) {
             return false;
         }
 
@@ -56,28 +57,5 @@ class CategoryService
         }
 
         return $categoryData;
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function findOrCreateAggregators(array $aggregators)
-    {
-        $aggregatorData = $this->category->whereIn('name', $aggregators)->findAll();
-
-        $aggregatorNames = array_column($aggregatorData, 'name');
-
-        $newAggregators = array_diff($aggregators, $aggregatorNames);
-
-        if (! empty($newAggregators)) {
-            $this->category->insertBatch(
-                array_map(
-                    static fn($aggregator) => ['name' => $aggregator],
-                    $newAggregators
-                )
-            );
-        }
-
-        return $this->category->whereIn('name', $aggregators)->findAll();
     }
 }

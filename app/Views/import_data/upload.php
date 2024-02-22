@@ -3,7 +3,7 @@
 <?php helper('adminlte3'); ?>
 
 <?= $this->section('pageStyles') ?>
-<?= load_select2_styles()?>
+<?= load_select2_styles() ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('main') ?>
@@ -31,7 +31,6 @@
                         <?php endif; ?>
                     </select>
                     <span class="help-block"><?= validation_show_error('category') ?></span>
-                    <p class="help-block">Either select a Category or write a new Category name</p>
                 </div>
             </div>
 
@@ -54,18 +53,17 @@
                     <p class="help-block">
                         Please upload a CSV file which contains
                         <code>aggregator_name</code>,
-                        <code>date</code>,
                         <code>from</code>,
                         <code>to</code>,
                         <code>operator_name</code>,
-                        <code>sms_content</code>,
+                        <code>content</code>,
                         <code>status</code>
                         headers.
                     </p>
-                    <div class="progress">
-                        <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
-                             role="progressbar" style="width: 0%" aria-valuenow="0"
-                             aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress progress-xs">
+                        <div id="progress-bar" class="progress-bar bg-primary progress-bar-striped" role="progressbar"
+                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,6 +78,117 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('pageScripts') ?>
-<?= load_select2_scripts()?>
-<?= initialize_select2('selectTwo')?>
+<?= load_select2_scripts() ?>
+<?= initialize_select2('selectTwo') ?>
+
+    <script>
+        $(document).ready(function () {
+
+            // Update the progress bar
+            function updateProgress() {
+                $.ajax({
+                    url: '<?= route_to('sms_service.import_data.progress')?>',
+                    success: function (data) {
+                        // Update your progress bar here
+                        let progress = data.progress;
+                        $('#progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+                    }
+                });
+            }
+
+            // Submit the form using AJAX
+            $('#upload-form').submit(function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const category = $('#category');
+
+                let intervalId;
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function () {
+                        $('#upload-form').find('input, button').prop('disabled', true);
+                        // Disable the Select2 dropdown
+                        category.prop('disabled', true);
+                        category.select2().trigger('change');
+
+                        $('#progress-bar').css('width', '0%').attr('aria-valuenow', 0);
+                        // Start the interval when the AJAX request starts call updateProgress every 5 second
+                        intervalId = setInterval(updateProgress, 2000);
+                    },
+                    success: function (data) {
+                        console.log(data);
+
+                        // find and update csrf token
+                        const csrfToken = data.csrf_token;
+                        const csrfHash = data.csrf_hash;
+
+                        $(`input[name="${csrfToken}"]`).val(csrfHash);
+                        console.log($(`input[name="${csrfToken}"]`).val(), csrfToken, csrfHash);
+
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                title: "Notification",
+                                text: `${data.message}`,
+                                icon: "success"
+                            });
+                            $('#progress-bar').css('width', 100 + '%').attr('aria-valuenow', 100);
+                            $('#upload-form').trigger('reset');
+                        } else {
+                            Swal.fire({
+                                title: "Notification",
+                                text: `${data.message}`,
+                                icon: "error"
+                            });
+                        }
+
+                    },
+                    error: function (jqXHR) {
+                        console.log(jqXHR);
+                        // find and update csrf token
+                        const data = jqXHR.responseJSON;
+                        const csrfToken = data.csrf_token;
+                        const csrfHash = data.csrf_hash;
+
+                        $(`input[name="${csrfToken}"]`).val(csrfHash);
+                        if (jqXHR.status === 422) { // If it's a validation error
+                            const errors = jqXHR.responseJSON.errors;
+                            for (const key in errors) {
+                                if (errors.hasOwnProperty(key)) {
+                                    Swal.fire({
+                                        title: "Validation Error",
+                                        text: `${errors[key]}`,
+                                        icon: "error"
+                                    });
+                                }
+                            }
+                        } else {
+                            Swal.fire({
+                                title: "Notification",
+                                text: `An error occurred while uploading the file`,
+                                icon: "error"
+                            });
+                        }
+                    },
+                    complete: function () {
+                        $('#upload-form').find('input, button').prop('disabled', false);
+                        // Enable the Select2 dropdown
+                        category.prop('disabled', false);
+                        category.select2().trigger('change');
+
+                        // Clear the interval when the AJAX request is completed
+                        clearInterval(intervalId);
+                    }
+                });
+            });
+        });
+    </script>
+
 <?= $this->endSection() ?>

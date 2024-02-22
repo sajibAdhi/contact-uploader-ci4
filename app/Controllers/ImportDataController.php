@@ -28,7 +28,7 @@ class ImportDataController extends BaseController
         return view('import_data/index', [
             'title' => 'Imported Data',
             'categories' => $this->importDataService->whereContactsExist()->categories(),
-            'contacts' => $this->importDataService->contactsContent($filters),
+            'contactContents' => $this->importDataService->contactsContent($filters),
             'pager' => $this->importDataService->contactContent->pager,
         ]);
     }
@@ -50,11 +50,19 @@ class ImportDataController extends BaseController
         set_time_limit(300); // Sets the maximum execution time to 300 seconds (5 minutes)
         ini_set('mysql.connect_timeout', '300');
         ini_set('default_socket_timeout', '300');
+        $newCsrfToken = csrf_token();
+        $newCsrfHash = csrf_hash();
 
         try {
+
+
             if (!$this->validateRequest()) {
                 if ($this->request->isAJAX()) {
-                    return response()->setStatusCode(422)->setJSON(['errors' => $this->validator->getErrors()]);
+                    return response()->setStatusCode(422)->setJSON([
+                        'errors' => $this->validator->getErrors(),
+                        'csrf_token' => $newCsrfToken,
+                        'csrf_hash' => $newCsrfHash
+                    ]);
                 }
 
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
@@ -62,30 +70,45 @@ class ImportDataController extends BaseController
 
             $file = $this->request->getFile('contacts_file');
             $category_id = $this->request->getPost('category');
-            $category_name = $this->request->getPost('category_name');
+            $aggregator_id = $this->request->getPost('aggregator');
             $date = $this->request->getPost('date');
 
-            $isUploaded = $this->importDataService->storeUploadedData($file, $category_id, $category_name, $date);
+            $isUploaded = $this->importDataService->storeUploadedData($file, $category_id, $aggregator_id, $date);
 
             if ($this->request->isAJAX()) {
                 if ($isUploaded) {
-                    return $this->response->setStatusCode(200)->setJSON(['status' => 'success', 'message' => 'Contacts content uploaded successfully']);
+                    return $this->response->setStatusCode(200)->setJSON([
+                        'status' => 'success',
+                        'message' => 'Contacts content uploaded successfully',
+                        'csrf_token' => $newCsrfToken,
+                        'csrf_hash' => $newCsrfHash
+                    ]);
                 }
 
-                return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Contacts content upload failed']);
+                return $this->response->setStatusCode(400)->setJSON([
+                    'status' => 'error',
+                    'message' => 'Contacts content upload failed',
+                    'csrf_token' => $newCsrfToken,
+                    'csrf_hash' => $newCsrfHash
+                ]);
             }
 
             if ($isUploaded) {
-                return redirect()->route('contact.content.index')->with('success', 'Contacts content uploaded successfully');
+                return redirect()->route('sms_service.import_data')->with('success', 'Contacts content uploaded successfully');
             }
 
-            return redirect()->route('contact.content.upload')->with('error', 'Contacts content upload failed');
+            return redirect()->route('sms_service.import_data.upload')->with('error', 'Contacts content upload failed');
         } catch (Exception $exception) {
             if ($this->request->isAJAX()) {
-                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => $exception->getMessage()]);
+                return $this->response->setStatusCode(500)->setJSON([
+                    'status' => 'error',
+                    'message' => $exception->getMessage(),
+                    'csrf_token' => $newCsrfToken,
+                    'csrf_hash' => $newCsrfHash
+                ]);
             }
 
-            return redirect()->route('contact.content.upload')->with('error', $exception->getMessage());
+            return redirect()->route('sms_service.import_data.upload')->with('error', $exception->getMessage());
         }
     }
 

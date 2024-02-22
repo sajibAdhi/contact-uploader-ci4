@@ -2,6 +2,7 @@
 
 <html lang="en">
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
@@ -14,6 +15,9 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="<?= base_url('adminlte/plugins/fontawesome-free/css/all.min.css') ?>">
+
+    <!-- SweetAlert CSS -->
+    <?= load_sweetalert2_styles() ?>
 
     <!-----------------------------
     | Application Page Style Here |
@@ -60,7 +64,7 @@
     <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
-<!--    --><?php //= $this->include('components/adminlte3/control-sidebar') ?>
+    <!--    --><?php //= $this->include('components/adminlte3/control-sidebar') ?>
     <!-- /.control-sidebar -->
 
     <!-- Main Footer -->
@@ -71,9 +75,11 @@
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="<?= base_url() ?>adminlte/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="<?= base_url() ?>adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('adminlte/plugins/jquery/jquery.min.js') ?>"></script>
+<!-- Bootstrap 4 JS -->
+<script src="<?= base_url('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+<!-- SweetAlert2 Js -->
+<?= load_sweetalert2_scripts() ?>
 
 <!-----------------------------
 | Application Page Scripts Here |

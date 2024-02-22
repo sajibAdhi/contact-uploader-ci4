@@ -15,7 +15,7 @@ class ContactContentModel extends Model
     protected $allowedFields    = [
         'aggregator_id',
         'date',
-        'form_contact_id',
+        'from_contact_id',
         'to_contact_id',
         'operator_name',
         'content',

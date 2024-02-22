@@ -94,9 +94,9 @@ node_modules/
 #-------------------------
 # AdmminLTE 3.2.0 Template
 #-------------------------
-!./public/adminlte/build/
-!./public/adminlte/dist/
-!./public/adminlte/plugins/
+!public/adminlte/build
+!public/adminlte/dist/
+!public/adminlte/plugins/
 
 #-------------------------
 # IDE / Development Files

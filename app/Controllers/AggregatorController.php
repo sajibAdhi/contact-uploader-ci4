@@ -19,7 +19,7 @@ class AggregatorController extends BaseController
     {
         return view('aggregator/index', [
             'title' => 'Aggregators',
-            'aggregators' => $this->aggregatorService->aggregator->findAll(),
+            'aggregators' => $this->aggregatorService->aggregatorModel->findAll(),
         ]);
     }
 
@@ -33,7 +33,7 @@ class AggregatorController extends BaseController
         $data = $this->getPost();
 
         try {
-            if ($this->aggregatorService->aggregator->insert($data)) {
+            if ($this->aggregatorService->aggregatorModel->insert($data)) {
                 return redirect()->route('sms_service.aggregator')
                     ->with('success', 'aggregator created successfully');
             }
@@ -51,8 +51,8 @@ class AggregatorController extends BaseController
         return view('aggregator/index', [
             'title' => 'Edit aggregator',
             'action' => 'edit',
-            'aggregators' => $this->aggregatorService->aggregator->findAll(),
-            'aggregator' => $this->aggregatorService->aggregator->find($id),
+            'aggregators' => $this->aggregatorService->aggregatorModel->findAll(),
+            'aggregator' => $this->aggregatorService->aggregatorModel->find($id),
         ]);
     }
 
@@ -61,7 +61,7 @@ class AggregatorController extends BaseController
         $data = $this->getPost();
 
         try {
-            if ($this->aggregatorService->aggregator->update($id, $data)) {
+            if ($this->aggregatorService->aggregatorModel->update($id, $data)) {
                 return redirect()->route('aggregator.index')
                     ->with('success', 'aggregator updated successfully');
             }
