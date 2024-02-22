@@ -142,16 +142,15 @@ class ContactContentService
      * @param UploadedFile $file
      * @param mixed $categoryId
      * @param mixed $date
-     *
+     * @param int|null $aggregatorId
      * @return bool
      * @throws ReflectionException
      * @throws Exception
      */
-    public function storeUploadedContactsContent(UploadedFile $file, $categoryId, $date): bool
+    public function storeUploadedContactsContent(UploadedFile $file, $categoryId, $date, int $aggregatorId = null): bool
     {
         $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'date', 'from', 'to', 'operator_name', 'sms_content', 'status']);
 
-        dd($data);
         $totalRows = count($data);
 
         // If the file is empty, return false
@@ -164,7 +163,25 @@ class ContactContentService
 
         $this->contact->db->transStart();
 
-        // get all the categories from $data
+        // unique categories
+        $aggregators = array_unique(array_column($data, 'aggregator_name'));
+
+        $aggregators = $this->categoryService->findOrCreateAggregators($aggregators);
+        // replace the aggregator name with the aggregator id
+        foreach ($data as $key => $datum) {
+
+            $index = array_search($datum['aggregator_name'], array_column($aggregators, 'name'), true);
+
+            if (isset($datum['aggregator_name'])) {
+                $data[$key]['aggregator_id'] = $aggregators[$index]->id;
+                unset($data[$key]['aggregator_name']);
+            } else {
+                $data[$key]['aggregator_id'] = null;
+            }
+        }
+
+
+        dd($aggregators, $data);
 
 
         $categoryId = $this->categoryService->category->find($categoryId)->id;

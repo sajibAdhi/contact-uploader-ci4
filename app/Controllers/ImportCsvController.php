@@ -21,22 +21,22 @@ class ImportCsvController extends BaseController
     {
         $filters = [
             'categories' => $this->request->getGet('categories'),
-            'daterange'  => $this->request->getGet('daterange'),
-            'limit'      => $this->request->getGet('limit'),
+            'daterange' => $this->request->getGet('daterange'),
+            'limit' => $this->request->getGet('limit'),
         ];
 
         return view('import_csv/index', [
-            'title'      => 'Imported Data',
+            'title' => 'Imported Data',
             'categories' => $this->contactService->whereContactsExist()->categories(),
-            'contacts'   => $this->contactService->contactsContent($filters),
-            'pager'      => $this->contactService->contactContent->pager,
+            'contacts' => $this->contactService->contactsContent($filters),
+            'pager' => $this->contactService->contactContent->pager,
         ]);
     }
 
     public function create(): string
     {
         return view('import_csv/upload', [
-            'title'      => 'Import CSV File',
+            'title' => 'Import CSV File',
             'categories' => (new CategoryModel())->findAll(),
         ]);
     }
@@ -52,10 +52,19 @@ class ImportCsvController extends BaseController
         ini_set('default_socket_timeout', '300');
 
         try {
-            $file          = $this->request->getFile('contacts_file');
-            $category_id   = $this->request->getPost('category');
+            if (!$this->validateRequest()) {
+                dd( $this->request->getPost('category'));
+                if ($this->request->isAJAX()) {
+                    return response()->setStatusCode(422)->setJSON(['errors' => $this->validator->getErrors()]);
+                }
+
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+
+            $file = $this->request->getFile('contacts_file');
+            $category_id = $this->request->getPost('category');
             $category_name = $this->request->getPost('category_name');
-            $date          = $this->request->getPost('date');
+            $date = $this->request->getPost('date');
 
             $isUploaded = $this->contactService->storeUploadedContactsContent($file, $category_id, $category_name, $date);
 
@@ -86,5 +95,39 @@ class ImportCsvController extends BaseController
         $progress = $this->contactService->getUploadProgress();
 
         return $this->response->setJSON(['progress' => $progress]);
+    }
+
+    private function validateRequest(): bool
+    {
+        $max_file_size = 5 * 1024; // 2MB
+
+        return $this->validate([
+            'category' => [
+                'label' => 'Category',
+                'rules' => [
+                    'required',
+                    'numeric',
+                    'is_not_unique[categories.id]',
+                ],
+            ],
+            'date' => [
+                'label' => 'Date',
+                'rules' => [
+                    'required',
+                    'trim',
+                    'string',
+                    'valid_date',
+                ],
+            ],
+            'contacts_file' => [
+                'label' => 'Contacts File',
+                'rules' => [
+                    'uploaded[contacts_file]', // checks if the file was uploaded
+                    // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                    'ext_in[contacts_file,csv,xlsx]', // checks if a file extension is CSV, XLS, XLSX, or XLSM
+                    "max_size[contacts_file,{$max_file_size}]", // checks if the file size is less than or equal to $max_file_size
+                ],
+            ],
+        ]);
     }
 }

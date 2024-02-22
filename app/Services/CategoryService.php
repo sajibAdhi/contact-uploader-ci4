@@ -57,4 +57,27 @@ class CategoryService
 
         return $categoryData;
     }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function findOrCreateAggregators(array $aggregators)
+    {
+        $aggregatorData = $this->category->whereIn('name', $aggregators)->findAll();
+
+        $aggregatorNames = array_column($aggregatorData, 'name');
+
+        $newAggregators = array_diff($aggregators, $aggregatorNames);
+
+        if (! empty($newAggregators)) {
+            $this->category->insertBatch(
+                array_map(
+                    static fn($aggregator) => ['name' => $aggregator],
+                    $newAggregators
+                )
+            );
+        }
+
+        return $this->category->whereIn('name', $aggregators)->findAll();
+    }
 }
