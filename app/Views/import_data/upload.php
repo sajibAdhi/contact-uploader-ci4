@@ -83,6 +83,7 @@
 
     <script>
         $(document).ready(function () {
+            let intervalId;
 
             // Update the progress bar
             function updateProgress() {
@@ -94,6 +95,9 @@
                         // Update your progress bar here
                         let progress = data.progress;
                         $('#progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+
+                        // Start the interval when the AJAX request completes successfully
+                        intervalId = setTimeout(updateProgress, 2000);
                     }
                 });
             }
@@ -105,7 +109,6 @@
                 const formData = new FormData(this);
                 const category = $('#category');
 
-                let intervalId;
 
                 $.ajax({
                     url: $(this).attr('action'),
@@ -122,8 +125,9 @@
                         category.select2().trigger('change');
 
                         $('#progress-bar').css('width', '0%').attr('aria-valuenow', 0);
-                        // Start the interval when the AJAX request starts call updateProgress every 5 second
-                        intervalId = setInterval(updateProgress, 2000);
+                        
+                        // Call updateProgress immediately when the AJAX request starts
+                        updateProgress();
                     },
                     success: function (data) {
                         console.log(data);

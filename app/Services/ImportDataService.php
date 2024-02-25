@@ -134,9 +134,12 @@ class ImportDataService
                 }
                 // Store the progress in the session
                 session()->setFlashdata('upload_progress', $progress);
+                log_message('info', 'Progress: ' . $progress);
                 // Close the session data to the client
                 session()->close();
             }
+
+            dd($data[$key]);
         }
         $this->contactContent->insertBatch($data);
 

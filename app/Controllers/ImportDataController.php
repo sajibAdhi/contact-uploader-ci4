@@ -47,7 +47,7 @@ class ImportDataController extends BaseController
     public function store()
     {
         ini_set('memory_limit', '3000M'); // Sets the memory limit to 250MB
-        set_time_limit(10 * 60);
+        set_time_limit(15 * 60);
         ini_set('mysql.connect_timeout', 5 * 60);
         ini_set('default_socket_timeout', 5 * 60);
 
