@@ -17,26 +17,25 @@ class AggregatorService
     /**
      * @throws ReflectionException
      */
-    public function findAllOrInsertBatchByAggregatorName(array $aggregatorNames): array
+    public function findOrInsert(string $name): object
     {
-        $existingAggregators = $this->existingAggregators($aggregatorNames);
-        $existingAggregators = array_column($existingAggregators, 'name');
+        $aggregator = $this->existingAggregator($name);
 
-        $newAggregatorNames = array_diff($aggregatorNames, $existingAggregators);
-
-        if (!empty($newAggregatorNames)) {
-            $this->aggregatorModel->insertBatch(array_map(
-                static fn($aggregatorName) => ['name' => $aggregatorName],
-                $newAggregatorNames
-            ));
+        if (empty($aggregator)) {
+            $this->aggregatorModel->insert(['name' => $name]);
+            $aggregator = $this->existingAggregator($name);
         }
 
-        return $this->existingAggregators($aggregatorNames);
+        return $aggregator;
     }
 
-    private function existingAggregators(array $aggregatorNames): array
+    /**
+     * @param string $name
+     * @return array|object|null
+     */
+    private function existingAggregator(string $name)
     {
-        return $this->aggregatorModel->whereIn('name', $aggregatorNames)->findAll();
+        return $this->aggregatorModel->where('name', $name)->first();
     }
 
     public function find($aggregator_id)
