@@ -79,7 +79,7 @@
 
 <?= $this->section('pageScripts') ?>
 <?= load_select2_scripts() ?>
-<?= initialize_select2('selectTwo') ?>
+<?= initialize_select2('.selectTwo') ?>
 
     <script>
         $(document).ready(function () {

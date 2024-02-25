@@ -88,25 +88,7 @@
                 <th>Content</th>
             </tr>
             </thead>
-            <tbody>
-            <?php /** @var App\Models\ContactContentModel[] $contacts */ ?>
-            <?php if (empty($contactContents)): ?>
-                <tr>
-                    <td colspan="7" class="text-center">No data found</td>
-                </tr>
-            <?php else: ?>
-                <?php foreach ($contactContents as $contactContent): ?>
-                    <tr>
-                        <td><?= $contactContent->aggregator->name ?></td>
-                        <td><?= $contactContent->operator_name ?></td>
-                        <td><?= $contactContent->form->number ?></td>
-                        <td><?= $contactContent->to->number ?></td>
-                        <td><?= $contactContent->date ?></td>
-                        <td><?= $contactContent->status ?></td>
-                        <td><?= $contactContent->content ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <tbody id="tableBody">
             </tbody>
             <tfoot>
             <tr>
@@ -120,8 +102,7 @@
             </tr>
             </tfoot>
         </table>
-        <?php /* @var object $pager */ ?>
-        <?= $pager->links('default', 'bootstrap4') ?>
+
     </div>
     <!-- /.card-body -->
 </div>
@@ -149,5 +130,51 @@
         //     $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
         // });
     });
+</script>
+
+<script>
+
+
+    $(document).ready(function () {
+        const table = $('#datatable1').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '<?= base_url("sms_service/import_data/fetch_data/1") ?>',
+                type: 'GET'
+            },
+            columns: [
+                {data: 'aggregator.name'},
+                {data: 'operator_name'},
+                {data: 'form.number'},
+                {data: 'to.number'},
+                {data: 'date'},
+                {data: 'status'},
+                {data: 'content'}
+            ]
+        });
+
+        let currentPage = 1;
+
+        function loadData() {
+            console.log('loading data');
+            table.ajax.url(`<?= base_url("sms_service/import_data/fetch_data/")?>${currentPage}`).load();
+        }
+
+        $('#datatable1_next').click(function () {
+            currentPage++;
+            table.ajax.url(`<?= base_url("sms_service/import_data/fetch_data/")?>${currentPage}`).load();
+        });
+
+        $('#datatable1_previous').click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                table.ajax.url(`<?= base_url("sms_service/import_data/fetch_data/")?>${currentPage}`).load();
+            }
+        });
+
+        loadData();
+    });
+
 </script>
 <?= $this->endSection() ?>

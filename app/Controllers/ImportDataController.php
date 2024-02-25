@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Constants\ApplicationConstant;
 use App\Models\CategoryModel;
 use App\Services\ImportDataService;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -19,18 +20,46 @@ class ImportDataController extends BaseController
 
     public function index(): string
     {
-        $filters = [
+        $filters = (object)[
             'categories' => $this->request->getGet('categories'),
             'daterange' => $this->request->getGet('daterange'),
-            'limit' => $this->request->getGet('limit'),
         ];
+        $limit = $this->request->getGet('limit');
 
         return view('import_data/index', [
             'title' => 'Imported Data',
             'categories' => $this->importDataService->whereContactsExist()->categories(),
-            'contactContents' => $this->importDataService->contactsContent($filters),
+            'contactContents' => $this->importDataService->filter($filters)->contactsContent($limit),
             'pager' => $this->importDataService->contactContent->pager,
         ]);
+    }
+
+    // AJAX request handler
+    public function fetchData(int $page = 1): ResponseInterface
+    {
+        $limit = ApplicationConstant::PER_PAGE; // Number of rows per page
+        $offset = ($page - 1) * $limit;
+        $data = $this->importDataService->getData($limit, $offset);
+
+        return $this->response->setJSON($data);
+    }
+
+
+    // Generate Excel file
+    public function generateExcel(): void
+    {
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Add data to the spreadsheet
+        $data = $this->importDataService->getAllData();
+        foreach ($data as $index => $row) {
+            $sheet->fromArray($row, null, 'A' . ($index + 1));
+        }
+
+        // Write the spreadsheet to a file
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('path/to/file.xlsx');
     }
 
     public function create(): string

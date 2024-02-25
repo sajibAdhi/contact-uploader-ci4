@@ -277,15 +277,15 @@ if (!function_exists('initialize_datepicker')) {
     /**
      * Initialize DatePicker
      *
-     * @param string $inputId
+     * @param string $selector
      * @param array $options
      * @return string
      */
-    function initialize_datepicker(string $inputId, array $options = []): string
+    function initialize_datepicker(string $selector, array $options = []): string
     {
         // Default options
         $defaultOptions = [
-            "format" => "YYYY-MM-DD",
+//            "format" => "YYYY-MM-DD",
             "useCurrent" => false
         ];
 
@@ -297,7 +297,9 @@ if (!function_exists('initialize_datepicker')) {
         return <<<EOT
                 <!-- initialize_datepicker -->
                 <script>
-                $('#$inputId').datetimepicker($finalOptions);
+                $(function () {
+                    $('$selector').daterangepicker($finalOptions);
+                });
                 </script>
                 EOT;
     }
@@ -350,11 +352,11 @@ if (!function_exists('initialize_select2')) {
     /**
      * Initialize Select2
      *
-     * @param string $class
+     * @param string $selector
      * @param array $options
      * @return string
      */
-    function initialize_select2(string $class, array $options = []): string
+    function initialize_select2(string $selector = '.selectTwo', array $options = []): string
     {
         // Default options
         $defaultOptions = [
@@ -369,7 +371,9 @@ if (!function_exists('initialize_select2')) {
         return <<<EOT
                 <!-- initialize_select2 -->
                 <script>
-                $('.$class').select2($finalOptions);
+                $(document).ready(function () {
+                    $('$selector').select2($finalOptions);                    
+                });
                 </script>
                 EOT;
     }
