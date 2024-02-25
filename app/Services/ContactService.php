@@ -235,7 +235,11 @@ class ContactService
         return $existingContact;
     }
 
-    private function existingContact(string $number): object
+    /**
+     * @param string $number
+     * @return array|object|null
+     */
+    private function existingContact(string $number)
     {
         return $this->contact->where('number', $number)->first();
     }
