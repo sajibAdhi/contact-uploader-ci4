@@ -223,26 +223,21 @@ class ContactService
     /**
      * @throws ReflectionException
      */
-    public function findAllOrInsertBatchContactNumbers(array $numbers, int $categoryId): array
+    public function findOrInsertNumber(string $number, int $categoryId): object
     {
-        $existingContacts = $this->existingContacts($numbers);
-        $existingContacts = array_column($existingContacts, 'number');
+        $existingContact = $this->existingContact($number);
 
-        $newContactNumbers = array_diff($numbers, $existingContacts);
-
-        if (!empty($newContactNumbers)) {
-            $this->contact->insertBatch(array_map(
-                static fn($number) => ['number' => $number, 'category_id' => $categoryId],
-                $newContactNumbers
-            ));
+        if (empty($existingContact)) {
+            $this->contact->insert(['number' => $number, 'category_id' => $categoryId]);
+            $existingContact = $this->existingContact($number);
         }
 
-        return $this->existingContacts($numbers);
+        return $existingContact;
     }
 
-    private function existingContacts(array $numbers): array
+    private function existingContact(string $number): object
     {
-        return $this->contact->whereIn('number', $numbers)->findAll();
+        return $this->contact->where('number', $number)->first();
     }
 
     public function find(int $contactId)
