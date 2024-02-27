@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Constants\ApplicationConstant;
 use App\Libraries\SpreadSheetFileReader;
 use App\Models\ContactContentModel;
+use CodeIgniter\CLI\CLI;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use Exception;
 use ReflectionException;
@@ -103,8 +104,7 @@ class ImportDataService
             throw new Exception('The file is too large, please upload a file with less than 500,000 rows');
         }
 
-        $numbLength = strlen($totalRows);
-        $divider = 10 ** ($numbLength - 1); // to set upload progress
+        $divider = $totalRows / 10; // to set upload progress
 
         // Initialize caches
         $fromNumbersCache = [];
@@ -112,6 +112,8 @@ class ImportDataService
         $aggregatorsCache = [];
 
         $this->contactContent->db->transStart();
+
+        $processedRows = 0;
 
         // Process the data in chunks
         for ($i = 0; $i < $totalRows; $i += $chunkSize) {
@@ -139,7 +141,6 @@ class ImportDataService
                 $aggregatorsCache[$aggregatorName] = $this->aggregatorService->findOrInsert($aggregatorName);
             }
 
-            $processedRows = 0;
             foreach ($dataChunk as $key => $datum) {
 
                 // replace the from with the form_contact_id
@@ -166,7 +167,7 @@ class ImportDataService
                     }
                     // Store the progress in the session
                     session()->setFlashdata('upload_progress', $progress);
-                    log_message('info', 'Progress: ' . $progress);
+
                     // Close the session data to the client
                     session()->close();
                 }
@@ -179,7 +180,9 @@ class ImportDataService
             unset($dataChunk);
         }
 
-
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session()->start();
+        }
         session()->setFlashdata('upload_progress', 100);
 
         $this->contactContent->db->transComplete();

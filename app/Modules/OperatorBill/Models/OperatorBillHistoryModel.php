@@ -13,7 +13,23 @@ class OperatorBillHistoryModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'previous_id',
+        'action',
+        'added_by',
+        'added_at',
+        'sbu',
+        'year',
+        'month',
+        'operator_id',
+        'successful_calls',
+        'effective_duration',
+        'voice_amount',
+        'voice_amount_with_vat',
+        'sms_count',
+        'sms_amount',
+        'sms_amount_with_vat',
+    ];
 
     protected bool $allowEmptyInserts = false;
 
