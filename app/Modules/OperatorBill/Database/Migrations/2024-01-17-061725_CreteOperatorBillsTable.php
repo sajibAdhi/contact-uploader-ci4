@@ -41,16 +41,19 @@ class CreteOperatorBillsTable extends Migration
             ],
             'effective_duration' => [
                 'type' => 'double',
+                'constraint' => '10,2',
                 'null' => true,
                 'default' => null,
             ],
             'voice_amount' => [
                 'type' => 'double',
+                'constraint' => '10,2',
                 'null' => true,
                 'default' => null,
             ],
             'voice_amount_with_vat' => [
                 'type' => 'double',
+                'constraint' => '10,2',
                 'null' => true,
                 'default' => null,
             ],
@@ -62,16 +65,18 @@ class CreteOperatorBillsTable extends Migration
             ],
             'sms_amount' => [
                 'type' => 'double',
+                'constraint' => '10,2',
                 'null' => true,
                 'default' => null,
             ],
             'sms_amount_with_vat' => [
                 'type' => 'double',
+                'constraint' => '10,2',
                 'null' => true,
                 'default' => null,
             ],
             'created_at datetime default current_timestamp',
-            'updated_at datetime default current_timestamp on update current_timestamp',
+            'updated_at datetime default NULL on update current_timestamp',
             'deleted_at datetime default null',
         ]);
 

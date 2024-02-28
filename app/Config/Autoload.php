@@ -48,7 +48,6 @@ class Autoload extends AutoloadConfig
         'Config'      => APPPATH . 'Config',
         'App\Modules\Shield' => APPPATH . 'Modules/Shield',
         'App\Modules\OperatorBill' => APPPATH . 'Modules/OperatorBill',
-        'App\Modules\Product' => APPPATH . 'Modules/Product',
     ];
 
     /**

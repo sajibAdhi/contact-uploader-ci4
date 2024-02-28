@@ -1,19 +1,5 @@
 # CodeIgniter 4 Application Starter
 
-## What is CodeIgniter?
-
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
-
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
-
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
-
-The user guide corresponding to the latest version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
-
 ## Installation & updates
 
 `composer create-project codeigniter4/appstarter` then `composer update` whenever
@@ -34,7 +20,8 @@ and any database settings.
 for better security and separation of components.
 
 This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
+not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be
+to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
 framework are exposed.
 
 **Please** read the user guide for a better explanation of how CI4 works!
@@ -65,3 +52,18 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 - json (enabled by default - don't turn it off)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
 - [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+
+## Users Credentials
+
+- Username : superadmin
+- Email : superadmin@admin.com
+- Password : P@$$w0rd!
+---
+- Username : admin
+- Email : admin@admin.com
+- Password : P@$$w0rd!
+---
+- Username : maruf.billah
+- Email : maruf.billah@ranksitt.com
+- Password : marufkhan7794
+---
