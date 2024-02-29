@@ -298,7 +298,7 @@ if (!function_exists('initialize_datepicker')) {
                 <!-- initialize_datepicker -->
                 <script>
                 $(function () {
-                    $('$selector').daterangepicker($finalOptions);
+                    $('$selector').daterangepicker($finalOptions)
                 });
                 </script>
                 EOT;
@@ -372,7 +372,7 @@ if (!function_exists('initialize_select2')) {
                 <!-- initialize_select2 -->
                 <script>
                 $(document).ready(function () {
-                    $('$selector').select2($finalOptions);                    
+                    $('$selector').select2($finalOptions)                    
                 });
                 </script>
                 EOT;
@@ -444,9 +444,125 @@ if (!function_exists('initialize_sweetalert2')) {
                 <!-- initialize_sweetalert2 -->
                 <script>
                 $(function () {
-                    const SweetAlert = Swal.mixin($finalOptions)
+                     Swal.mixin($finalOptions)
                 });
                 </script>
                 EOT;
     }
 }
+
+// toasts helper functions
+if (!function_exists('load_toasts_styles')) {
+    /**
+     * Load notify styles
+     *
+     * @return string
+     */
+    function load_toasts_styles(): string
+    {
+        $styles = [
+            'adminlte/plugins/toastr/toastr.min.css'
+        ];
+
+        $result = '<!-- load_toasts_styles -->' . PHP_EOL;
+        foreach ($styles as $style) {
+            $result .= '<link rel="stylesheet" href="' . base_url($style) . '">' . PHP_EOL;
+        }
+
+        return $result;
+    }
+}
+
+if (!function_exists('load_toasts_scripts')) {
+    /**
+     * Load notify scripts
+     *
+     * @return string
+     */
+    function load_toasts_scripts(): string
+    {
+        $scripts = [
+            'adminlte/plugins/toastr/toastr.min.js'
+        ];
+
+        $result = '<!-- load_toasts_scripts -->' . PHP_EOL;
+        foreach ($scripts as $script) {
+            $result .= '<script src="' . base_url($script) . '"></script>' . PHP_EOL;
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('initialize_toasts')) {
+    /**
+     * Initialize notify
+     *
+     * @param array $options
+     * @return string
+     */
+    function initialize_toasts(array $options = []): string
+    {
+        // Default options
+        $defaultOptions = [
+            "progressBar" => true,
+            "timeOut" => 3000
+        ];
+
+        // Merge default options with user-provided options
+        $finalOptions = array_merge($defaultOptions, $options);
+        $finalOptions = json_encode($finalOptions);
+
+        // Initialize notify
+        return <<<EOT
+                $(function () {
+                    toastr.options = $finalOptions;
+                });
+                EOT;
+    }
+}
+
+// notify toasts helper functions for server session
+if (!function_exists('notify')) {
+    /**
+     * Notify
+     *
+     * @param string $type
+     * @param string $message
+     * @return void
+     */
+    function notify(string $type, string $message): void
+    {
+        session()->setFlashdata('notify', [
+            'type' => $type,
+            'message' => $message
+        ]);
+    }
+}
+
+// notify toasts
+if (!function_exists('notify_toasts')) {
+    /**
+     * Notify toasts
+     *
+     * @return string
+     */
+    function notify_toasts(): string
+    {
+        $notify = session()->getFlashdata('notify');
+
+        if ($notify === null) {
+            return '';
+        }
+
+        return <<<EOT
+                <script>
+                $(function () {
+                    toastr.{$notify['type']}('{$notify['message']}');
+                });
+                </script>
+                EOT;
+    }
+}
+
+
+
