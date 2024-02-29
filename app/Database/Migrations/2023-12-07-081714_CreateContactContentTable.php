@@ -65,12 +65,12 @@ class CreateContactContentTable extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addKey('aggregator_id');
         $this->forge->addKey('date');
-        $this->forge->addKey('form_contact_id');
+        $this->forge->addKey('from_contact_id');
         $this->forge->addKey('to_contact_id');
         $this->forge->addKey('content');
         $this->forge->addKey('operator_name');
         $this->forge->addKey('status');
-        $this->forge->addUniqueKey(['form_contact_id', 'to_contact_id', 'content','date']);
+        $this->forge->addUniqueKey(['from_contact_id', 'to_contact_id', 'content','date']);
         $this->forge->createTable('contact_content');
     }
 
