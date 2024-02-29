@@ -149,6 +149,13 @@ class ImportDataController extends BaseController
         return $this->response->setJSON(['progress' => $progress]);
     }
 
+    public function uploadStatus(): ResponseInterface
+    {
+        $status = $this->importDataService->getUploadStatus();
+
+        return $this->response->setJSON(['data' => $status]);
+    }
+
     private function validateRequest(): bool
     {
         $max_file_size = 5 * 1024; // 2MB
