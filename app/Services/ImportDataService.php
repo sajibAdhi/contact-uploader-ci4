@@ -89,21 +89,27 @@ class ImportDataService
      */
     public function storeUploadedData(UploadedFile $file, int $categoryId = null, int $aggregatorId = null, string $date = null): bool
     {
-        $chunkSize = 5000; // Define the size of each chunk
+        $identifier = $date . auth()->id();
+        // Set the status to reading
+        session()->setFlashdata("$identifier.upload_status", 'Reading the data...');
+        session()->close();
+
         $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'from', 'to', 'operator_name', 'content', 'status']);
 
         $totalRows = count($data);
+        $divider = $totalRows / 10; // to set upload progress
+        $processedRows = 0;
+        $chunkSize = 5000; // Define the size of each chunk
 
         // If the file is empty, return false
         if ($totalRows === 0) {
             throw new Exception('The file is empty');
         }
-
+        // If the file is too large, return false
         if ($totalRows > 500000) {
             throw new Exception('The file is too large, please upload a file with less than 500,000 rows');
         }
 
-        $divider = $totalRows / 10; // to set upload progress
 
         // Initialize caches
         $fromNumbersCache = [];
@@ -111,88 +117,85 @@ class ImportDataService
         $aggregatorsCache = [];
 
         $this->contactContent->db->transStart();
-
-        $processedRows = 0;
+        // Set the status to writing
+        session()->start();
+        session()->setFlashdata("$identifier.upload_status", 'Writing the data...');
+        session()->close();
 
         // Process the data in chunks
         for ($i = 0; $i < $totalRows; $i += $chunkSize) {
             $dataChunk = array_slice($data, $i, $chunkSize);
 
-            // unique formNumbers
-            $fromNumbers = array_unique(array_map(static fn($datum) => trim($datum['from']), $dataChunk));
-            foreach ($fromNumbers as $fromNumber) {
+            $fromNumbers = [];
+            $toNumbers = [];
+            $aggregator_names_in_data = [];
+
+            foreach ($dataChunk as $datum) {
+                $fromNumbers[] = trim($datum['from']);
+                $toNumbers[] = trim($datum['to']);
+                $aggregator_names_in_data[] = trim($datum['aggregator_name']);
+            }
+
+            // unique fromNumbers
+            foreach (array_unique($fromNumbers) as $fromNumber) {
                 if (!isset($fromNumbersCache[$fromNumber])) {
                     $fromNumbersCache[$fromNumber] = $this->contactService->findOrInsertNumber($fromNumber, $categoryId);
                 }
             }
 
             // unique toNumbers
-            $toNumbers = array_unique(array_map(static fn($datum) => trim($datum['to']), $dataChunk));
-            foreach ($toNumbers as $toNumber) {
+            foreach (array_unique($toNumbers) as $toNumber) {
                 if (!isset($toNumbersCache[$toNumber])) {
                     $toNumbersCache[$toNumber] = $this->contactService->findOrInsertNumber($toNumber, $categoryId);
                 }
             }
 
             // unique aggregators trim names
-            $aggregator_names_in_data = array_unique(array_map(static fn($datum) => trim($datum['aggregator_name']), $dataChunk));
-            foreach ($aggregator_names_in_data as $aggregatorName) {
+            foreach (array_unique($aggregator_names_in_data) as $aggregatorName) {
                 $aggregatorsCache[$aggregatorName] = $this->aggregatorService->findOrInsert($aggregatorName);
             }
 
+            $validData = [];
             foreach ($dataChunk as $key => $datum) {
 
-                // replace the from with the form_contact_id
-                $dataChunk[$key]['from_contact_id'] = $fromNumbersCache[$datum['from']]->id;
+                $validData[$key]['from_contact_id'] = $fromNumbersCache[$datum['from']]->id;
+                $validData[$key]['to_contact_id'] = $toNumbersCache[$datum['to']]->id;
+                $validData[$key]['aggregator_id'] = $aggregatorsCache[trim($datum['aggregator_name'])]->id;
+                $validData[$key]['date'] = date('Y-m-d', strtotime($date));
+                $validData[$key]['operator_name'] = $datum['operator_name'];
+                $validData[$key]['content'] = $datum['content'];
+                $validData[$key]['status'] = $datum['status'];
+                $validData[$key]['remarks'] = $datum['status'] ?? null;
 
-                // replace the to with the to_contact_id
-                $dataChunk[$key]['to_contact_id'] = $toNumbersCache[$datum['to']]->id;
-
-                // replace the aggregator_name with the aggregator_id
-                $dataChunk[$key]['aggregator_id'] = $aggregatorsCache[trim($datum['aggregator_name'])]->id;
-
-                // date
-                $dataChunk[$key]['date'] = date('Y-m-d', strtotime($date));
 
                 $processedRows++;
-
                 // Update the progress 10 times
                 if ($processedRows % $divider === 0) {
                     $progress = ($processedRows / $totalRows) * 100;
 
-                    // Start the session
-                    if (session_status() !== PHP_SESSION_ACTIVE) {
-                        session()->start();
-                    }
-                    // Store the progress in the session
-                    session()->setFlashdata('upload_progress', $progress);
-
-                    // Close the session data to the client
-                    session()->close();
+                    session()->start();
+                    session()->setFlashdata("$identifier.upload_progress", $progress);
+                    session_commit();
                 }
             }
-
             // Insert the chunk into the database
-            $this->contactContent->insertBatch($dataChunk);
+            $this->contactContent->builder()->ignore()->insertBatch($validData);
 
             // Free up memory
             unset($dataChunk);
         }
 
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session()->start();
-        }
-        session()->setFlashdata('upload_progress', 100);
+        session()->start();
+        session()->setFlashdata("$identifier.upload_progress", 100);
+        // Set the status to complete
+        session()->setFlashdata("$identifier.upload_status", 'Data upload complete.');
 
         $this->contactContent->db->transComplete();
 
         return $this->contactContent->db->transStatus();
     }
 
-    public function getUploadProgress()
-    {
-        return session()->getFlashdata('upload_progress');
-    }
+
 
     public function whereContactsExist(): ImportDataService
     {
@@ -207,5 +210,23 @@ class ImportDataService
     public function categories(): array
     {
         return $this->categoryService->category->findAll();
+    }
+
+    /**
+     * @param string $identifier
+     * @return array|null
+     */
+    public function getUploadProgress(string $identifier)
+    {
+        return session()->getFlashdata("$identifier.upload_progress");
+    }
+
+    /**
+     * @param string $identifier
+     * @return array|null
+     */
+    public function getUploadStatus(string $identifier)
+    {
+        return session()->getFlashdata("$identifier.upload_status");
     }
 }

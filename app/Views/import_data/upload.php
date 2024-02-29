@@ -82,27 +82,45 @@
 
     <script>
         $(document).ready(function () {
-            let intervalId;
+            let uploadProgressInterval;
+            let uploadStatusInterval;
+            let identifier = '<?= date('Y-m-d') . auth()->id() ?>';
 
             // Update the progress bar
-            function updateProgress() {
+            function uploadProgress() {
+
                 $.ajax({
                     url: '<?= route_to('sms_service.import_data.progress')?>',
                     type: 'GET',
+                    data:{
+                        identifier: identifier
+                    },
                     success: function (data) {
-
-                        console.log("updateProgress", data);
                         // Update your progress bar here
-                        let progress = data.progress;
-                        if (progress === null) {
-                            progress = 0;
-                        }
-                        if (progress === 100) {
-                            clearInterval(intervalId);
-                        }
+                        let progress = data.progress ?? 0;
                         $('#progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+                    }
+                });
+            }
 
-
+            // Update the status
+            function uploadStatus() {
+                $.ajax({
+                    url: '<?= route_to('sms_service.import_data.status')?>',
+                    type: 'GET',
+                    data:{
+                        identifier: identifier
+                    },
+                    success: function (data) {
+                        // Update your progress bar here
+                        let status = data.status;
+                        if (status !== null) {
+                            Swal.fire({
+                                title: "Notification",
+                                text: `${status}`,
+                                icon: "info"
+                            });
+                        }
                     }
                 });
             }
@@ -114,7 +132,6 @@
                 const formData = new FormData(this);
                 const category = $('#category');
 
-
                 $.ajax({
                     url: $(this).attr('action'),
                     type: 'POST',
@@ -125,16 +142,14 @@
                     processData: false,
                     beforeSend: function () {
                         $('#upload-form').find('input, button').prop('disabled', true);
-
-                        // Disable the Select2 dropdown
                         category.prop('disabled', true);
-                        category.select2().trigger('change');
 
                         $('#progress-bar').css('width', '0%').attr('aria-valuenow', 0);
 
                         // Call updateProgress immediately when the AJAX request starts
                         // Start the interval when the AJAX request completes successfully
-                        intervalId = setTimeout(updateProgress, 2000);
+                        uploadProgressInterval = setTimeout(uploadProgress, 5000);
+                        uploadStatusInterval = setInterval(uploadStatus, 2000);
                     },
                     success: function (data) {
                         // Update CSRF token
@@ -185,23 +200,26 @@
                         } else {
                             Swal.fire({
                                 title: "Error",
-                                text: `${jqXHR.responseJSON.error}`,
+                                text: `${jqXHR.responseJSON.message}`,
                                 icon: "error"
                             });
                         }
                     },
                     complete: function () {
+
                         $('#upload-form').find('input, button').prop('disabled', false);
+
                         // Enable the Select2 dropdown
                         category.prop('disabled', false);
                         category.select2().trigger('change');
 
-                        // Stop updateProgress when the AJAX request is completed
-                        clearTimeout(intervalId);
+                        clearTimeout(uploadProgressInterval); // Clear the interval
+                        clearInterval(uploadStatusInterval); // Clear the interval
                     }
                 });
             });
         });
     </script>
+
 
 <?= $this->endSection() ?>

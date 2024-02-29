@@ -46,21 +46,21 @@ class ImportDataController extends BaseController
 
 
     // Generate Excel file
-    public function generateExcel(): void
-    {
-        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Add data to the spreadsheet
-        $data = $this->importDataService->getAllData();
-        foreach ($data as $index => $row) {
-            $sheet->fromArray($row, null, 'A' . ($index + 1));
-        }
-
-        // Write the spreadsheet to a file
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('path/to/file.xlsx');
-    }
+//    public function generateExcel(): void
+//    {
+//        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+//        $sheet = $spreadsheet->getActiveSheet();
+//
+//        // Add data to the spreadsheet
+//        $data = $this->importDataService->getAllData();
+//        foreach ($data as $index => $row) {
+//            $sheet->fromArray($row, null, 'A' . ($index + 1));
+//        }
+//
+//        // Write the spreadsheet to a file
+//        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+//        $writer->save('path/to/file.xlsx');
+//    }
 
     public function create(): string
     {
@@ -83,19 +83,21 @@ class ImportDataController extends BaseController
         $newCsrfToken = csrf_token();
         $newCsrfHash = csrf_hash();
 
+        $isAjax = $this->request->isAJAX();
+
         try {
 
-
             if (!$this->validateRequest()) {
-                if ($this->request->isAJAX()) {
+                if ($isAjax) {
                     return response()->setStatusCode(422)->setJSON([
+                        'status' => 'error',
                         'errors' => $this->validator->getErrors(),
                         'csrf_token' => $newCsrfToken,
                         'csrf_hash' => $newCsrfHash
                     ]);
+                } else {
+                    return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
                 }
-
-                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
 
             $file = $this->request->getFile('contacts_file');
@@ -105,31 +107,31 @@ class ImportDataController extends BaseController
 
             $isUploaded = $this->importDataService->storeUploadedData($file, $category_id, $aggregator_id, $date);
 
-            if ($this->request->isAJAX()) {
-                if ($isUploaded) {
+            if ($isUploaded) {
+                if ($isAjax) {
                     return $this->response->setStatusCode(200)->setJSON([
                         'status' => 'success',
                         'message' => 'Contacts content uploaded successfully',
                         'csrf_token' => $newCsrfToken,
                         'csrf_hash' => $newCsrfHash
                     ]);
+                } else {
+                    return redirect()->route('sms_service.import_data')->with('success', 'Contacts content uploaded successfully');
                 }
-
-                return $this->response->setStatusCode(400)->setJSON([
-                    'status' => 'error',
-                    'message' => 'Contacts content upload failed',
-                    'csrf_token' => $newCsrfToken,
-                    'csrf_hash' => $newCsrfHash
-                ]);
+            } else {
+                if ($isAjax) {
+                    return $this->response->setStatusCode(500)->setJSON([
+                        'status' => 'error',
+                        'message' => 'Contacts content upload failed',
+                        'csrf_token' => $newCsrfToken,
+                        'csrf_hash' => $newCsrfHash
+                    ]);
+                } else {
+                    return redirect()->route('sms_service.import_data.upload')->with('error', 'Contacts content upload failed');
+                }
             }
-
-            if ($isUploaded) {
-                return redirect()->route('sms_service.import_data')->with('success', 'Contacts content uploaded successfully');
-            }
-
-            return redirect()->route('sms_service.import_data.upload')->with('error', 'Contacts content upload failed');
         } catch (Exception $exception) {
-            if ($this->request->isAJAX()) {
+            if ($isAjax) {
                 return $this->response->setStatusCode(500)->setJSON([
                     'status' => 'error',
                     'message' => $exception->getMessage(),
@@ -144,16 +146,19 @@ class ImportDataController extends BaseController
 
     public function progress(): ResponseInterface
     {
-        $progress = $this->importDataService->getUploadProgress();
+        $identifier = $this->request->getGet('identifier');
+
+        $progress = $this->importDataService->getUploadProgress($identifier);
 
         return $this->response->setJSON(['progress' => $progress]);
     }
 
     public function uploadStatus(): ResponseInterface
     {
-        $status = $this->importDataService->getUploadStatus();
+        $identifier = $this->request->getGet('identifier');
+        $status = $this->importDataService->getUploadStatus($identifier);
 
-        return $this->response->setJSON(['data' => $status]);
+        return $this->response->setJSON(['status' => $status]);
     }
 
     private function validateRequest(): bool
