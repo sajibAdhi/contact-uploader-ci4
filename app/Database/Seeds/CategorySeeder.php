@@ -10,9 +10,10 @@ class CategorySeeder extends Seeder
     {
         // data
         $data = [
-            ['name' => 'Category 1', 'created_at' => date('Y-m-d H:i:s')],
-            ['name' => 'Category 2', 'created_at' => date('Y-m-d H:i:s')],
-            ['name' => 'Category 3', 'created_at' => date('Y-m-d H:i:s')],
+            ['name' => 'Local'],
+            ['name' => 'Govt'],
+            ['name' => 'VIP'],
+            ['name' => 'Commercial'],
         ];
 
         // Using Query Builder

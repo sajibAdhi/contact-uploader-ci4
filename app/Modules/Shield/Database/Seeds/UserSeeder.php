@@ -11,8 +11,8 @@ class UserSeeder extends Seeder
         // data
         $data = [
             [
-                'username' => 'superadmin',
-                'active' => 1,
+                'username' => 'admin',
+                'active' => 0,
             ],
         ];
 
