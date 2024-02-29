@@ -16,7 +16,8 @@
     "ext-mbstring": "*",
     "codeigniter4/framework": "^4.0",
     "codeigniter4/settings": "^2.2",
-    "codeigniter4/translations": "^4.4"
+    "codeigniter4/translations": "^4.4",
+    "phpoffice/phpspreadsheet": "^1.29"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9",

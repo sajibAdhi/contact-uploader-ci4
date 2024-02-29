@@ -61,7 +61,7 @@
                     </p>
                     <div class="progress progress-xs">
                         <div id="progress-bar" class="progress-bar bg-primary progress-bar-striped" role="progressbar"
-                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0.0%">
                         </div>
                     </div>
                 </div>
@@ -161,9 +161,11 @@
 
                     },
                     error: function (jqXHR) {
-                        // Update CSRF token
+                        console.error(jqXHR);
                         const data = jqXHR.responseJSON;
-                        console.log("uploader error" + jqXHR);
+                        console.error(data);
+
+                        // Update CSRF token
                         const csrfToken = data.csrf_token;
                         const csrfHash = data.csrf_hash;
                         $(`input[name="${csrfToken}"]`).val(csrfHash);
