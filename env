@@ -20,139 +20,137 @@
 # APP
 #--------------------------------------------------------------------
 
-# app.baseURL = ''
-# If you have trouble with `.`, you could also use `_`.
 # app_baseURL = ''
-# app.forceGlobalSecureRequests = false
-# app.CSPEnabled = false
+# app_forceGlobalSecureRequests = false
+# app_CSPEnabled = false
 
 #--------------------------------------------------------------------
 # DATABASE
 #--------------------------------------------------------------------
 
-# database.default.hostname = localhost
-# database.default.database = ci4
-# database.default.username = root
-# database.default.password = root
-# database.default.DBDriver = MySQLi
-# database.default.DBPrefix =
-# database.default.port = 3306
+# database_default_hostname = localhost
+# database_default_database = ci4
+# database_default_username = root
+# database_default_password = root
+# database_default_DBDriver = MySQLi
+# database_default_DBPrefix =
+# database_default_port = 3306
 
-# database.tests.hostname = localhost
-# database.tests.database = ci4_test
-# database.tests.username = root
-# database.tests.password = root
-# database.tests.DBDriver = MySQLi
-# database.tests.DBPrefix =
-# database.tests.port = 3306
+# database_tests_hostname = localhost
+# database_tests_database = ci4_test
+# database_tests_username = root
+# database_tests_password = root
+# database_tests_DBDriver = MySQLi
+# database_tests_DBPrefix =
+# database_tests_port = 3306
 
 #--------------------------------------------------------------------
 # CONTENT SECURITY POLICY
 #--------------------------------------------------------------------
 
-# contentsecuritypolicy.reportOnly = false
-# contentsecuritypolicy.defaultSrc = 'none'
-# contentsecuritypolicy.scriptSrc = 'self'
-# contentsecuritypolicy.styleSrc = 'self'
-# contentsecuritypolicy.imageSrc = 'self'
-# contentsecuritypolicy.baseURI = null
-# contentsecuritypolicy.childSrc = null
-# contentsecuritypolicy.connectSrc = 'self'
-# contentsecuritypolicy.fontSrc = null
-# contentsecuritypolicy.formAction = null
-# contentsecuritypolicy.frameAncestors = null
-# contentsecuritypolicy.frameSrc = null
-# contentsecuritypolicy.mediaSrc = null
-# contentsecuritypolicy.objectSrc = null
-# contentsecuritypolicy.pluginTypes = null
-# contentsecuritypolicy.reportURI = null
-# contentsecuritypolicy.sandbox = false
-# contentsecuritypolicy.upgradeInsecureRequests = false
-# contentsecuritypolicy.styleNonceTag = '{csp-style-nonce}'
-# contentsecuritypolicy.scriptNonceTag = '{csp-script-nonce}'
-# contentsecuritypolicy.autoNonce = true
+# contentsecuritypolicy_reportOnly = false
+# contentsecuritypolicy_defaultSrc = 'none'
+# contentsecuritypolicy_scriptSrc = 'self'
+# contentsecuritypolicy_styleSrc = 'self'
+# contentsecuritypolicy_imageSrc = 'self'
+# contentsecuritypolicy_baseURI = null
+# contentsecuritypolicy_childSrc = null
+# contentsecuritypolicy_connectSrc = 'self'
+# contentsecuritypolicy_fontSrc = null
+# contentsecuritypolicy_formAction = null
+# contentsecuritypolicy_frameAncestors = null
+# contentsecuritypolicy_frameSrc = null
+# contentsecuritypolicy_mediaSrc = null
+# contentsecuritypolicy_objectSrc = null
+# contentsecuritypolicy_pluginTypes = null
+# contentsecuritypolicy_reportURI = null
+# contentsecuritypolicy_sandbox = false
+# contentsecuritypolicy_upgradeInsecureRequests = false
+# contentsecuritypolicy_styleNonceTag = '{csp-style-nonce}'
+# contentsecuritypolicy_scriptNonceTag = '{csp-script-nonce}'
+# contentsecuritypolicy_autoNonce = true
 
 #--------------------------------------------------------------------
 # COOKIE
 #--------------------------------------------------------------------
 
-# cookie.prefix = ''
-# cookie.expires = 0
-# cookie.path = '/'
-# cookie.domain = ''
-# cookie.secure = false
-# cookie.httponly = false
-# cookie.samesite = 'Lax'
-# cookie.raw = false
+# cookie_prefix = ''
+# cookie_expires = 0
+# cookie_path = '/'
+# cookie_domain = ''
+# cookie_secure = false
+# cookie_httponly = false
+# cookie_samesite = 'Lax'
+# cookie_raw = false
 
 #--------------------------------------------------------------------
 # ENCRYPTION
 #--------------------------------------------------------------------
 
-# encryption.key =
-# encryption.driver = OpenSSL
-# encryption.blockSize = 16
-# encryption.digest = SHA512
+# encryption_key =
+# encryption_driver = OpenSSL
+# encryption_blockSize = 16
+# encryption_digest = SHA512
 
 #--------------------------------------------------------------------
 # HONEYPOT
 #--------------------------------------------------------------------
 
-# honeypot.hidden = 'true'
-# honeypot.label = 'Fill This Field'
-# honeypot.name = 'honeypot'
-# honeypot.template = '<label>{label}</label><input type="text" name="{name}" value=""/>'
-# honeypot.container = '<div style="display:none">{template}</div>'
+# honeypot_hidden = 'true'
+# honeypot_label = 'Fill This Field'
+# honeypot_name = 'honeypot'
+# honeypot_template = '<label>{label}</label><input type="text" name="{name}" value=""/>'
+# honeypot_container = '<div style="display:none">{template}</div>'
 
 #--------------------------------------------------------------------
 # SECURITY
 #--------------------------------------------------------------------
 
-# security.csrfProtection = 'cookie'
-# security.tokenRandomize = false
-# security.tokenName = 'csrf_token_name'
-# security.headerName = 'X-CSRF-TOKEN'
-# security.cookieName = 'csrf_cookie_name'
-# security.expires = 7200
-# security.regenerate = true
-# security.redirect = false
-# security.samesite = 'Lax'
+# security_csrfProtection = 'cookie'
+# security_tokenRandomize = false
+# security_tokenName = 'csrf_token_name'
+# security_headerName = 'X-CSRF-TOKEN'
+# security_cookieName = 'csrf_cookie_name'
+# security_expires = 7200
+# security_regenerate = true
+# security_redirect = false
+# security_samesite = 'Lax'
 
 #--------------------------------------------------------------------
 # SESSION
 #--------------------------------------------------------------------
 
-# session.driver = 'CodeIgniter\Session\Handlers\FileHandler'
-# session.cookieName = 'ci_session'
-# session.expiration = 7200
-# session.savePath = null
-# session.matchIP = false
-# session.timeToUpdate = 300
-# session.regenerateDestroy = false
+# session_driver = 'CodeIgniter\Session\Handlers\FileHandler'
+# session_cookieName = 'ci_session'
+# session_expiration = 7200
+# session_savePath = null
+# session_matchIP = false
+# session_timeToUpdate = 300
+# session_regenerateDestroy = false
 
 #--------------------------------------------------------------------
 # LOGGER
 #--------------------------------------------------------------------
 
-# logger.threshold = 4
+# logger_threshold = 4
 
 #--------------------------------------------------------------------
 # CURLRequest
 #--------------------------------------------------------------------
 
-# curlrequest.shareOptions = true
+# curlrequest_shareOptions = true
 
 #--------------------------------------------------------------------
 # Email
 #--------------------------------------------------------------------
 
-# email.fromEmail = ''
-# email.fromName = ''
-# email.protocol = 'mail' # 'mail', 'sendmail', or 'smtp'
-# email.mailType = 'text' # 'text' or 'html'
-# email.charset = 'UTF-8'
-# email.SMTPHost = ''
-# email.SMTPUser = ''
-# email.SMTPPass = ''
-# email.SMTPPort = 25
+# email_fromEmail = ''
+# email_fromName = ''
+# email_protocol = 'mail' # 'mail', 'sendmail', or 'smtp'
+# email_mailType = 'text' # 'text' or 'html'
+# email_charset = 'UTF-8'
+# email_SMTPHost = ''
+# email_SMTPUser = ''
+# email_SMTPPass = ''
+# email_SMTPPort = 25
 
