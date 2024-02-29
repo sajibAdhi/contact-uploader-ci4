@@ -11,11 +11,10 @@ use App\Controllers\AggregatorController;
 use App\Controllers\CategoryController;
 use App\Controllers\SettingController;
 
-$routes->get('/', static fn() => redirect()->to('operator_bills'), ['filter' => ['session']]);
+$routes->get('/', static fn() => redirect('sms_service.import_data'), ['filter' => ['session']]);
 
 $routes->group('sms_service', ['filter' => ['session']], static function ($routes) {
 
-    $routes->get('/', static fn() => redirect()->to('sms_service/categories'));
 
     $routes->group('aggregators', static function ($routes) {
         $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'sms_service.aggregator']);
@@ -33,8 +32,11 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
         $routes->delete('(:num)', [CategoryController::class, 'delete/$1'], ['as' => 'sms_service.category.delete']);
     });
 
+    // host/sms_service/import_data
     $routes->group('import_data', static function ($routes) {
+        // host/sms_service/import_data
         $routes->get('/', [ImportDataController::class, 'index'], ['as' => 'sms_service.import_data']);
+        // host/sms_service/import_data/fetch_data/1
         $routes->get('fetch_data/(:num)', [ImportDataController::class, 'fetchData/$1'], ['as' => 'sms_service.import_data.fetch_data']);
 
         $routes->get('upload', [ImportDataController::class, 'create'], ['as' => 'sms_service.import_data.upload']);
