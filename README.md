@@ -55,15 +55,7 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 
 ## Users Credentials
 
-- Username : superadmin
-- Email : superadmin@admin.com
-- Password : P@$$w0rd!
----
 - Username : admin
 - Email : admin@admin.com
 - Password : P@$$w0rd!
----
-- Username : maruf.billah
-- Email : maruf.billah@ranksitt.com
-- Password : marufkhan7794
 ---
