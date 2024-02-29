@@ -38,7 +38,7 @@
         <li class="nav-item <?= menu_open(route_to('sms_service.import_data'), route_to('sms_service.import_data.upload')) ?>">
             <a href="#"
                class="nav-link <?= active_link(route_to('sms_service.import_data'), route_to('sms_service.import_data.upload')) ?>">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-sms"></i>
                 <p>
                     Sms Service
                     <i class="right fas fa-angle-left"></i>
@@ -47,12 +47,12 @@
             <ul class="nav nav-treeview">
                 <?= view_cell(\App\Cells\NavItemCell::class, [
                     'link' => route_to('sms_service.import_data'),
-                    'icon' => 'fas fa-th',
+                    'icon' => 'fas fa-database',
                     'title' => 'Data',
                 ]) ?>
                 <?= view_cell(\App\Cells\NavItemCell::class, [
                     'link' => route_to('sms_service.import_data.upload'),
-                    'icon' => 'fas fa-th',
+                    'icon' => 'fas fa-file-import',
                     'title' => 'Import Data',
                 ]) ?>
             </ul>
@@ -61,13 +61,13 @@
 
         <?= view_cell(\App\Cells\NavItemCell::class, [
             'link' => route_to('sms_service.category'),
-            'icon' => 'fas fa-th',
+            'icon' => 'fas fa-list',
             'title' => 'Categories',
         ]) ?>
 
         <?= view_cell(\App\Cells\NavItemCell::class, [
             'link' => route_to('sms_service.aggregator'),
-            'icon' => 'fas fa-th',
+            'icon' => 'fas fa-project-diagram',
             'title' => 'Aggregators',
         ]) ?>
 
