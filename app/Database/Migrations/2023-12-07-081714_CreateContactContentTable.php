@@ -25,14 +25,14 @@ class CreateContactContentTable extends Migration
                 'null' => true,
             ],
             'from_contact_id' => [
-                'type'       => 'BIGINT',
+                'type' => 'BIGINT',
                 'constraint' => 20,
-                'null'   => false,
+                'null' => false,
             ],
             'to_contact_id' => [
-                'type'       => 'BIGINT',
+                'type' => 'BIGINT',
                 'constraint' => 20,
-                'null'   => false,
+                'null' => false,
             ],
             'operator_name' => [
                 'type' => 'VARCHAR',
@@ -54,6 +54,11 @@ class CreateContactContentTable extends Migration
                 'type' => 'TEXT',
                 'null' => true,
             ],
+            'batch' => [
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => false,
+            ],
             'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
             'updated_at TIMESTAMP default null on update CURRENT_TIMESTAMP',
             'deleted_at' => [
@@ -70,7 +75,8 @@ class CreateContactContentTable extends Migration
         $this->forge->addKey('content');
         $this->forge->addKey('operator_name');
         $this->forge->addKey('status');
-        $this->forge->addUniqueKey(['from_contact_id', 'to_contact_id', 'content','date']);
+        $this->forge->addKey('batch');
+        $this->forge->addUniqueKey(['from_contact_id', 'to_contact_id', 'content', 'date']);
         $this->forge->createTable('contact_content');
     }
 
