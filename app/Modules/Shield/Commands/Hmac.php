@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter Shield.
  *
@@ -46,7 +44,7 @@ class Hmac extends BaseCommand
             shield:hmac reencrypt
             shield:hmac encrypt
             shield:hmac decrypt
-
+            
             The reencrypt command should be used when rotating the encryption keys.
             The encrypt command should only be run on existing raw secret keys (extremely rare).
         EOL;
@@ -54,7 +52,7 @@ class Hmac extends BaseCommand
     /**
      * the Command's Arguments
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $arguments = [
         'action' => <<<'EOL'
@@ -72,7 +70,7 @@ class Hmac extends BaseCommand
     /**
      * the Command's Options
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $options = [];
 

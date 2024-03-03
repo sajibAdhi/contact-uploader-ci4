@@ -51,34 +51,34 @@ class User extends BaseCommand
      */
     protected $usage = <<<'EOL'
         shield:user <action> options
-
+            
             shield:user create -n newusername -e newuser@example.com
-
+            
             shield:user activate -n username
             shield:user activate -e user@example.com
-
+            
             shield:user deactivate -n username
             shield:user deactivate -e user@example.com
-
+            
             shield:user changename -n username --new-name newusername
             shield:user changename -e user@example.com --new-name newusername
-
+            
             shield:user changeemail -n username --new-email newuseremail@example.com
             shield:user changeemail -e user@example.com --new-email newuseremail@example.com
-
+            
             shield:user delete -i 123
             shield:user delete -n username
             shield:user delete -e user@example.com
-
+            
             shield:user password -n username
             shield:user password -e user@example.com
-
+            
             shield:user list
             shield:user list -n username -e user@example.com
-
+            
             shield:user addgroup -n username -g mygroup
             shield:user addgroup -e user@example.com -g mygroup
-
+            
             shield:user removegroup -n username -g mygroup
             shield:user removegroup -e user@example.com -g mygroup
         EOL;
@@ -90,7 +90,7 @@ class User extends BaseCommand
      */
     protected $arguments = [
         'action' => <<<'EOL'
-
+                
                 create:      Create a new user
                 activate:    Activate a user
                 deactivate:  Deactivate a user
