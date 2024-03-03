@@ -21,6 +21,7 @@
 #--------------------------------------------------------------------
 
 # app_baseURL = ''
+# app_indexPage = ''
 # app_forceGlobalSecureRequests = false
 # app_CSPEnabled = false
 
@@ -106,7 +107,7 @@
 # SECURITY
 #--------------------------------------------------------------------
 
-# security_csrfProtection = 'cookie'
+# security_csrfProtection = 'session'
 # security_tokenRandomize = false
 # security_tokenName = 'csrf_token_name'
 # security_headerName = 'X-CSRF-TOKEN'

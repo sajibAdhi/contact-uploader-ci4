@@ -24,7 +24,10 @@ class ImportDataController extends BaseController
             'categories' => $this->request->getGet('categories'),
             'daterange' => $this->request->getGet('daterange'),
         ];
-        $limit = $this->request->getGet('limit');
+
+        $limit = $this->request->getGet('limit') ?? null;
+        //if empty, set to null
+        $limit = empty($limit) ? null : $limit;
 
         return view('import_data/index', [
             'title' => 'Imported Data',
