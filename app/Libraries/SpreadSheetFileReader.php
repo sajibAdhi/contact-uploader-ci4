@@ -10,10 +10,12 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 class SpreadSheetFileReader
 {
     /**
-     * @return array|false
+     * @param UploadedFile $file
+     * @param array $headers
+     * @return array
      * @throws Exception
      */
-    public static function readCsvFile(UploadedFile $file, array $headers)
+    public static function readCsvFile(UploadedFile $file, array $headers): array
     {
         $csvData = [];
 
