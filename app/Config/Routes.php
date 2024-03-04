@@ -40,7 +40,11 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
         $routes->get('fetch_data/(:num)', [ImportDataController::class, 'fetchData/$1'], ['as' => 'sms_service.import_data.fetch_data']);
 
         $routes->get('upload', [ImportDataController::class, 'create'], ['as' => 'sms_service.import_data.upload']);
-        $routes->post('upload', [ImportDataController::class, 'store']);
+        $routes->post('upload_file', [ImportDataController::class, 'uploadFile'], ['as' => 'sms_service.import_data.upload_file']);
+        $routes->post('store_data', [ImportDataController::class, 'storeFileData'], ['as' => 'sms_service.import_data.store_data']);
+        $routes->get('progress', [ImportDataController::class, 'progress'], ['as' => 'sms_service.import_data.progress']);
+
+
         $routes->get('progress', [ImportDataController::class, 'progress'], ['as' => 'sms_service.import_data.progress']);
         $routes->get('status', [ImportDataController::class, 'uploadStatus'], ['as' => 'sms_service.import_data.status']);
     });

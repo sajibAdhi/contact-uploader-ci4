@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Constants\ApplicationConstant;
 use App\Libraries\SpreadSheetFileReader;
 use App\Models\ContactContentModel;
+use CodeIgniter\Files\Exceptions\FileException;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use Exception;
 use ReflectionException;
@@ -80,14 +81,13 @@ class ImportDataService
 
     /**
      * @param UploadedFile $file
-     * @param mixed $categoryId
-     * @param mixed $date
-     * @param int|null $aggregatorId
+     * @param int $categoryId
+     * @param string $date
      * @return bool
      * @throws ReflectionException
      * @throws Exception
      */
-    public function storeUploadedData(UploadedFile $file, int $categoryId = null, int $aggregatorId = null, string $date = null): bool
+    public function storeUploadedData(UploadedFile $file, int $categoryId, string $date): bool
     {
         $identifier = $date . auth()->id();
         // Set the status to reading
@@ -196,7 +196,6 @@ class ImportDataService
     }
 
 
-
     public function whereContactsExist(): ImportDataService
     {
         $this->categoryService->category
@@ -213,20 +212,129 @@ class ImportDataService
     }
 
     /**
-     * @param string $identifier
-     * @return array|null
+     * @throws Exception
      */
-    public function getUploadProgress(string $identifier)
+    public function uploadFile(?UploadedFile $file): string
     {
-        return session()->getFlashdata("$identifier.upload_progress");
+        if ($file === null) {
+            throw new FileException('No file was uploaded');
+        }
+
+        if ($file->getError() !== UPLOAD_ERR_OK) {
+            throw new FileException($file->getErrorString());
+        }
+
+        $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'from', 'to', 'operator_name', 'content', 'status']);
+
+        $count = count($data);
+
+        // If the file is empty, return false
+        if ($count === 0) {
+            throw new Exception('The file is empty');
+        }
+        // If the file is too large, return false
+        if ($count >= 500000) {
+            throw new Exception('The file is too large, please upload a file with less than 500,000 rows');
+        }
+
+        // change file name in a unique name
+        $fileRandomName = $file->getRandomName();
+        cache()->save($fileRandomName, ['data' => $data, 'count' => $count], 60 * 60 * 24); // cache the file data for 24 hours (1 day
+
+        return $fileRandomName;
     }
 
     /**
-     * @param string $identifier
-     * @return array|null
+     * @throws ReflectionException
      */
-    public function getUploadStatus(string $identifier)
+    public function storeFileData(string $batch, int $categoryId, string $date)
     {
-        return session()->getFlashdata("$identifier.upload_status");
+        $batchData = cache()->get($batch);
+
+        $count = $batchData['count'];
+        $chunkSize = 5000; // Define the size of each chunk
+
+        // Initialize caches
+        $fromNumbersCache = [];
+        $toNumbersCache = [];
+        $aggregatorsCache = [];
+
+        // Process the data in chunks
+        for ($i = 0; $i < $count; $i += $chunkSize) {
+            $dataChunk = array_slice($batchData['data'], $i, $chunkSize);
+
+            $fromNumbers = [];
+            $toNumbers = [];
+            $aggregator_names_in_data = [];
+
+            foreach ($dataChunk as $datum) {
+                $fromNumbers[] = trim($datum['from']);
+                $toNumbers[] = trim($datum['to']);
+                $aggregator_names_in_data[] = trim($datum['aggregator_name']);
+            }
+
+            // unique fromNumbers
+            foreach (array_unique($fromNumbers) as $fromNumber) {
+                if (!isset($fromNumbersCache[$fromNumber])) {
+                    $fromNumbersCache[$fromNumber] = $this->contactService->findOrInsertNumber($fromNumber, $categoryId);
+                }
+            }
+
+            // unique toNumbers
+            foreach (array_unique($toNumbers) as $toNumber) {
+                if (!isset($toNumbersCache[$toNumber])) {
+                    $toNumbersCache[$toNumber] = $this->contactService->findOrInsertNumber($toNumber, $categoryId);
+                }
+            }
+
+            // unique aggregators trim names
+            foreach (array_unique($aggregator_names_in_data) as $aggregatorName) {
+                $aggregatorsCache[$aggregatorName] = $this->aggregatorService->findOrInsert($aggregatorName);
+            }
+
+            $validData = [];
+            foreach ($dataChunk as $key => $datum) {
+
+                $validData[$key]['from_contact_id'] = $fromNumbersCache[$datum['from']]->id;
+                $validData[$key]['to_contact_id'] = $toNumbersCache[$datum['to']]->id;
+                $validData[$key]['aggregator_id'] = $aggregatorsCache[trim($datum['aggregator_name'])]->id;
+                $validData[$key]['date'] = date('Y-m-d', strtotime($date));
+                $validData[$key]['operator_name'] = $datum['operator_name'];
+                $validData[$key]['content'] = $datum['content'];
+                $validData[$key]['status'] = $datum['status'];
+                $validData[$key]['remarks'] = $datum['status'] ?? null;
+                $validData[$key]['batch'] = $batch;
+            }
+            // Insert the chunk into the database
+            $this->contactContent->builder()->ignore()->insertBatch($validData);
+
+            // Free up memory
+            unset($dataChunk);
+        }
+        $batchData['stored'] = true;
+        cache()->save($batch, $batchData, 60 * 60 * 24); // cache the file data for 24 hours (1 day
+    }
+
+    public function testGetUploadProgress(string $batch): object
+    {
+        $batchData = cache()->get($batch);
+        $count = $batchData['count'];
+        $stored = $batchData['stored'] ?? false;
+
+        if ($stored) {
+            cache()->delete($batch);
+        }
+
+        $inserted = $this->contactContent->where('batch', $batch)->countAllResults();
+
+        $progress = ($inserted / $count) * 100;
+
+
+        return (object)[
+            'progress' => $progress,
+            'inserted' => $inserted,
+            'count' => $count,
+            'stored' => $stored,
+        ];
     }
 }
