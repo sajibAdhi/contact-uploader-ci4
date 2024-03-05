@@ -58,4 +58,13 @@ class CategoryService
 
         return $categoryData;
     }
+
+    public function getCategoriesOfContacts(): array
+    {
+        return $this->category
+            ->select('categories.id, categories.name')
+            ->join('contacts', 'contacts.category_id = categories.id', 'right')
+            ->groupBy('categories.id')
+            ->findAll();
+    }
 }

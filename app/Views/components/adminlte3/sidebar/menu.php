@@ -58,6 +58,11 @@
             </ul>
         </li>
 
+        <?= view_cell(\App\Cells\NavItemCell::class, [
+            'link' => route_to('sms_service.contact'),
+            'icon' => 'fas fa-address-book',
+            'title' => 'Contacts',
+        ]) ?>
 
         <?= view_cell(\App\Cells\NavItemCell::class, [
             'link' => route_to('sms_service.category'),

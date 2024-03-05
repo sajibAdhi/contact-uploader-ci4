@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\ContactController;
 use App\Controllers\ImportDataController;
 use CodeIgniter\Router\RouteCollection;
 
@@ -30,6 +31,10 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
         $routes->get('(:num)', [CategoryController::class, 'edit/$1'], ['as' => 'sms_service.category.edit']);
         $routes->put('(:num)', [CategoryController::class, 'update/$1']);
         $routes->delete('(:num)', [CategoryController::class, 'delete/$1'], ['as' => 'sms_service.category.delete']);
+    });
+
+    $routes->group('contacts', static function ($routes) {
+        $routes->get('/', [ContactController::class, 'index'], ['as' => 'sms_service.contact']);
     });
 
     // host/sms_service/import_data
