@@ -37,20 +37,10 @@ class ImportDataController extends BaseController
         ]);
     }
 
-    // AJAX request handler
-    public function fetchData(int $page = 1): ResponseInterface
-    {
-        $limit = ApplicationConstant::PER_PAGE; // Number of rows per page
-        $offset = ($page - 1) * $limit;
-        $data = $this->importDataService->getData($limit, $offset);
-
-        return $this->response->setJSON($data);
-    }
-
     public function create(): string
     {
         return view('import_data/upload', [
-            'title' => 'Import CSV File',
+            'title' => 'Import Data',
             'categories' => (new CategoryModel())->findAll(),
         ]);
     }
@@ -60,6 +50,9 @@ class ImportDataController extends BaseController
      */
     public function uploadFile()
     {
+        // Sets the memory limit
+        ini_set('memory_limit', '512M'); // 100MB
+
         if (!$this->request->isAJAX()) {
             return redirect()->route('sms_service.import_data.upload')->with('error', 'Invalid request');
         }
@@ -76,6 +69,7 @@ class ImportDataController extends BaseController
                     'csrf_hash' => $newCsrfHash
                 ]);
             }
+
 
             $file = $this->request->getFile('contacts_file');
 
@@ -110,11 +104,10 @@ class ImportDataController extends BaseController
      */
     public function storeFileData()
     {
-        // Sets the memory limit
-        ini_set('memory_limit', '30M'); // 3000MB
-        set_time_limit(15 * 60);
-        // Sets the maximum time in seconds that the script is allowed to connect to the database
-        ini_set('mysql.connect_timeout', 5 * 60); // 5 minutes
+        ini_set('memory_limit', '256M'); // 100MB
+//        set_time_limit(15 * 60);
+//        // Sets the maximum time in seconds that the script is allowed to connect to the database
+//        ini_set('mysql.connect_timeout', 5 * 60); // 5 minutes
 
         if (!$this->request->isAJAX()) {
             return redirect()->route('sms_service.import_data.upload')->with('error', 'Invalid request');
@@ -158,7 +151,7 @@ class ImportDataController extends BaseController
     public function progress(): ResponseInterface
     {
         $batch = $this->request->getGet('batch');
-        $progressData = $this->importDataService->testGetUploadProgress($batch);
+        $progressData = $this->importDataService->getUploadProgress($batch);
 
         return $this->response->setJSON([
             'status' => 'success',

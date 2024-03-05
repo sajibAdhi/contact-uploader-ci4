@@ -19,7 +19,7 @@
             <div class="form-group row <?= validation_show_error('category') ? 'has-warning' : '' ?>">
                 <label for="category" class="control-label col-sm-3">Select a category:</label>
                 <div class=" col-sm-9">
-                    <select class="form-control selectTwo" name="category" id="category" style="width: 100%">
+                    <select class="form-control selectTwo" name="category" id="category" style="width: 100%" required>
                         <option value="">Select a Category</option>
                         <?php if (!empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>
@@ -59,7 +59,7 @@
                         <code>status</code>
                         headers.
                     </p>
-                    <div class="progress">
+                    <div class="progress " style="display:none">
                         <div id="progress-bar" class="progress-bar bg-primary progress-bar-striped" role="progressbar"
                              aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                         </div>
@@ -82,46 +82,25 @@
 
     <script>
         $(document).ready(function () {
-            let uploadProgressInterval;
             const uploadForm = $('#upload-form');
+            const progressBar = $('#progress-bar');
+
+            let storeDataProcessed = false;
 
             // Submit the form using AJAX
             uploadForm.submit(function (event) {
                 event.preventDefault();
                 let formData = new FormData(this);
 
+                storeDataProcessed = false;
                 // stop interacting with the form
                 $(this).find('input, button, select').prop('disabled', true);
 
+                // progress bar
+                progressBar.css('width', '0%').attr('aria-valuenow', 0).html('0/0');
 
-                uploadFile(formData).then((response) => {
-
-                    if (response.csrf_token && response.csrf_hash) {
-                        // update the csrf token
-                        $(`input[name="${response.csrf_token}"]`).val(response.csrf_hash);
-                        // update the csrf token in the form
-                        formData.append(response.csrf_token, response.csrf_hash);
-                    }
-
-                    if (response.success) {
-                        $(document).Toasts('create', {
-                            class: 'bg-success',
-                            title: 'Notification',
-                            body: `${response.success}!`
-                        })
-
-                        let batch = response.batch;
-                        formData.append('batch', batch);
-                        // Start the progress bar
-                        uploadProgressInterval = setInterval(() => testProgress(batch), 1000);
-
-                        return storeData(formData);
-                    }
-
-                    return response;
-                }).then((response) => {
-
-                    if (response.success) {
+                uploadFile(formData)
+                    .then((response) => {
                         if (response.csrf_token && response.csrf_hash) {
                             // update the csrf token
                             $(`input[name="${response.csrf_token}"]`).val(response.csrf_hash);
@@ -129,45 +108,75 @@
                             formData.append(response.csrf_token, response.csrf_hash);
                         }
 
-                        $(document).Toasts('create', {
-                            class: 'bg-success',
-                            title: 'Notification',
-                            body: `${response.success}!`
-                        })
-                        // enable form
-                        uploadForm.find('input, button, select').prop('disabled', false);
-                    }
-                    $(this).find('input, button, select').prop('disabled', false);
-                }).fail((error) => {
-                    let response = error.responseJSON;
+                        if (response.success) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Notification',
+                                body: `${response.success}!`
+                            })
+                            let batch = response.batch;
+                            formData.append('batch', batch);
+                            // Start the progress bar
+                            progress(batch);
 
-                    if (response.csrf_token && response.csrf_hash) {
-                        // update the csrf token
-                        $(`input[name="${response.csrf_token}"]`).val(response.csrf_hash);
-                        // update the csrf token in the form
-                        formData.append(response.csrf_token, response.csrf_hash);
-                    }
+                            // store data
+                            return storeData(formData);
+                        }
 
-                    if (response.error) {
-                        $(document).Toasts('create', {
-                            class: 'bg-danger',
-                            title: 'Alert!',
-                            body: `${response.error}!`
-                        });
-                    } else if (response.errors) {
-                        let errors = response.errors;
-                        for (let key in errors) {
+                        return response;
+                    })
+                    .then((response) => {
+                        if (response.success) {
+                            if (response.csrf_token && response.csrf_hash) {
+                                // update the csrf token
+                                $(`input[name="${response.csrf_token}"]`).val(response.csrf_hash);
+                                // update the csrf token in the form
+                                formData.append(response.csrf_token, response.csrf_hash);
+                            }
+
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Notification',
+                                body: `${response.success}!`
+                            })
+                            // enable form
+                            uploadForm.find('input, button, select').prop('disabled', false);
+                            // clear uploaded file
+                            uploadForm.find('input[type="file"]').val('');
+                        }
+                        storeDataProcessed = true;
+                        $(this).find('input, button, select').prop('disabled', false);
+                    })
+                    .fail((error) => {
+                        let response = error.responseJSON;
+
+                        if (response.csrf_token && response.csrf_hash) {
+                            // update the csrf token
+                            $(`input[name="${response.csrf_token}"]`).val(response.csrf_hash);
+                            // update the csrf token in the form
+                            formData.append(response.csrf_token, response.csrf_hash);
+                        }
+
+                        if (response.error) {
                             $(document).Toasts('create', {
                                 class: 'bg-danger',
                                 title: 'Alert!',
-                                body: `${errors[key]}`
+                                body: `${response.error}!`
                             });
+                        } else if (response.errors) {
+                            let errors = response.errors;
+                            for (let key in errors) {
+                                $(document).Toasts('create', {
+                                    class: 'bg-danger',
+                                    title: 'Alert!',
+                                    body: `${errors[key]}`
+                                });
+                            }
+
                         }
+                        $(this).find('input, button, select').prop('disabled', false);
 
-                    }
-                    $(this).find('input, button, select').prop('disabled', false);
-
-                });
+                    });
 
             });
 
@@ -185,7 +194,7 @@
             }
 
             // store data
-            function storeData(formData) {
+            async function storeData(formData) {
                 return $.ajax({
                     url: '<?= route_to('sms_service.import_data.store_data')?>',
                     type: 'POST',
@@ -198,42 +207,45 @@
             }
 
             // Update the progress bar
-            function testProgress(batch) {
+            const progress = (batch) => {
                 $.ajax({
                     url: `<?= route_to('sms_service.import_data.progress')?>`,
                     type: 'GET',
                     data: {batch: batch},
                     success: function (response) {
+                        console.log('progress:success:', storeDataProcessed);
                         // Update your progress bar here
-                        const stored = response.stored;
-                        const count = response.count;
-                        const inserted = response.inserted;
-                        const progress = response.progress;
+                        const responseStored = response.stored;
+                        const responseCount = response.count;
+                        const responseInserted = response.inserted;
+                        const responseProgress = response.progress;
 
-                        if (stored === true) {
-                            if (inserted === count) {
+                        progressBar.css('width', `${responseProgress}%`).attr('aria-valuenow', responseProgress).html(`${responseInserted}/${responseCount}`);
+
+                        if (storeDataProcessed === true) {
+                            console.log('Stored: ', responseStored, 'Count: ', responseCount, 'Inserted: ', responseInserted, 'Progress: ', responseProgress);
+                            if (responseInserted === responseCount && responseStored === true) {
                                 $(document).Toasts('create', {
                                     class: 'bg-success',
                                     title: 'Notification',
                                     body: `Data has been successfully stored!`
                                 });
-                            } else if (progress === 0) {
+                            } else if (responseStored === true && responseProgress === 0) {
                                 $(document).Toasts('create', {
                                     class: 'bg-warning',
                                     title: 'Notification',
                                     body: `No unique data to store!`
                                 });
-                            } else if (inserted > 0 && inserted < count) {
+                            } else if (responseInserted > 0 && responseInserted < responseCount) {
                                 $(document).Toasts('create', {
-                                    class: 'bg-warning',
+                                    class: 'bg-success',
                                     title: 'Notification',
                                     body: `Some data has been stored!`
                                 });
                             }
-                            clearInterval(uploadProgressInterval);
+                        } else {
+                            progress(batch);
                         }
-                        // progress bar with inserted count
-                        $('#progress-bar').css('width', `${progress}%`).attr('aria-valuenow', progress).html(`${inserted}/${count}`);
                     }
                 });
             }

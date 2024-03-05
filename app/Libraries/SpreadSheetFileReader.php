@@ -118,7 +118,7 @@ class SpreadSheetFileReader
         // Check if the actual headers match the expected headers
         if (count($diff) !== 0) {
             // The headers do not match, return false or handle the error as needed
-            throw new \Exception('The headers do not match');
+            throw new \Exception('This file does not match the expected headers {"' . implode('", "', $diff) . '"}');
         }
 
         // The headers match, continue processing the file

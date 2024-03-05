@@ -315,19 +315,23 @@ class ImportDataService
         cache()->save($batch, $batchData, 60 * 60 * 24); // cache the file data for 24 hours (1 day
     }
 
-    public function testGetUploadProgress(string $batch): object
+    public function getUploadProgress(string $batch): object
     {
         $batchData = cache()->get($batch);
-        $count = $batchData['count'];
         $stored = $batchData['stored'] ?? false;
 
         if ($stored) {
             cache()->delete($batch);
         }
 
+        $count = $batchData['count'] ?? 0;
         $inserted = $this->contactContent->where('batch', $batch)->countAllResults();
 
-        $progress = ($inserted / $count) * 100;
+        if ($count === 0) {
+            $progress = 0;
+        } else {
+            $progress = ($inserted / $count) * 100;
+        }
 
 
         return (object)[
