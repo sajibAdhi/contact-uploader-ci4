@@ -50,7 +50,7 @@
                            accept=".csv,.xlsx" required>
                     <span class="help-block"><?= validation_show_error('contacts_file') ?></span>
                     <p class="help-block">
-                        Please upload a CSV file which contains
+                        Please upload a .csv or .xlsx file which contains
                         <code>aggregator_name</code>,
                         <code>from</code>,
                         <code>to</code>,
