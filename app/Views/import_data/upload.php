@@ -9,7 +9,7 @@
     <div class="card card-default">
 
         <div class="card-header with-border">
-            <h3 class="card-title">Import CSV File</h3>
+            <h3 class="card-title"><?= $title ?? null ?></h3>
         </div>
 
         <?= form_open_multipart(route_to('contact.content.upload'), ['id' => 'upload-form']) ?>
