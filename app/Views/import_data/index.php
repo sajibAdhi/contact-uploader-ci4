@@ -1,9 +1,9 @@
 <?= $this->extend('layout/app') ?>
 
 <?= $this->section('pageStyles') ?>
-<?= load_datatable_styles() ?>
-<?= load_datepicker_styles() ?>
 <?= load_select2_styles() ?>
+<?= load_datepicker_styles() ?>
+<?= load_datatable_styles() ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('main') ?>
@@ -15,8 +15,9 @@
     <!-- /.card-header -->
     <div class="card-body">
         <!-- Filter Form -->
-        <form action="<?= base_url(route_to('sms_service.import_data')) ?>">
+        <form action="<?= base_url(route_to('sms_service.import_data')) ?>" autocomplete="off">
             <div class="row">
+
                 <!-- category -->
                 <div class="form-group col-sm-4">
                     <label for="category">Category</label>
@@ -40,13 +41,11 @@
                 <div class="form-group col-sm-4">
                     <label for="daterange">Date range:</label>
 
-                    <div class="input-group date-range">
+                    <div class="input-group ">
                         <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                      </span>
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <input type="text" class="form-control float-right" name="daterange"
+                        <input type="text" class="form-control float-right date-range-picker" name="daterange"
                                value="<?= set_value('daterange') ?>">
                     </div>
                     <!-- /.input group -->
@@ -55,8 +54,22 @@
                 <!-- limit -->
                 <div class="form-group col-sm-4">
                     <label for="limit">Limit</label>
-                    <input type="number" name="limit" id="limit" class="form-control"
-                           value="<?= set_value('limit') ?>">
+                    <?= form_dropdown(
+                        'limit',
+                        [
+                            '' => 'Default',
+                            '10' => '10',
+                            '25' => '25',
+                            '50' => '50',
+                            '100' => '100',
+                            '200' => '200',
+                            '500' => '500',
+                            '1000' => '1000',
+                            '5000' => '5000',
+                        ],
+                        set_value('limit', ''),
+                        "class='form-control selectTwo' width='100%'"
+                    ) ?>
                 </div>
 
             </div> <!-- /.row -->
@@ -122,34 +135,31 @@
             </tr>
             </tfoot>
         </table>
-        <?php /* @var object $pager */ ?>
-        <?= $pager->links('default', 'bootstrap4') ?>
+        <br>
+        <?php if (!empty($pager)): ?>
+            <?php
+            $thisPageStart = $pager->getPerPage() * $pager->getCurrentPage() - $pager->getPerPage() + 1;
+            $thisPageEnd = $pager->getPerPage() * $pager->getCurrentPage();
+            ?>
+            <div class="d-flex justify-content-between">
+                <div>
+                    Showing <?= $thisPageStart ?> to <?= $thisPageEnd ?> of <?= $pager->getTotal() ?> Entries
+                </div>
+                <div>
+                    <?= $pager->links('default', 'bootstrap4') ?>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
     <!-- /.card-body -->
 </div>
 <?= $this->endSection() ?>
 
 <?= $this->section('pageScripts') ?>
-<?= load_datatable_scripts() ?>
-<?= load_datepicker_scripts() ?>
 <?= load_select2_scripts() ?>
+<?= load_datepicker_scripts() ?>
+<?= load_datatable_scripts() ?>
 
 <?= initialize_select2('.selectTwo') ?>
-
-<?php //= initialize_datepicker('.date-range',[
-//
-//]) ?>
-
-<script>
-    $(document).ready(function () {
-
-        //Date range picker
-        const daterange = $('.date-range');
-        daterange.daterangepicker();
-
-        // daterange.on('apply.daterangepicker', function (ev, picker) {
-        //     $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-        // });
-    });
-</script>
+<?= initialize_date_range_picker('.date-range-picker',) ?>
 <?= $this->endSection() ?>
