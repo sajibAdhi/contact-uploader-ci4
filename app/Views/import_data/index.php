@@ -123,17 +123,6 @@
                 <?php endforeach; ?>
             <?php endif; ?>
             </tbody>
-            <tfoot>
-            <tr>
-                <th>Aggregator</th>
-                <th>Operator</th>
-                <th>Form</th>
-                <th>To</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Content</th>
-            </tr>
-            </tfoot>
         </table>
         <br>
         <?php if (!empty($pager)): ?>
