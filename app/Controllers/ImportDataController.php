@@ -18,21 +18,25 @@ class ImportDataController extends BaseController
         $this->importDataService = new ImportDataService();
     }
 
+    /**
+     * @return string
+     */
     public function index(): string
     {
         $filters = (object)[
-            'categories' => $this->request->getGet('categories'),
+            'to_contact_categories' => $this->request->getGet('to_contact_categories'),
             'daterange' => $this->request->getGet('daterange'),
         ];
 
-        $limit = $this->request->getGet('limit') ?? null;
-        //if empty, set to null
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
         $limit = empty($limit) ? null : $limit;
+
+        $contactContents = $this->importDataService->filter($filters)->contactsContent($limit);
 
         return view('import_data/index', [
             'title' => 'Imported Data',
             'categories' => $this->importDataService->whereContactsExist()->categories(),
-            'contactContents' => $this->importDataService->filter($filters)->contactsContent($limit),
+            'contactContents' => $contactContents,
             'pager' => $this->importDataService->contactContent->pager,
         ]);
     }

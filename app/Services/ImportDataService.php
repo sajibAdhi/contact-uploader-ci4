@@ -25,46 +25,11 @@ class ImportDataService
         $this->contactContent = new ContactContentModel();
     }
 
-    public function contacts(): array
-    {
-        return $this->contactService->contact
-            ->select('contacts.*, categories.name as category_name')
-            ->join('categories', 'categories.id = contacts.category_id')
-            ->findAll();
-    }
-
-    public function contactsContent(int $limit = null): array
-    {
-        $result = $this->contactContent->paginate($limit ?? ApplicationConstant::PER_PAGE);
-
-        array_walk($result, function ($contactContent) {
-            $contactContent->aggregator = $this->aggregatorService->find($contactContent->aggregator_id);
-            $contactContent->form = $this->contactService->find($contactContent->from_contact_id);
-            $contactContent->to = $this->contactService->contact->find($contactContent->to_contact_id);
-        });
-
-        return $result;
-    }
-
-    public function getData(int $limit, int $offset): array
-    {
-        $result = $this->contactContent->orderBy('id', 'DESC')->findAll($limit, $offset);
-
-        array_walk($result, function ($contactContent) {
-            $contactContent->aggregator = $this->aggregatorService->find($contactContent->aggregator_id);
-            $contactContent->form = $this->contactService->find($contactContent->from_contact_id);
-            $contactContent->to = $this->contactService->contact->find($contactContent->to_contact_id);
-        });
-
-        return $result;
-    }
-
     public function filter(object $filters): ImportDataService
     {
-        if ($filters->categories ?? null) {
-            if (!in_array('all', $filters->categories, true)) {
-                $this->contactContent->whereIn('contacts.category_id', $filters->categories);
-            }
+//        dd(!in_array('all', $filters->to_contact_categories, true));
+        if (is_array($filters->to_contact_categories) && !in_array('all', $filters->to_contact_categories, true)) {
+            $this->contactContent->whereIn('to_contacts.category_id', $filters->to_contact_categories);
         }
 
         if ($filters->daterange ?? null) {
@@ -79,122 +44,36 @@ class ImportDataService
         return $this;
     }
 
-    /**
-     * @param UploadedFile $file
-     * @param int $categoryId
-     * @param string $date
-     * @return bool
-     * @throws ReflectionException
-     * @throws Exception
-     */
-    public function storeUploadedData(UploadedFile $file, int $categoryId, string $date): bool
+    public function prepareSelectQuery(array $fields = []): ContactContentModel
     {
-        $identifier = $date . auth()->id();
-        // Set the status to reading
-        session()->setFlashdata("$identifier.upload_status", 'Reading the data...');
-        session()->close();
-
-        $data = SpreadSheetFileReader::readFile($file, ['aggregator_name', 'from', 'to', 'operator_name', 'content', 'status']);
-
-        $totalRows = count($data);
-        $divider = $totalRows / 10; // to set upload progress
-        $processedRows = 0;
-        $chunkSize = 5000; // Define the size of each chunk
-
-        // If the file is empty, return false
-        if ($totalRows === 0) {
-            throw new Exception('The file is empty');
-        }
-        // If the file is too large, return false
-        if ($totalRows > 500000) {
-            throw new Exception('The file is too large, please upload a file with less than 500,000 rows');
+        // If no fields are passed, use a default set
+        if (empty($fields)) {
+            $fields = [
+                'contact_content.id',
+                'contact_content.date',
+                'contact_content.operator_name',
+                'contact_content.status',
+                'contact_content.content',
+                'from_contacts.number as from_number',
+                'to_contacts.number as to_number',
+                'to_contact_category.name as to_number_category',
+                'aggregators.name as aggregator_name'
+            ];
         }
 
+        $this->contactContent->select($fields)
+            ->join('contacts from_contacts', 'from_contacts.id = contact_content.from_contact_id', 'LEFT')
+            ->join('contacts to_contacts', 'to_contacts.id = contact_content.to_contact_id', 'LEFT')
+            ->join('categories to_contact_category', 'to_contact_category.id = to_contacts.category_id', 'LEFT')
+            ->join('aggregators', 'aggregators.id = contact_content.aggregator_id', 'LEFT');
 
-        // Initialize caches
-        $fromNumbersCache = [];
-        $toNumbersCache = [];
-        $aggregatorsCache = [];
-
-        $this->contactContent->db->transStart();
-        // Set the status to writing
-        session()->start();
-        session()->setFlashdata("$identifier.upload_status", 'Writing the data...');
-        session()->close();
-
-        // Process the data in chunks
-        for ($i = 0; $i < $totalRows; $i += $chunkSize) {
-            $dataChunk = array_slice($data, $i, $chunkSize);
-
-            $fromNumbers = [];
-            $toNumbers = [];
-            $aggregator_names_in_data = [];
-
-            foreach ($dataChunk as $datum) {
-                $fromNumbers[] = trim($datum['from']);
-                $toNumbers[] = trim($datum['to']);
-                $aggregator_names_in_data[] = trim($datum['aggregator_name']);
-            }
-
-            // unique fromNumbers
-            foreach (array_unique($fromNumbers) as $fromNumber) {
-                if (!isset($fromNumbersCache[$fromNumber])) {
-                    $fromNumbersCache[$fromNumber] = $this->contactService->findOrInsertNumber($fromNumber, $categoryId);
-                }
-            }
-
-            // unique toNumbers
-            foreach (array_unique($toNumbers) as $toNumber) {
-                if (!isset($toNumbersCache[$toNumber])) {
-                    $toNumbersCache[$toNumber] = $this->contactService->findOrInsertNumber($toNumber, $categoryId);
-                }
-            }
-
-            // unique aggregators trim names
-            foreach (array_unique($aggregator_names_in_data) as $aggregatorName) {
-                $aggregatorsCache[$aggregatorName] = $this->aggregatorService->findOrInsert($aggregatorName);
-            }
-
-            $validData = [];
-            foreach ($dataChunk as $key => $datum) {
-
-                $validData[$key]['from_contact_id'] = $fromNumbersCache[$datum['from']]->id;
-                $validData[$key]['to_contact_id'] = $toNumbersCache[$datum['to']]->id;
-                $validData[$key]['aggregator_id'] = $aggregatorsCache[trim($datum['aggregator_name'])]->id;
-                $validData[$key]['date'] = date('Y-m-d', strtotime($date));
-                $validData[$key]['operator_name'] = $datum['operator_name'];
-                $validData[$key]['content'] = $datum['content'];
-                $validData[$key]['status'] = $datum['status'];
-                $validData[$key]['remarks'] = $datum['status'] ?? null;
-
-
-                $processedRows++;
-                // Update the progress 10 times
-                if ($processedRows % $divider === 0) {
-                    $progress = ($processedRows / $totalRows) * 100;
-
-                    session()->start();
-                    session()->setFlashdata("$identifier.upload_progress", $progress);
-                    session_commit();
-                }
-            }
-            // Insert the chunk into the database
-            $this->contactContent->builder()->ignore()->insertBatch($validData);
-
-            // Free up memory
-            unset($dataChunk);
-        }
-
-        session()->start();
-        session()->setFlashdata("$identifier.upload_progress", 100);
-        // Set the status to complete
-        session()->setFlashdata("$identifier.upload_status", 'Data upload complete.');
-
-        $this->contactContent->db->transComplete();
-
-        return $this->contactContent->db->transStatus();
+        return $this->contactContent;
     }
 
+    public function contactsContent(int $limit = null): array
+    {
+        return $this->prepareSelectQuery()->paginate($limit ?? ApplicationConstant::PER_PAGE);
+    }
 
     public function whereContactsExist(): ImportDataService
     {

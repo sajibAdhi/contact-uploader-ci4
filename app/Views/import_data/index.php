@@ -15,54 +15,54 @@
     <!-- /.card-header -->
     <div class="card-body">
         <!-- Filter Form -->
-        <?= form_open(route_to('sms_service.import_data'), "method='GET' autocomplete='false'") ?>
-        <div class="row">
-            <!-- category -->
-            <div class="form-group col-sm-4">
-                <label for="category">Category</label>
-                <select name="categories[]" id="category" class="form-control selectTwo" multiple
-                        data-placeholder="Select a Category"
-                        style="width: 100%;">
-                    <option value="all" <?= set_select('categories', 'all', true) ?> >
-                        All
-                    </option>
-                    <?php if (!empty($categories)): ?>
-                        <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category->id ?>" <?= set_select('categories', $category->id) ?>><?= $category->name ?></option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+        <form action="<?= base_url(route_to('sms_service.import_data')) ?>">
+            <div class="row">
+                <!-- category -->
+                <div class="form-group col-sm-4">
+                    <label for="category">Category</label>
+                    <select name="to_contact_categories[]" id="to_contact_categories" class="form-control selectTwo"
+                            multiple
+                            data-placeholder="Select a Category"
+                            style="width: 100%;">
+                        <option value="all" <?= set_select('to_contact_categories', 'all', true) ?> >
+                            All
+                        </option>
+                        <?php if (!empty($categories)): ?>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= $category->id ?>" <?= set_select('to_contact_categories', $category->id) ?>><?= $category->name ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
 
-                </select>
-            </div>
+                    </select>
+                </div>
 
-            <!-- Date range -->
-            <div class="form-group col-sm-4">
-                <label for="daterange">Date range:</label>
+                <!-- Date range -->
+                <div class="form-group col-sm-4">
+                    <label for="daterange">Date range:</label>
 
-                <div class="input-group date-range">
-                    <div class="input-group-prepend">
+                    <div class="input-group date-range">
+                        <div class="input-group-prepend">
                       <span class="input-group-text">
                         <i class="far fa-calendar-alt"></i>
                       </span>
+                        </div>
+                        <input type="text" class="form-control float-right" name="daterange"
+                               value="<?= set_value('daterange') ?>">
                     </div>
-                    <input type="text" class="form-control float-right" name="daterange"
-                           value="<?= set_value('daterange') ?>">
+                    <!-- /.input group -->
                 </div>
-                <!-- /.input group -->
-            </div>
 
-            <!-- limit -->
-            <div class="form-group col-sm-4">
-                <label for="limit">Limit</label>
-                <input type="number" name="limit" id="limit" class="form-control"
-                       value="<?= set_value('limit') ?>">
-            </div>
+                <!-- limit -->
+                <div class="form-group col-sm-4">
+                    <label for="limit">Limit</label>
+                    <input type="number" name="limit" id="limit" class="form-control"
+                           value="<?= set_value('limit') ?>">
+                </div>
 
-        </div> <!-- /.row -->
+            </div> <!-- /.row -->
 
-        <?= view_cell(\App\Cells\ButtonCell::class, ['title' => 'Search', 'class' => 'btn-primary pull-right']) ?>
-
-        <?= form_close() ?>
+            <?= view_cell(\App\Cells\ButtonCell::class, ['title' => 'Search', 'class' => 'btn-primary pull-right']) ?>
+        </form>
         <!-- /.Filter Form -->
     </div>
     <!-- /.card-body -->
@@ -83,6 +83,7 @@
                 <th>Operator</th>
                 <th>Form</th>
                 <th>To</th>
+                <th>ToCategory</th>
                 <th>Date</th>
                 <th>Status</th>
                 <th>Content</th>
@@ -97,10 +98,11 @@
             <?php else: ?>
                 <?php foreach ($contactContents as $contactContent): ?>
                     <tr>
-                        <td><?= $contactContent->aggregator->name ?></td>
+                        <td><?= $contactContent->aggregator_name ?></td>
                         <td><?= $contactContent->operator_name ?></td>
-                        <td><?= $contactContent->form->number ?></td>
-                        <td><?= $contactContent->to->number ?></td>
+                        <td><?= $contactContent->from_number ?></td>
+                        <td><?= $contactContent->to_number ?></td>
+                        <td><?= $contactContent->to_number_category ?></td>
                         <td><?= $contactContent->date ?></td>
                         <td><?= $contactContent->status ?></td>
                         <td><?= $contactContent->content ?></td>
