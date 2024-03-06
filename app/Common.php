@@ -329,11 +329,11 @@ if (!function_exists('initialize_date_range_picker')) {
      */
     function initialize_date_range_picker(string $selector, array $options = []): string
     {
-        // Default options
+        // date range field must be empty
         $defaultOptions = [
             "autoUpdateInput" => false,
             "locale" => [
-                "cancelLabel" => "Clear"
+                "cancelLabel" => "Clear",
             ]
         ];
 
@@ -345,14 +345,17 @@ if (!function_exists('initialize_date_range_picker')) {
         return <<<EOT
                 <!-- initialize_daterange_picker -->
                 <script>
-                   $(document).ready(function() {
-                        console.debug(`$selector`);
-                        //Date range picker
-                        const daterange = $('$selector');
-                        daterange.daterangepicker($finalOptions)
-                           
-                        daterange.on('apply.daterangepicker', function (ev, picker) {
+                    $(function () {
+                        const daterangepicker = $(`$selector`);
+                       
+                        daterangepicker.daterangepicker($finalOptions);
+                       
+                        daterangepicker.on('apply.daterangepicker', function(ev, picker) {
                             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                        });
+                        
+                        daterangepicker.on('cancel.daterangepicker', function() {
+                            $(this).val('');
                         });
                     });
                 </script>
