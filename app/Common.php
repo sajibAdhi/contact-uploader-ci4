@@ -154,9 +154,9 @@ if (!function_exists('load_datatable_styles')) {
             'adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'
         ];
 
-        $result = '';
+        $result = '<!-- load_datatable_styles -->' . PHP_EOL;
         foreach ($styles as $style) {
-            $result .= '<link rel="stylesheet" href="' . base_url($style) . '">';
+            $result .= '<link rel="stylesheet" href="' . base_url($style) . '">' . PHP_EOL;
         }
 
         return $result;
@@ -186,9 +186,9 @@ if (!function_exists('load_datatable_scripts')) {
             'adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js'
         ];
 
-        $result = '';
+        $result = '<!-- load_datatable_scripts -->' . PHP_EOL;
         foreach ($scripts as $script) {
-            $result .= '<script src="' . base_url($script) . '"></script>';
+            $result .= '<script src="' . base_url($script) . '"></script>' . PHP_EOL;
         }
         return $result;
     }
@@ -244,7 +244,7 @@ if (!function_exists('load_datepicker_styles')) {
 
         $result = '<!-- load_datepicker_styles -->' . PHP_EOL;
         foreach ($styles as $style) {
-            $result .= '<link rel="stylesheet" href="' . base_url($style) . '">';
+            $result .= '<link rel="stylesheet" href="' . base_url($style) . '">' . PHP_EOL;
         }
 
         return $result;
@@ -285,8 +285,21 @@ if (!function_exists('initialize_datepicker')) {
     {
         // Default options
         $defaultOptions = [
-//            "format" => "YYYY-MM-DD",
-            "useCurrent" => false
+            "singleDatePicker" => true,
+            "showDropdowns" => true,
+            "autoApply" => true,
+            "locale" => [
+                "format" => "YYYY-MM-DD",
+                "separator" => " to ",
+                "applyLabel" => "Apply",
+                "cancelLabel" => "Cancel",
+                "fromLabel" => "From",
+                "toLabel" => "To",
+                "customRangeLabel" => "Custom",
+                "daysOfWeek" => ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+                "monthNames" => ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                "firstDay" => 1
+            ]
         ];
 
         // Merge default options with user-provided options
@@ -300,6 +313,48 @@ if (!function_exists('initialize_datepicker')) {
                 $(function () {
                     $('$selector').daterangepicker($finalOptions)
                 });
+                </script>
+                EOT;
+    }
+}
+
+// initialize date_range picker
+if (!function_exists('initialize_date_range_picker')) {
+    /**
+     * Initialize DateRangePicker
+     *
+     * @param string $selector
+     * @param array $options
+     * @return string
+     */
+    function initialize_date_range_picker(string $selector, array $options = []): string
+    {
+        // Default options
+        $defaultOptions = [
+            "autoUpdateInput" => false,
+            "locale" => [
+                "cancelLabel" => "Clear"
+            ]
+        ];
+
+        // Merge default options with user-provided options
+        $finalOptions = array_merge($defaultOptions, $options);
+        $finalOptions = json_encode($finalOptions);
+
+        // Initialize DateRangePicker
+        return <<<EOT
+                <!-- initialize_daterange_picker -->
+                <script>
+                   $(document).ready(function() {
+                        console.debug(`$selector`);
+                        //Date range picker
+                        const daterange = $('$selector');
+                        daterange.daterangepicker($finalOptions)
+                           
+                        daterange.on('apply.daterangepicker', function (ev, picker) {
+                            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                        });
+                    });
                 </script>
                 EOT;
     }
