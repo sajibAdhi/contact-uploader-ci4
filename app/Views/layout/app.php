@@ -81,10 +81,13 @@
 <!-- SweetAlert2 Js -->
 <?= load_sweetalert2_scripts() ?>
 
-<!-----------------------------
-| Application Page Scripts Here |
------------------------------->
+<!-------------------------------------
+| Application Page Scripts Start Here |
+-------------------------------------->
 <?= $this->renderSection('pageScripts') ?>
+<!-----------------------------------
+| Application Page Scripts End Here |
+------------------------------------>
 
 <!-- AdminLTE App -->
 <script src="<?= base_url() ?>adminlte/dist/js/adminlte.min.js"></script>
@@ -93,8 +96,8 @@
 <script>
     $(document).ready(function() {
         // Check if the sidebar state is saved in local storage
-        var sidebarState = localStorage.getItem('sidebarState');
-        console.log(sidebarState);
+        const sidebarState = localStorage.getItem('sidebarState');
+
         // Apply the sidebar state
         if (sidebarState === 'collapsed') {
             $('body').addClass('sidebar-collapse');
@@ -104,14 +107,12 @@
 
         // Listen for the collapse event
         $(document).on('collapsed.lte.pushmenu', function() {
-            console.log('collapsed')
             // Save the state to local storage
             localStorage.setItem('sidebarState', 'collapsed');
         });
 
         // Listen for the show event
         $(document).on('shown.lte.pushmenu', function() {
-            console.log('shown')
             // Save the state to local storage
             localStorage.setItem('sidebarState', 'expanded');
         });
