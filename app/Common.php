@@ -206,16 +206,13 @@ if (!function_exists('initialize_datatable')) {
     {
         // Default options
         $defaultOptions = [
-            "responsive" => true,
-            "lengthChange" => false,
-            "autoWidth" => false,
-            "order" => [],
-            "buttons" => ["copy", "csv", "excel", "pdf", "print", "colvis"]
         ];
 
         // Merge default options with user-provided options
         $finalOptions = array_merge($defaultOptions, $options);
-        $finalOptions = json_encode($finalOptions);
+        // how to support php to json function suppports also
+        $finalOptions = json_encode($finalOptions, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+
 
         // Initialize DataTable
         return <<<EOT

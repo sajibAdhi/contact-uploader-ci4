@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\ContactService;
+use Hermawan\DataTables\DataTable;
 
 class ContactController extends BaseController
 {
@@ -15,14 +16,22 @@ class ContactController extends BaseController
 
     public function index(): string
     {
+        return view('contact/index', [
+            'categories' => $this->contactService->categoryService->getCategoriesOfContacts()
+        ]);
+    }
+
+    public function indexDatatable()
+    {
         $filter = [
             'categories' => $this->request->getGet('categories'),
         ];
-        return view('contact/index', [
-            'categories' => $this->contactService->categoryService->getCategoriesOfContacts(),
-            'contacts' => $this->contactService->filter($filter)->paginate(),
-            'pager' => $this->contactService->contact->pager,
-        ]);
+
+        $builder = $this->contactService->filter($filter)->contactBuilder();
+
+        return DataTable::of($builder)
+            ->addNumbering('no')
+            ->toJson(true);
     }
 
 }

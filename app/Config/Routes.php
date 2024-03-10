@@ -35,6 +35,7 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
 
     $routes->group('contacts', static function ($routes) {
         $routes->get('/', [ContactController::class, 'index'], ['as' => 'sms_service.contact']);
+        $routes->get('index_datatable', [ContactController::class, 'indexDatatable'], ['as' => 'sms_service.contact.index_datatable']);
     });
 
     // host/sms_service/import_data

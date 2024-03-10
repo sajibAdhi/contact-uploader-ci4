@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Constants\ApplicationConstant;
 use App\Models\ContactContentModel;
 use App\Models\ContactModel;
+use CodeIgniter\Database\BaseBuilder;
 use ReflectionException;
 
 class ContactService
@@ -77,5 +78,12 @@ class ContactService
         }
 
         return $this;
+    }
+
+    public function contactBuilder()
+    {
+        return $this->contact
+            ->select('contacts.id, contacts.number, categories.name as category_name')
+            ->join('categories', 'categories.id = contacts.category_id');
     }
 }

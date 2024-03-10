@@ -21,7 +21,7 @@
                 <!-- category -->
                 <div class="form-group col-sm-4">
                     <label for="category">Category</label>
-                    <select name="categories[]" id="category" class="form-control selectTwo" multiple
+                    <select name="categories[]" id="categories" class="form-control selectTwo" multiple
                             data-placeholder="Select a Category"
                             style="width: 100%;">
                         <option value="all" <?= set_select('categories', 'all', true) ?> >
@@ -37,9 +37,6 @@
                 </div>
 
             </div> <!-- /.row -->
-
-            <?= view_cell(\App\Cells\ButtonCell::class, ['title' => 'Search', 'class' => 'btn-primary pull-right']) ?>
-
         </form>
         <!-- /.Filter Form -->
     </div>
@@ -57,42 +54,15 @@
         <table id="datatable" class="table table-sm table-hover table-bordered">
             <thead>
             <tr>
+                <th>No</th>
                 <th>Contact</th>
                 <th>Category</th>
             </tr>
             </thead>
             <tbody>
-            <?php /** @var App\Models\ContactModel[] $contacts */ ?>
-            <?php if (empty($contacts)): ?>
-                <tr>
-                    <td colspan="5" class="text-center">No data found</td>
-                </tr>
-            <?php else: ?>
-                <?php foreach ($contacts as $contact): ?>
-                    <tr>
-                        <td><?= $contact->number ?></td>
-                        <td><?= $contact->category_name ?></td>
-                    </tr>
-                <?php endforeach; ?>
-
-            <?php endif; ?>
             </tbody>
         </table>
-        <br>
-        <?php if (!empty($pager)): ?>
-            <?php
-            $thisPageStart = $pager->getPerPage() * $pager->getCurrentPage() - $pager->getPerPage() + 1;
-            $thisPageEnd = $pager->getPerPage() * $pager->getCurrentPage();
-            ?>
-            <div class="d-flex justify-content-between">
-                <div>
-                    Showing <?= $thisPageStart ?> to <?= $thisPageEnd ?> of <?= $pager->getTotal() ?> Entries
-                </div>
-                <div>
-                    <?= $pager->links('default', 'bootstrap4') ?>
-                </div>
-            </div>
-        <?php endif; ?>
+
     </div>
     <!-- /.card-body -->
 </div>
@@ -105,8 +75,39 @@
 <?= load_datatable_scripts() ?>
 
 <?= initialize_select2() ?>
-<?php //= initialize_datatable('datatable', [
-//    // off page length
-//    'lengthMenu' => [10, 25, 50, 100],
-//]) ?>
+<!--processing: true,-->
+<!--serverSide: true,-->
+<!--ajax: '/ajax-datatable/basic'-->
+
+
+<script>
+    $(function () {
+        let categories = $('#categories');
+
+        let table = $("#datatable").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": `<?= route_to('sms_service.contact.index_datatable')?>`,
+                "type": "GET",
+                "data": {
+                    categories: categories.val() || []
+                }
+            },
+            "order": [],
+            "columns": [
+                {"data": "no", "orderable": false},
+                {"data": "number"},
+                {"data": "category_name"}
+            ]
+        }).buttons().container().appendTo('#datatable' + '_wrapper .col-md-6:eq(0)');
+
+
+        categories.change(function () {
+            table.ajax.reload();
+        });
+    });
+
+</script>
+
 <?= $this->endSection() ?>
