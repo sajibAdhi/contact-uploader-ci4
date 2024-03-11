@@ -86,6 +86,7 @@
 
         let table = $("#datatable").DataTable({
             "responsive": true,
+
             "processing": true,
             "serverSide": true,
             "ajax": {
@@ -95,13 +96,20 @@
                     categories: () => categories.val(),
                 }
             },
-            "order": [],
+            "order": [
+                [1, "desc"]
+            ],
             "columns":
                 [
                     {data: "no", orderable: false},
                     {data: "number"},
                     {data: "category_name"}
                 ],
+            lengthMenu: [
+                [10, 25, 50, 100, 1000, 5000, -1],
+                [10, 25, 50, 100, 1000, 5000, 'Show all']
+            ],
+            "dom": 'Blfrtip',
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         });
 
