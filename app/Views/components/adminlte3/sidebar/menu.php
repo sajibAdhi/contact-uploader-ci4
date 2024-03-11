@@ -35,6 +35,12 @@
                 </p>
             </a>
         </li>-->
+        <?= view_cell(\App\Cells\NavItemCell::class, [
+            'link' => route_to('sms_service.dashboard'),
+            'icon' => 'fas fa-tachometer-alt',
+            'title' => 'Dashboard',
+        ]) ?>
+
         <li class="nav-item <?= menu_open(route_to('sms_service.import_data'), route_to('sms_service.import_data.upload')) ?>">
             <a href="#"
                class="nav-link <?= active_link(route_to('sms_service.import_data'), route_to('sms_service.import_data.upload')) ?>">

@@ -619,5 +619,36 @@ if (!function_exists('notify_toasts')) {
     }
 }
 
+// random bootstrap color
+if (!function_exists('random_bootstrap_color')) {
+    /**
+     * Random color
+     *
+     * @return string
+     */
+    function random_bootstrap_color(): string
+    {
+        $colors = [
+            'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'
+        ];
 
+        return $colors[array_rand($colors)];
+    }
+}
 
+// random bootstrap positive color
+if (!function_exists('random_positive_bootstrap_color')) {
+    /**
+     * Random positive color
+     *
+     * @return string
+     */
+    function random_positive_bootstrap_color(): string
+    {
+        $colors = [
+            'primary', 'success', 'info'
+        ];
+
+        return $colors[array_rand($colors)];
+    }
+}

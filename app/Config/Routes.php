@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\ContactController;
+use App\Controllers\DashboardController;
 use App\Controllers\ImportDataController;
 use CodeIgniter\Router\RouteCollection;
 
@@ -12,10 +13,11 @@ use App\Controllers\AggregatorController;
 use App\Controllers\CategoryController;
 use App\Controllers\SettingController;
 
-$routes->get('/', static fn() => redirect('sms_service.import_data'), ['filter' => ['session']]);
+$routes->get('/', static fn() => redirect('sms_service.dashboard'), ['filter' => ['session']]);
 
-$routes->group('sms_service', ['filter' => ['session']], static function ($routes) {
+$routes->group('', ['filter' => ['session']], static function ($routes) {
 
+    $routes->get('dashboard', [DashboardController::class, 'index'], ['as' => 'sms_service.dashboard']);
 
     $routes->group('aggregators', static function ($routes) {
         $routes->get('/', [AggregatorController::class, 'index'], ['as' => 'sms_service.aggregator']);
@@ -36,6 +38,8 @@ $routes->group('sms_service', ['filter' => ['session']], static function ($route
     $routes->group('contacts', static function ($routes) {
         $routes->get('/', [ContactController::class, 'index'], ['as' => 'sms_service.contact']);
         $routes->get('index_datatable', [ContactController::class, 'indexDatatable'], ['as' => 'sms_service.contact.index_datatable']);
+
+//        Get request with categories wise contacts
     });
 
     // host/sms_service/import_data
