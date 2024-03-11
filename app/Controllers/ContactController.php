@@ -23,9 +23,9 @@ class ContactController extends BaseController
 
     public function indexDatatable()
     {
-        $filter = [
-            'categories' => $this->request->getGet('categories'),
-        ];
+
+        $filter = new \stdClass();
+        $filter->categories = explode(',', $this->request->getGet('categories'));
 
         $builder = $this->contactService->filter($filter)->contactBuilder();
 

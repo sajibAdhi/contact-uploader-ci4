@@ -71,10 +71,11 @@ class ContactService
             ->paginate(ApplicationConstant::PER_PAGE);
     }
 
-    public function filter(array $filter): ContactService
+    public function filter(object $filter): ContactService
     {
-        if (!empty($filter['categories']) && !in_array('all', $filter['categories'])) {
-            $this->contact->whereIn('contacts.category_id', $filter['categories']);
+
+        if (!empty($filter->categories) && !in_array('all', $filter->categories)) {
+            $this->contact->whereIn('contacts.category_id', $filter->categories);
         }
 
         return $this;
