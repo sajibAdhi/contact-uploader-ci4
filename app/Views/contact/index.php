@@ -8,11 +8,10 @@
 
 
 <?= $this->section('main') ?>
-<!-- Filter Form card -->
-<div class="card">
+<!-- Contacts Filer -->
+<div class="card" id="contactsFilter">
     <div class="card-header">
         <h3 class="card-title">Contacts Filter</h3>
-
         <!-- contacts card tool-->
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -21,13 +20,13 @@
         </div>
 
     </div>
+
     <!-- /.card-header -->
     <div class="card-body">
-        <!-- Filter Form -->
-        <div class="row">
-            <!-- category -->
-            <div class="form-group col-sm-4">
-                <label for="categories">Category</label>
+        <!-- category -->
+        <div class="form-group row">
+            <label for="categories" class="col-sm-4">Category</label>
+            <div class="col-sm-8">
                 <select name="categories[]" id="categories" class="form-control selectTwo" multiple
                         data-placeholder="Select a Category"
                         style="width: 100%;">
@@ -39,12 +38,9 @@
                             <option value="<?= $category->id ?>" <?= set_select('categories', $category->id) ?>><?= $category->name ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
-
                 </select>
             </div>
-
         </div> <!-- /.row -->
-        <!-- /.Filter Form -->
     </div>
     <!-- /.card-body -->
 </div>
@@ -89,28 +85,34 @@
         let categories = $('#categories');
 
         let table = $("#datatable").DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
+            "responsive": true,
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
                 "url": `<?= route_to('sms_service.contact.index_datatable')?>`,
                 "type": "GET",
                 "data": {
                     categories: () => categories.val(),
                 }
             },
-            order: [],
-            columns:
+            "order": [],
+            "columns":
                 [
                     {data: "no", orderable: false},
                     {data: "number"},
                     {data: "category_name"}
-                ]
+                ],
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         });
 
-        table.buttons().container().appendTo('#datatable' + '_wrapper .col-md-6:eq(0)');
+        table.buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
 
 
         categories.change(function () {
+            // Change the URL without reloading the page
+            let newUrl = `<?= route_to('sms_service.contact.index')?>?categories=${categories.val().join(',')}`;
+            history.pushState({}, '', newUrl);
+
             table.ajax.reload();
         });
     });
@@ -123,11 +125,28 @@
         let categories = $('#categories');
         let url = new URL(window.location.href);
         let params = new URLSearchParams(url.search);
-        console.log(params.get('categories'));
+
         if (params.has('categories')) {
             let selectedCategories = params.get('categories').split(',');
             categories.val(selectedCategories).trigger('change');
         }
+    });
+</script>
+
+<!-- contactsFilter Collapse with localstorage-->
+<script>
+    $(function () {
+        let contactsFilter = $('#contactsFilter');
+        let contactsFilterState = localStorage.getItem('contactsFilterState');
+        if (contactsFilterState === 'collapsed') {
+            contactsFilter.find('.card-tools button').click();
+        }
+        contactsFilter.on('collapsed.lte.cardwidget', function () {
+            localStorage.setItem('contactsFilterState', 'collapsed');
+        });
+        contactsFilter.on('expanded.lte.cardwidget', function () {
+            localStorage.setItem('contactsFilterState', 'expanded');
+        });
     });
 </script>
 <?= $this->endSection() ?>
