@@ -41,6 +41,36 @@
             'title' => 'Dashboard',
         ]) ?>
 
+        <li class="nav-item <?= menu_open(route_to('sms_service.contact.upload'), route_to('sms_service.contact'), route_to('sms_service.category')) ?>">
+            <a href="#"
+               class="nav-link <?= active_link(route_to('sms_service.contact.upload'), route_to('sms_service.contact'), route_to('sms_service.category')) ?>">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                    Number Database
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+<!--                --><?php //= view_cell(\App\Cells\NavItemCell::class, [
+//                    'link' => route_to('sms_service.contact.upload'),
+//                    'icon' => 'fas fa-upload', // Change the icon here
+//                    'title' => 'Upload Numbers',
+//                ]) ?>
+
+                <?= view_cell(\App\Cells\NavItemCell::class, [
+                    'link' => route_to('sms_service.contact'),
+                    'icon' => 'fas fa-list', // Change the icon here
+                    'title' => 'List Data',
+                ]) ?>
+
+                <?= view_cell(\App\Cells\NavItemCell::class, [
+                    'link' => route_to('sms_service.category'),
+                    'icon' => 'fas fa-tags', // Change the icon here
+                    'title' => 'Categories',
+                ]) ?>
+            </ul>
+        </li>
+
         <li class="nav-item <?= menu_open(route_to('sms_service.import_data'), route_to('sms_service.import_data.upload')) ?>">
             <a href="#"
                class="nav-link <?= active_link(route_to('sms_service.import_data'), route_to('sms_service.import_data.upload')) ?>">
@@ -63,18 +93,6 @@
                 ]) ?>
             </ul>
         </li>
-
-        <?= view_cell(\App\Cells\NavItemCell::class, [
-            'link' => route_to('sms_service.contact'),
-            'icon' => 'fas fa-address-book',
-            'title' => 'Contacts',
-        ]) ?>
-
-        <?= view_cell(\App\Cells\NavItemCell::class, [
-            'link' => route_to('sms_service.category'),
-            'icon' => 'fas fa-list',
-            'title' => 'Categories',
-        ]) ?>
 
         <?= view_cell(\App\Cells\NavItemCell::class, [
             'link' => route_to('sms_service.aggregator'),
